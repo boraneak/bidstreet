@@ -9,7 +9,6 @@ export const verifyUserToken = (
   res: Response,
   next: NextFunction
 ) => {
-  // const authHeader = req.headers.authorization;
   if (!req.headers.authorization) {
     return res.status(401).send("Unauthorized request");
   }
@@ -22,7 +21,7 @@ export const verifyUserToken = (
       token,
       jwtSecret
     ) as DecodedToken;
-    req.user = decodedToken.user;
+    req.user = decodedToken;
     next();
   } catch (err) {
     if (err instanceof TokenExpiredError) {

@@ -1,4 +1,8 @@
-import { IUser } from "./UserInterface";
 export interface DecodedToken {
-  user: IUser;
+  _id: string;
+  name: string;
+  email: string;
+  seller: boolean;
+  iat: number;
+  exp: number;
 }

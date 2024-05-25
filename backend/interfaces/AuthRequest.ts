@@ -1,5 +1,12 @@
 import { Request } from "express";
-import { IUser } from "./UserInterface";
+
 export interface AuthRequest extends Request {
-  user?: IUser;
+  user?: {
+    _id: string;
+    name: string;
+    email: string;
+    seller: boolean;
+    iat: number;
+    exp: number;
+  };
 }
