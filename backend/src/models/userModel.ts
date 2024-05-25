@@ -1,19 +1,6 @@
-import mongoose, { Document, Schema } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import crypto from "crypto";
-
-interface IUser extends Document {
-  name: string;
-  email: string;
-  hashed_password: string;
-  salt: string;
-  updated?: Date;
-  created: Date;
-  seller: boolean;
-  _password?: string;
-  authenticate: (plainText: string) => boolean;
-  encryptPassword: (password: string) => string;
-  genSalt: () => string;
-}
+import { IUser } from "../../interfaces/UserInterface";
 
 const userSchema: Schema<IUser> = new Schema({
   name: {

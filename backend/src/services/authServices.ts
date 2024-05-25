@@ -1,9 +1,10 @@
 import User from "../models/userModel";
 import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
-const jwtSecret = process.env.JWT_SECRET!;
-
 import "dotenv/config";
+const jwtSecret = process.env.JWT_SECRET!;
+const tokenDuration = process.env.TOKEN_DURATION;
+
 export const signIn = async (req: Request, res: Response) => {
   try {
     const user = await User.findOne({
@@ -21,10 +22,19 @@ export const signIn = async (req: Request, res: Response) => {
       });
     }
 
-    const token = jwt.sign({ _id: user._id }, jwtSecret);
-    res.cookie("t", token, {
-      expires: new Date(Date.now() + 3600000),
-      // accessible only by the web server
+    const token = jwt.sign(
+      {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        seller: user.seller,
+      },
+      jwtSecret,
+      {
+        expiresIn: tokenDuration,
+      }
+    );
+    res.cookie("authCookie", token, {
       httpOnly: true,
     });
     return res.json({
@@ -44,9 +54,14 @@ export const signIn = async (req: Request, res: Response) => {
 };
 export const signOut = (req: Request, res: Response) => {
   try {
-    res.clearCookie("t");
+    if (req.cookies && req.cookies.authCookie) {
+      res.clearCookie("authCookie");
+      return res.status(200).json({
+        message: "signed out",
+      });
+    }
     return res.status(200).json({
-      message: "signed out",
+      message: "no user was signed in",
     });
   } catch (err) {
     return res.status(500).json({
