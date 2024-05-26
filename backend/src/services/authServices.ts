@@ -1,11 +1,14 @@
 import User from "../models/userModel";
-import jwt from "jsonwebtoken";
-import { Request, Response } from "express";
+import jwt, { TokenExpiredError } from "jsonwebtoken";
+import { Request, Response, NextFunction } from "express";
+import { AuthRequest } from "../../interfaces/AuthRequest";
+import { DecodedToken } from "../../interfaces/DecodedToken";
 import "dotenv/config";
 const jwtSecret = process.env.JWT_SECRET!;
 const tokenDuration = process.env.TOKEN_DURATION;
 
-export const signIn = async (req: Request, res: Response) => {
+
+export const signin = async (req: Request, res: Response) => {
   try {
     const user = await User.findOne({
       email: req.body.email,
@@ -52,7 +55,8 @@ export const signIn = async (req: Request, res: Response) => {
     });
   }
 };
-export const signOut = (req: Request, res: Response) => {
+
+export const signout = (req: Request, res: Response) => {
   try {
     if (req.cookies && req.cookies.authCookie) {
       res.clearCookie("authCookie");
@@ -67,5 +71,35 @@ export const signOut = (req: Request, res: Response) => {
     return res.status(500).json({
       error: "Could not sign out",
     });
+  }
+};
+
+export const hasAuthorization = (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  if (!req.headers.authorization) {
+    return res.status(401).json("Unauthorized request");
+  }
+  const token: string = req.headers["authorization"]?.split(" ")[1];
+  if (!token) {
+    return res.status(401).json("Access denied. No token provided.");
+  }
+  try {
+    const decodedToken: DecodedToken = jwt.verify(
+      token,
+      jwtSecret
+    ) as DecodedToken;
+    req.user = decodedToken;
+    next();
+  } catch (err) {
+    if (err instanceof TokenExpiredError) {
+      // token is expired
+      return res.status(401).send("Access denied. Token expired.");
+    } else {
+      // other errors : invalid signature or malformed token
+      return res.status(400).send("Invalid token.");
+    }
   }
 };

@@ -1,13 +1,26 @@
 import express from "express";
 import { userServices } from "../services/index";
-import { verifyUserToken } from "../../middlewares/verifyUserToken";
-
+import { authServices } from "../services/index";
 const router = express.Router();
 
-router.post("/create", userServices.create);
-router.get("/list", verifyUserToken, userServices.list);
-router.get("/list/:id", verifyUserToken, userServices.getUserById);
-router.put("/update/:id", verifyUserToken, userServices.updateUserById);
-router.delete("/delete/:id", verifyUserToken, userServices.deleteUserById);
+router.get("/list", authServices.hasAuthorization, userServices.getAllUsers);
+router.post("/create", userServices.createUser);
 
+router.get(
+  "/profile/:userId",
+  authServices.hasAuthorization,
+  userServices.readUserProfile
+);
+
+router.put(
+  "/update/:userId",
+  authServices.hasAuthorization,
+  userServices.updateUserById
+);
+router.delete(
+  "/delete/:userId",
+  authServices.hasAuthorization,
+  userServices.deleteUserById
+);
+router.get("/:userId", userServices.getUserById);
 export default router;
