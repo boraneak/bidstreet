@@ -1,5 +1,4 @@
-import { Document } from "mongoose";
-
+import mongoose, { Document } from "mongoose";
 export interface IUser extends Document {
   name: string;
   email: string;
@@ -12,4 +11,5 @@ export interface IUser extends Document {
   authenticate: (plainText: string) => boolean;
   encryptPassword: (password: string) => string;
   genSalt: () => string;
+  _id: mongoose.Types.ObjectId;
 }

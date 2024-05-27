@@ -2,38 +2,34 @@ import mongoose, { Schema } from "mongoose";
 import crypto from "crypto";
 import { IUser } from "../../interfaces/UserInterface";
 
-const userSchema: Schema<IUser> = new Schema({
-  name: {
-    type: String,
-    trim: true,
-    required: [true, "Name is required"],
+const userSchema: Schema<IUser> = new Schema(
+  {
+    name: {
+      type: String,
+      trim: true,
+      required: [true, "Name is required"],
+    },
+    email: {
+      type: String,
+      trim: true,
+      unique: true,
+      match: [/.+@.+\..+/, "Please fill a valid email address"],
+      required: [true, "Email is required"],
+    },
+    hashed_password: {
+      type: String,
+      required: [true, "Password is required"],
+    },
+    salt: {
+      type: String,
+    },
+    seller: {
+      type: Boolean,
+      default: false,
+    },
   },
-  email: {
-    type: String,
-    trim: true,
-    unique: true,
-    match: [/.+@.+\..+/, "Please fill a valid email address"],
-    required: [true, "Email is required"],
-  },
-  hashed_password: {
-    type: String,
-    required: [true, "Password is required"],
-  },
-  salt: {
-    type: String,
-  },
-  updated: {
-    type: Date,
-  },
-  created: {
-    type: Date,
-    default: Date.now,
-  },
-  seller: {
-    type: Boolean,
-    default: false,
-  }
-});
+  { timestamps: true }
+);
 
 userSchema
   .virtual("password")

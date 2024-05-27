@@ -1,10 +1,4 @@
-"use strict";
-
-interface MongoError extends Error {
-  code?: number;
-  keyValue?: Record<string, any>;
-  errors?: Record<string, { message: string }>;
-}
+import { MongoError } from "../interfaces/MongoError";
 
 /**
  * Get unique error field name
