@@ -1,5 +1,5 @@
-import { IUser } from "./UserInterface";
+import { IUser } from "./User";
 import { Request } from "express";
-export interface UserRequest extends Request {
+export interface IUserRequest extends Request {
   user?: IUser;
 }

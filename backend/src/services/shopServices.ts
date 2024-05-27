@@ -3,17 +3,17 @@ import mongoose from "mongoose";
 
 import Shop from "../models/shopModel";
 import { getErrorMessage } from "../../utils/dbErrorHandler";
-import { MongoError } from "../../interfaces/MongoError";
+import { IMongoError } from "../../interfaces/MongoError";
 import fs from "fs";
-import { IShop } from "../../interfaces/ShopInterface";
-import { AuthRequest } from "../../interfaces/AuthRequest";
+import { IShop } from "../../interfaces/Shop";
+import { IAuthRequest } from "../../interfaces/AuthRequest";
 import path from "path";
 const defaultImagePath = path.join(
   __dirname,
   "../../public/images/defaultShopImage.jpg"
 );
 
-export const createShop = async (req: AuthRequest, res: Response) => {
+export const createShop = async (req: IAuthRequest, res: Response) => {
   try {
     if (!req.user || !req.user._id) {
       return res.status(400).json({ error: "User information is missing" });
@@ -40,12 +40,12 @@ export const createShop = async (req: AuthRequest, res: Response) => {
     return res.status(200).json(result);
   } catch (error) {
     return res.status(400).json({
-      error: getErrorMessage(error as MongoError),
+      error: getErrorMessage(error as IMongoError),
     });
   }
 };
 
-export const getShopById = async (req: AuthRequest, res: Response) => {
+export const getShopById = async (req: IAuthRequest, res: Response) => {
   try {
     const shopId = req.params.shopId;
 
@@ -140,7 +140,7 @@ export const deleteShopById = async (req: Request, res: Response) => {
     res.json(deletedShop);
   } catch (error) {
     return res.status(400).json({
-      error: getErrorMessage(error as MongoError),
+      error: getErrorMessage(error as IMongoError),
     });
   }
 };
@@ -151,12 +151,12 @@ export const getAllShops = async (req: Request, res: Response) => {
     res.json(shops);
   } catch (error) {
     return res.status(400).json({
-      error: getErrorMessage(error as MongoError),
+      error: getErrorMessage(error as IMongoError),
     });
   }
 };
 
-export const getShopByOwner = async (req: AuthRequest, res: Response) => {
+export const getShopByOwner = async (req: IAuthRequest, res: Response) => {
   try {
     const userId = req.params.userId;
     if (!mongoose.Types.ObjectId.isValid(userId)) {
@@ -168,7 +168,7 @@ export const getShopByOwner = async (req: AuthRequest, res: Response) => {
     res.json(shops);
   } catch (error) {
     return res.status(400).json({
-      error: getErrorMessage(error as MongoError),
+      error: getErrorMessage(error as IMongoError),
     });
   }
 };

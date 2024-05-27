@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 import crypto from "crypto";
-import { IUser } from "../../interfaces/UserInterface";
+import { IUser } from "../../interfaces/User";
 
 const userSchema: Schema<IUser> = new Schema(
   {

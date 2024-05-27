@@ -1,8 +1,8 @@
 import User from "../models/userModel";
 import jwt, { TokenExpiredError } from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
-import { AuthRequest } from "../../interfaces/AuthRequest";
-import { DecodedToken } from "../../interfaces/DecodedToken";
+import { IAuthRequest } from "../../interfaces/AuthRequest";
+import { IDecodedToken } from "../../interfaces/DecodedToken";
 import "dotenv/config";
 const jwtSecret = process.env.JWT_SECRET!;
 const tokenDuration = process.env.TOKEN_DURATION;
@@ -75,7 +75,7 @@ export const signout = (req: Request, res: Response) => {
 };
 
 export const hasAuthorization = (
-  req: AuthRequest,
+  req: IAuthRequest,
   res: Response,
   next: NextFunction
 ) => {
@@ -87,10 +87,10 @@ export const hasAuthorization = (
     return res.status(401).json("Access denied. No token provided.");
   }
   try {
-    const decodedToken: DecodedToken = jwt.verify(
+    const decodedToken: IDecodedToken = jwt.verify(
       token,
       jwtSecret
-    ) as DecodedToken;
+    ) as IDecodedToken;
     req.user = decodedToken;
     next();
   } catch (err) {

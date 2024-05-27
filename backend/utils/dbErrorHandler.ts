@@ -1,9 +1,9 @@
-import { MongoError } from "../interfaces/MongoError";
+import { IMongoError } from "../interfaces/MongoError";
 
 /**
  * Get unique error field name
  */
-const getUniqueErrorMessage = (err: MongoError): string => {
+const getUniqueErrorMessage = (err: IMongoError): string => {
   let output: string;
   try {
     const fieldName = err.message.substring(
@@ -23,7 +23,7 @@ const getUniqueErrorMessage = (err: MongoError): string => {
 /**
  * Get the error message from error object
  */
-export const getErrorMessage = (err: MongoError): string => {
+export const getErrorMessage = (err: IMongoError): string => {
   let message = "";
 
   if (err.code) {

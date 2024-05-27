@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import { IShop } from "../../interfaces/ShopInterface";
+import { IShop } from "../../interfaces/Shop";
 
 const ShopSchema: Schema<IShop> = new Schema(
   {

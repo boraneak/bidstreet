@@ -1,7 +1,7 @@
 import User from "../models/userModel";
 import { Request, Response, NextFunction } from "express";
 import { getErrorMessage } from "../../utils/dbErrorHandler";
-import { UserRequest } from "../../interfaces/UserRequest";
+import { IUserRequest } from "../../interfaces/UserRequest";
 import mongoose from "mongoose";
 
 export const createUser = async (req: Request, res: Response) => {
@@ -122,7 +122,7 @@ export const deleteUserById = async (req: Request, res: Response) => {
 };
 
 export const isSeller = (
-  req: UserRequest,
+  req: IUserRequest,
   res: Response,
   next: NextFunction
 ) => {
