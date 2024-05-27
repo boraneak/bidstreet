@@ -4,6 +4,7 @@ import morgan from "morgan";
 import { connectToDatabase } from "../database/db";
 import router from "./routes/index";
 import cookieParser from "cookie-parser";
+import { getCurrentDate } from "../utils/date";
 
 const app = express();
 const port = process.env.PORT;
@@ -12,8 +13,16 @@ app.use(express.json());
 app.use(morgan("dev"));
 app.use("/api/v1", router);
 
+app.get("/health", (req, res) => {
+  res.status(200).json({
+    message: "Server is healthy and running!",
+    status: "OK",
+    date: getCurrentDate(),
+  });
+});
+
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  res.send("Welcome to the Express server!");
 });
 app.listen(port, async () => {
   await connectToDatabase();
