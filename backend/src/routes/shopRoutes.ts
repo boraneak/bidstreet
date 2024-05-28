@@ -13,7 +13,6 @@ router.post(
   upload.single("image"),
   authServices.hasAuthorization,
   userServices.isSeller,
-  shopServices.isShopOwner,
   shopServices.createShop
 );
 
@@ -38,7 +37,7 @@ router.delete(
   shopServices.deleteShopById
 );
 
-router.get("/logo/:shopId", shopServices.getShopPhoto);
+router.get("/photo/:shopId", shopServices.getShopPhoto);
 
 router.get("/list/:shopId", shopServices.getShopById);
 
