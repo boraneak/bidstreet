@@ -9,10 +9,11 @@ const router = express.Router();
 router.get("/", shopServices.getAllShops);
 
 router.post(
-  "/create",
+  "/create/by/:userId",
   upload.single("image"),
   authServices.hasAuthorization,
   userServices.isSeller,
+  shopServices.isShopOwner,
   shopServices.createShop
 );
 
@@ -26,12 +27,14 @@ router.put(
   "/update/:shopId",
   upload.single("image"),
   authServices.hasAuthorization,
+  shopServices.isShopOwner,
   shopServices.updateShopById
 );
 
 router.delete(
   "/delete/:shopId",
   authServices.hasAuthorization,
+  shopServices.isShopOwner,
   shopServices.deleteShopById
 );
 

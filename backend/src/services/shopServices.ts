@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
 
 import Shop from "../models/shopModel";
@@ -170,5 +170,27 @@ export const getShopByOwner = async (req: IAuthRequest, res: Response) => {
     return res.status(400).json({
       error: getErrorMessage(error as IMongoError),
     });
+  }
+};
+
+export const isShopOwner = async (
+  req: IAuthRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const userId = req.params.userId;
+    const shop = await Shop.findOne({ owner: userId });
+    if (!shop) {
+      return res.status(404).json({ error: "Shop not found" });
+    }
+    if (!shop.owner.equals(userId)) {
+      return res
+        .status(403)
+        .json({ error: "Unauthorized - User is not the owner of the shop" });
+    }
+    next();
+  } catch (error) {
+    return res.status(500).json({ error: "Internal Server Error" });
   }
 };
