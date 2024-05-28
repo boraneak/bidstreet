@@ -27,11 +27,6 @@ const ProductSchema = new Schema<IProduct>(
       type: Number,
       required: [true, "Price is required"],
     },
-    updated: Date,
-    created: {
-      type: Date,
-      default: Date.now,
-    },
     shop: { type: Schema.Types.ObjectId, ref: "Shop", required: true },
   },
   { timestamps: true }

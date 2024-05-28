@@ -45,11 +45,6 @@ const OrderSchema = new Schema<IOrder>(
       country: { type: String, required: "Country is required" },
     },
     payment_id: {},
-    updated: Date,
-    created: {
-      type: Date,
-      default: Date.now,
-    },
     user: { type: Schema.Types.ObjectId, ref: "User", required: true },
   },
   { timestamps: true }
