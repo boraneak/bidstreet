@@ -1,7 +1,7 @@
-import { Schema } from "mongoose";
+import { Schema, model } from "mongoose";
 
 import { IAuction } from "../../interfaces/Auction";
-export const AuctionSchema = new Schema<IAuction>(
+const AuctionSchema = new Schema<IAuction>(
   {
     itemName: {
       type: String,
@@ -53,3 +53,4 @@ export const AuctionSchema = new Schema<IAuction>(
   },
   { timestamps: true }
 );
+export const Auction = model<IAuction>("Auction", AuctionSchema);
