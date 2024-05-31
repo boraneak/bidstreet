@@ -70,7 +70,7 @@ export const readUserProfile = async (req: Request, res: Response) => {
 
 export const getAllUsers = async (req: Request, res: Response) => {
   try {
-    const users = await User.find().select("name email updated created");
+    const users = await User.find();
     res.json(users);
   } catch (err: any) {
     return res.status(400).json({

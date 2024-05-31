@@ -179,7 +179,7 @@ export const isShopOwner = async (
   next: NextFunction
 ) => {
   try {
-    const userId = req.params.userId;
+    const userId = req.user?._id;
     const shop = await Shop.findOne({ owner: userId });
     if (!shop) {
       return res.status(404).json({ error: "Shop not found" });
