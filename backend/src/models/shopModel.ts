@@ -18,7 +18,7 @@ const ShopSchema: Schema<IShop> = new Schema(
     },
     owner: {
       type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
+      ref: "User",
     },
   },
   { timestamps: true }

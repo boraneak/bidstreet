@@ -14,7 +14,8 @@
   "scripts": {
     "start": "tsc && node dist/src/app.js",
     "dev": "nodemon --exec ts-node src/app.ts",
-    "lint": "yarn eslint . --ignore-pattern 'dist/**'"
+    "lint": "yarn eslint . --ignore-pattern 'dist/**'",
+    "lint:fix": "yarn eslint --fix"
   },
   "dependencies": {
     "@types/cookie-parser": "^1.4.7",
