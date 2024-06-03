@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import "dotenv/config";
 import morgan from "morgan";
 import { connectToDatabase } from "../database/db";
@@ -8,6 +9,13 @@ import { getCurrentDate } from "../utils/date";
 
 const app = express();
 const port = process.env.PORT;
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    // allow credentials (e.g., cookies, authorization headers)
+    credentials: true,
+  })
+);
 app.use(cookieParser());
 app.use(express.json());
 app.use(morgan("dev"));
