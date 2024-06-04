@@ -34,7 +34,7 @@ app.get("/", (req, res) => {
 });
 app.listen(port, async () => {
   await connectToDatabase();
-  return console.log(
+  console.log(
     "\x1b[32m",
     `Express is listening at http://localhost:${port}`,
     "\x1b[0m"
