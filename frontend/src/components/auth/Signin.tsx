@@ -32,10 +32,14 @@ const Signin: React.FC = () => {
     password: "",
     error: "",
   });
-
+  const [emailError, setEmailError] = useState<boolean>(false);
+  const [passwordError, setPasswordError] = useState<boolean>(false);
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { id, value } = event.target;
     setValues({ ...values, [id]: value });
+    id === "email"
+      ? setEmailError(value.trim() === "")
+      : setPasswordError(value.trim() === "");
   };
 
   const goToSignup = () => {
@@ -70,6 +74,7 @@ const Signin: React.FC = () => {
       }
     }
   };
+  const isFormValid = !(emailError || passwordError);
   return (
     <Box
       display="flex"
@@ -90,6 +95,8 @@ const Signin: React.FC = () => {
             onChange={handleChange}
             margin="normal"
             fullWidth
+            error={emailError}
+            helperText={emailError ? "Email is required" : ""}
           />
           <TextField
             id="password"
@@ -99,6 +106,8 @@ const Signin: React.FC = () => {
             margin="normal"
             onChange={handleChange}
             fullWidth
+            error={passwordError}
+            helperText={passwordError ? "Password is required" : ""}
           />
         </CardContent>
         <CardActions>
@@ -107,6 +116,7 @@ const Signin: React.FC = () => {
               color="primary"
               variant="contained"
               fullWidth
+              disabled={!isFormValid}
               onClick={onSignin}
             >
               Login

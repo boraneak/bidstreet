@@ -1,18 +1,18 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import Signin  from "./components/auth/Signin";
-import Home  from "./pages/Home";
+import Signin from "./components/auth/Signin";
+import Home from "./pages/Home";
 import Menu from "./pages/Menu";
-
-
+import Signup from "./components/auth/Signup";
 
 export const Router: React.FC = () => {
   return (
     <div>
-      <Menu/>
+      <Menu />
       <Routes>
-        <Route path="/home" Component={Home}/>
+        <Route path="/home" Component={Home} />
         <Route path="/signin" Component={Signin} />
+        <Route path="/signup" Component={Signup} />
       </Routes>
     </div>
   );
