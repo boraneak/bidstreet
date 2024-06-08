@@ -32,25 +32,21 @@ const Signin: React.FC = () => {
     password: "",
     error: "",
   });
-  const [emailError, setEmailError] = useState<boolean>(false);
-  const [passwordError, setPasswordError] = useState<boolean>(false);
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = event.target;
-    setValues({ ...values, [id]: value });
-    id === "email"
-      ? setEmailError(value.trim() === "")
-      : setPasswordError(value.trim() === "");
-  };
-
+  const [errors, setErrors] = useState<{ [key: string]: boolean }>({
+    email: false,
+    password: false,
+  });
+  const handleChange =
+    (id: string) => (event: ChangeEvent<HTMLInputElement>) => {
+      const { id, value } = event.target;
+      setValues({ ...values, [id]: value });
+      setErrors({ ...errors, [id]: value.trim() === "" });
+    };
   const goToSignup = () => {
     navigate("/signup");
   };
 
   const onSignin = async () => {
-    if (!values.email || !values.password) {
-      setValues({ ...values, error: "email and password are required" });
-      return;
-    }
     const user: User = {
       email: values.email || "",
       password: values.password || "",
@@ -63,7 +59,7 @@ const Signin: React.FC = () => {
       // go home
       navigate("/home");
     } catch (error) {
-      console.error("signin error:", error);
+      console.error("error signing in:", error);
       if (axios.isAxiosError(error) && error.response) {
         setValues({
           ...values,
@@ -74,7 +70,7 @@ const Signin: React.FC = () => {
       }
     }
   };
-  const isFormValid = !(emailError || passwordError);
+  const isFormValid = !(errors.email || errors.password);
   return (
     <Box
       display="flex"
@@ -87,28 +83,24 @@ const Signin: React.FC = () => {
           <Typography variant="h5" style={{ fontWeight: "bold" }}>
             Sign In
           </Typography>
-          <TextField
-            id="email"
-            label="Email"
-            type="email"
-            value={values.email}
-            onChange={handleChange}
-            margin="normal"
-            fullWidth
-            error={emailError}
-            helperText={emailError ? "Email is required" : ""}
-          />
-          <TextField
-            id="password"
-            label="Password"
-            value={values.password}
-            type="password"
-            margin="normal"
-            onChange={handleChange}
-            fullWidth
-            error={passwordError}
-            helperText={passwordError ? "Password is required" : ""}
-          />
+          {["email", "password"].map((id) => (
+            <TextField
+              key={id}
+              label={id === "email" ? "Email" : "Password"}
+              id={id}
+              type={id === "password" ? "password" : "email"}
+              value={values[id as keyof FormValues]}
+              onChange={handleChange(id)}
+              margin="normal"
+              fullWidth
+              error={errors[id]}
+              helperText={
+                errors[id]
+                  ? `${id.charAt(0).toUpperCase() + id.slice(1)} is required`
+                  : ""
+              }
+            />
+          ))}
         </CardContent>
         <CardActions>
           <Box display="flex" justifyContent="center" width="100%">
@@ -128,7 +120,10 @@ const Signin: React.FC = () => {
           style={{ cursor: "pointer", color: "blue" }}
           onClick={goToSignup}
         >
-          do not have an account?
+          Do not have an account?
+        </Typography>
+        <Typography align="center" style={{ cursor: "pointer", color: "gray" }}>
+          Forgot password?
         </Typography>
         {values.error && (
           <Typography color="error" align="center">

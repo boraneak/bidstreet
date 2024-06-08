@@ -40,27 +40,18 @@ const Signup: React.FC = () => {
     open: false,
     error: "",
   });
-  const [nameError, setNameError] = useState<boolean>(false);
-  const [emailError, setEmailError] = useState<boolean>(false);
-  const [passwordError, setPasswordError] = useState<boolean>(false);
+
+  const [errors, setErrors] = useState<{ [key: string]: boolean }>({
+    name: false,
+    email: false,
+    password: false,
+  });
 
   const handleChange =
     (id: string) => (event: ChangeEvent<HTMLInputElement>) => {
       const { value } = event.target;
       setValues({ ...values, [id]: value });
-      switch (id) {
-        case "name":
-          setNameError(value.trim() === "");
-          break;
-        case "email":
-          setEmailError(value.trim() === "");
-          break;
-        case "password":
-          setPasswordError(value.trim() === "");
-          break;
-        default:
-          break;
-      }
+      setErrors({ ...errors, [id]: value.trim() === "" });
     };
 
   const goToSignin = () => {
@@ -86,7 +77,7 @@ const Signup: React.FC = () => {
       }
     }
   };
-  const isFormValid = !(nameError || emailError || passwordError);
+  const isFormValid = !(errors.name || errors.email || errors.password);
 
   return (
     <Box
@@ -100,39 +91,32 @@ const Signup: React.FC = () => {
           <Typography variant="h5" style={{ fontWeight: "bold" }}>
             Sign Up
           </Typography>
-          <TextField
-            id="name"
-            label="Name"
-            type="text"
-            value={values.name}
-            onChange={handleChange("name")}
-            margin="normal"
-            fullWidth
-            error={nameError}
-            helperText={nameError ? "Name is required" : ""}
-          />
-          <TextField
-            id="email"
-            type="email"
-            label="Email"
-            value={values.email}
-            onChange={handleChange("email")}
-            margin="normal"
-            fullWidth
-            error={emailError}
-            helperText={emailError ? "Email is required" : ""}
-          />
-          <TextField
-            id="password"
-            type="password"
-            label="Password"
-            value={values.password}
-            onChange={handleChange("password")}
-            margin="normal"
-            fullWidth
-            error={passwordError}
-            helperText={passwordError ? "Password is required" : ""}
-          />
+          {["name", "email", "password"].map((id) => (
+            <TextField
+              key={id}
+              id={id}
+              label={
+                id === "name" ? "Name" : id === "email" ? "Email" : "Password"
+              }
+              type={
+                id === "email"
+                  ? "email"
+                  : id === "password"
+                  ? "password"
+                  : "text"
+              }
+              value={values[id as keyof FormValues]}
+              onChange={handleChange(id)}
+              margin="normal"
+              fullWidth
+              error={errors[id]}
+              helperText={
+                errors[id]
+                  ? `${id.charAt(0).toUpperCase() + id.slice(1)} is required`
+                  : ""
+              }
+            />
+          ))}
           {values.error && (
             <Typography color="error" style={{ verticalAlign: "middle" }}>
               {values.error}
@@ -157,7 +141,7 @@ const Signup: React.FC = () => {
           style={{ cursor: "pointer", color: "blue" }}
           onClick={goToSignin}
         >
-          already have an account?
+          Already have an account?
         </Typography>
       </Card>
       <Dialog open={values.open}>
@@ -171,6 +155,7 @@ const Signup: React.FC = () => {
         <DialogActions>
           <Typography style={{ cursor: "pointer", color: "blue" }}>
             <Button
+              style={{ textTransform: "none" }}
               color="primary"
               variant="contained"
               fullWidth
