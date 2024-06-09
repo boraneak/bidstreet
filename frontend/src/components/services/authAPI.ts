@@ -17,7 +17,7 @@ export const signin = async (user: User): Promise<AxiosResponse<any>> => {
     });
     return response.data;
   } catch (error) {
-    console.error(error);
+    console.error("error signing in ", error);
     throw error;
   }
 };
@@ -31,7 +31,7 @@ export const signup = async (user: User): Promise<AxiosResponse<any>> => {
     });
     return response.data;
   } catch (error) {
-    console.error(error);
+    console.error("error creating acccount", error);
     throw error;
   }
 };

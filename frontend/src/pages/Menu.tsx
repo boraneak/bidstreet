@@ -1,28 +1,13 @@
 import React from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-// import Typography from "@mui/material/Typography";
-// import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { auth } from "../utils/auth";
 
-const isActive = (
-  location: ReturnType<typeof useLocation>,
-  path: string
-): React.CSSProperties => {
-  return {
-    color: location.pathname === path ? "#bef67a" : "#ffffff",
-  };
-};
-
-const isPartActive = (
-  location: ReturnType<typeof useLocation>,
-  path: string
-): React.CSSProperties => {
-  return {
-    color: location.pathname.includes(path) ? "#bef67a" : "#ffffff",
-  };
+const isActive = (location: any, path: string) => {
+  if (location.pathname === path) return { color: "#00ff00" };
+  return { color: "#ffffff", fontWeight: "bold", fontSize: "16px" };
 };
 
 const Menu: React.FC = () => {
@@ -34,15 +19,21 @@ const Menu: React.FC = () => {
     <AppBar position="fixed">
       <Toolbar>
         <div>
-          {/* <Link to="/home" style={isActive(location, "/home")}>
-              bidstreet
-          </Link> */}
-          <Link to="/shops/all">
-            <Button style={isActive(location, "/shops/all")}>shops</Button>
+          <Link to="/shops">
+            <Button
+              style={{ ...isActive(location, "/shops"), textTransform: "none" }}
+            >
+              Shops
+            </Button>
           </Link>
-          <Link to="/auctions/all">
-            <Button style={isActive(location, "/auctions/all")}>
-             auctions
+          <Link to="/auctions">
+            <Button
+              style={{
+                ...isActive(location, "/auctions"),
+                textTransform: "none",
+              }}
+            >
+              Auctions
             </Button>
           </Link>
         </div>
@@ -51,10 +42,24 @@ const Menu: React.FC = () => {
             {!user && (
               <span>
                 <Link to="/signup">
-                  <Button style={isActive(location, "/signup")}>sign up</Button>
+                  <Button
+                    style={{
+                      ...isActive(location, "/signup"),
+                      textTransform: "none",
+                    }}
+                  >
+                    Sign up
+                  </Button>
                 </Link>
                 <Link to="/signin">
-                  <Button style={isActive(location, "/signin")}>login</Button>
+                  <Button
+                    style={{
+                      ...isActive(location, "/signin"),
+                      textTransform: "none",
+                    }}
+                  >
+                    Login
+                  </Button>
                 </Link>
               </span>
             )}
@@ -62,35 +67,40 @@ const Menu: React.FC = () => {
               <span>
                 {user.seller && (
                   <>
-                    <Link to="/seller/shops">
-                      <Button style={isPartActive(location, "/seller/")}>
-                        my shops
+                    <Link to="/seller/shop">
+                      <Button
+                        style={{
+                          ...isActive(location, "/seller/shop"),
+                          textTransform: "none",
+                        }}
+                      >
+                        My Shop
                       </Button>
                     </Link>
-                    <Link to="/myauctions">
-                      <Button style={isPartActive(location, "/myauctions")}>
-                        my auctions
+                    <Link to="/seller/auctions">
+                      <Button
+                        style={{
+                          ...isActive(location, "/seller/auctions"),
+                          textTransform: "none",
+                        }}
+                      >
+                        My Auctions
                       </Button>
                     </Link>
                   </>
                 )}
-                {/* <Link to={"/user/" + user.id}>
-                  <Button
-                    style={isActive(
-                      location,
-                      "/user/" + user.id
-                    )}
-                  >
-                    profile
-                  </Button>
-                </Link> */}
                 <Button
+                  style={{
+                    textTransform: "none",
+                    fontWeight: "bold",
+                    fontSize: "16px",
+                  }}
                   color="inherit"
                   onClick={() => {
-                    auth.clearJwt(() => navigate("/home"));
+                    auth.clearJwt(() => navigate("/"));
                   }}
                 >
-                  sign out
+                  Logout
                 </Button>
               </span>
             )}

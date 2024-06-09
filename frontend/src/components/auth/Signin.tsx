@@ -11,7 +11,7 @@ import {
   Button,
   Box,
 } from "@mui/material";
-import { signin } from "../services/auth-api";
+import { signin } from "../services/authAPI";
 import { auth } from "../../utils/auth";
 
 interface FormValues {
@@ -45,7 +45,6 @@ const Signin: React.FC = () => {
   const goToSignup = () => {
     navigate("/signup");
   };
-
   const onSignin = async () => {
     const user: User = {
       email: values.email || "",

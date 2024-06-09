@@ -15,7 +15,7 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
-import { signup } from "../services/auth-api";
+import { signup } from "../services/authAPI";
 
 interface FormValues {
   name: string;
