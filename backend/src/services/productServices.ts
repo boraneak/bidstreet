@@ -160,20 +160,20 @@ export const getFilteredProducts = async (
 ) => {
   try {
     const query: {
-      name?: { $regex: string; $options: string };
+      name?: RegExp;
       category?: string;
     } = {};
-    if (req.query.search) {
-      query.name = { $regex: req.query.search, $options: "i" };
+    if (req.query.productName)
+      query.name = new RegExp(req.query.productName, "i");
+    if (req.query.category) query.category = req.query.category;
+    if (Object.keys(query).length === 0) {
+      res.json([]);
+    } else {
+      const products = await Product.find(query)
+        .populate("shop", "_id name")
+        .exec();
+      res.json(products);
     }
-    if (req.query.category && req.query.category !== "all") {
-      query.category = req.query.category;
-    }
-    const products = await Product.find(query)
-      .populate("shop", "_id name")
-      .select("-image")
-      .exec();
-    res.json(products);
   } catch (error) {
     return res.status(400).json({
       error: getErrorMessage(error as IMongoError),

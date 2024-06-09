@@ -27,7 +27,7 @@ router.get(
 
 router.get(
   "/photo/:productId",
-  authServices.hasAuthorization,
+  // authServices.hasAuthorization,
   productServices.getProductPhoto
 );
 

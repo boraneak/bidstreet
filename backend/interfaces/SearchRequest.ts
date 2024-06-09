@@ -1,7 +1,7 @@
 import { Request } from "express";
 export interface ISearchRequest extends Request {
   query: {
-    search?: string;
+    productName?: string;
     category?: string;
   };
 }
