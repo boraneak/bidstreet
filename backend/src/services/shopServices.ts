@@ -2,12 +2,11 @@ import { NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
 
 import Shop from "../models/shopModel";
-import { getErrorMessage } from "../../utils/dbErrorHandler";
-import { IMongoError } from "../../interfaces/MongoError";
 import fs from "fs";
 import { IShop } from "../../interfaces/Shop";
 import { IAuthRequest } from "../../interfaces/AuthRequest";
 import path from "path";
+import { isValidObjectId } from "../../utils/isValidObjectId";
 const defaultImagePath = path.join(
   __dirname,
   "../../public/images/defaultShopImage.jpg"
@@ -39,8 +38,9 @@ export const createShop = async (req: IAuthRequest, res: Response) => {
     const result = await shop.save();
     return res.status(200).json(result);
   } catch (error) {
-    return res.status(400).json({
-      error: getErrorMessage(error as IMongoError),
+    console.error("Error creating shop:", error);
+    return res.status(500).json({
+      error: "Internal Server Error",
     });
   }
 };
@@ -49,22 +49,21 @@ export const getShopById = async (req: IAuthRequest, res: Response) => {
   try {
     const shopId = req.params.shopId;
 
-    if (!mongoose.Types.ObjectId.isValid(shopId)) {
-      return res.status(400).json({ error: "Invalid user ID format" });
-    }
+    if (!isValidObjectId(shopId, res, "shop")) return;
+
     const shop = await Shop.findById(shopId)
       .populate("owner", "_id name")
       .exec();
+
     if (!shop) {
-      return res.status(400).json({
-        error: "Shop not found",
-      });
+      return res.status(404).json({ error: "Shop not found" });
     }
-    res.json(shop);
+
+    return res.status(200).json(shop);
   } catch (error) {
-    return res.status(400).json({
-      message: "Could not retrieve shop",
-      error: error,
+    console.error("Error retrieving shop by ID:", error);
+    return res.status(500).json({
+      error: "Internal server error",
     });
   }
 };
@@ -72,11 +71,11 @@ export const getShopById = async (req: IAuthRequest, res: Response) => {
 export const getShopPhoto = async (req: Request, res: Response) => {
   try {
     const shopId = req.params.shopId;
-    if (!mongoose.Types.ObjectId.isValid(shopId)) {
-      return res.status(400).json({ error: "Invalid shop ID format" });
-    }
+
+    if (!isValidObjectId(shopId, res, "shop")) return;
 
     const shop = await Shop.findById(shopId);
+
     if (!shop) {
       return res.status(404).json({ error: "Shop not found" });
     }
@@ -87,9 +86,10 @@ export const getShopPhoto = async (req: Request, res: Response) => {
     } else {
       return res.sendFile(defaultImagePath);
     }
-  } catch (error: any) {
-    return res.status(400).json({
-      error: "Could not retrieve shop photo",
+  } catch (error) {
+    console.error("Error retrieving shop photo:", error);
+    return res.status(500).json({
+      error: "Internal server error",
     });
   }
 };
@@ -97,11 +97,15 @@ export const getShopPhoto = async (req: Request, res: Response) => {
 export const updateShopById = async (req: Request, res: Response) => {
   try {
     const shopId = req.params.shopId;
-    const shop = await Shop.findOne({ _id: shopId});
+
+    if (!isValidObjectId(shopId, res, "shop")) return;
+
+    const shop = await Shop.findOne({ _id: shopId });
 
     if (!shop) {
       return res.status(404).json({ error: "Shop not found" });
     }
+
     // Update image data if a new file is uploaded
     if (req.file) {
       const imageData = fs.readFileSync(req.file.path);
@@ -110,15 +114,18 @@ export const updateShopById = async (req: Request, res: Response) => {
         contentType: req.file.mimetype,
       };
     }
+
     shop.set({
       ...req.body,
     });
+
     const result = await shop.save();
     return res.status(200).json(result);
-  } catch (error: any) {
-    return res
-      .status(400)
-      .json({ error: "An error occurred while updating the shop" });
+  } catch (error) {
+    console.error("Error updating shop by ID:", error);
+    return res.status(500).json({
+      error: "Internal server error",
+    });
   }
 };
 
@@ -126,9 +133,7 @@ export const deleteShopById = async (req: Request, res: Response) => {
   try {
     const shopId = req.params.shopId;
 
-    if (!mongoose.Types.ObjectId.isValid(shopId)) {
-      return res.status(400).json({ error: "Invalid shop ID format" });
-    }
+    if (!isValidObjectId(shopId, res, "shop")) return;
 
     const shop = await Shop.findById(shopId);
 
@@ -137,21 +142,23 @@ export const deleteShopById = async (req: Request, res: Response) => {
     }
 
     const deletedShop = await shop.deleteOne({ _id: shopId });
-    res.json(deletedShop);
+    return res.json(deletedShop);
   } catch (error) {
-    return res.status(400).json({
-      error: getErrorMessage(error as IMongoError),
+    console.error("Error deleting shop by ID:", error);
+    return res.status(500).json({
+      error: "Internal server error",
     });
   }
 };
 
-export const getAllShops = async (req: Request, res: Response) => {
+export const getAllShops = async (_req: Request, res: Response) => {
   try {
     const shops = await Shop.find();
-    res.json(shops);
+    return res.json(shops);
   } catch (error) {
-    return res.status(400).json({
-      error: getErrorMessage(error as IMongoError),
+    console.error("Error retrieving all shops:", error);
+    return res.status(500).json({
+      error: "Internal server error",
     });
   }
 };
@@ -159,16 +166,17 @@ export const getAllShops = async (req: Request, res: Response) => {
 export const getShopByOwner = async (req: IAuthRequest, res: Response) => {
   try {
     const userId = req.params.userId;
-    if (!mongoose.Types.ObjectId.isValid(userId)) {
-      return res.status(400).json({ error: "Invalid user ID format" });
-    }
+    if (!isValidObjectId(userId, res, "user")) return;
+
     const shops = await Shop.find({ owner: userId })
       .populate("owner", "_id name")
       .exec();
-    res.json(shops);
+
+    return res.json(shops);
   } catch (error) {
-    return res.status(400).json({
-      error: getErrorMessage(error as IMongoError),
+    console.error("Error retrieving shops by owner:", error);
+    return res.status(500).json({
+      error: "Internal server error",
     });
   }
 };
@@ -180,17 +188,22 @@ export const isShopOwner = async (
 ) => {
   try {
     const userId = req.user?._id;
+    if (!isValidObjectId(userId as string, res, "user")) return;
     const shop = await Shop.findOne({ owner: userId });
+
     if (!shop) {
       return res.status(404).json({ error: "Shop not found" });
     }
+
     if (!shop.owner.equals(userId)) {
       return res
         .status(403)
         .json({ error: "Unauthorized - User is not the owner of the shop" });
     }
-    next();
+
+    return next();
   } catch (error) {
+    console.error("Error verifying shop ownership:", error);
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };

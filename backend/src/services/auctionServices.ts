@@ -1,6 +1,4 @@
-import { getErrorMessage } from "../../utils/dbErrorHandler";
 import { Request, Response } from "express";
-import { IMongoError } from "../../interfaces/MongoError";
 import { isValidObjectId } from "../../utils/isValidObjectId";
 
 import mongoose from "mongoose";
@@ -37,8 +35,9 @@ export const createAuction = async (req: Request, res: Response) => {
     const result = await auction.save();
     return res.status(200).json(result);
   } catch (error) {
-    return res.status(400).json({
-      error: getErrorMessage(error as IMongoError),
+    console.error("Error creating auction:", error);
+    return res.status(500).json({
+      error: "Internal Server Error",
     });
   }
 };
@@ -51,15 +50,15 @@ export const getAuctionById = async (req: Request, res: Response) => {
       .populate("seller", "_id name")
       .populate("bids.bidder", "_id name")
       .exec();
-    if (!auction)
-      return res.status(400).json({
-        error: "auction not found",
-      });
-    res.json(auction);
-  } catch (err) {
-    return res.status(400).json({
-      error: "could not retrieve auction",
-    });
+
+    if (!auction) {
+      return res.status(404).json({ error: "Auction not found" });
+    }
+
+    return res.json(auction);
+  } catch (error) {
+    console.error("Error fetching auction:", error);
+    return res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
@@ -67,31 +66,34 @@ export const getAuctionBySeller = async (req: Request, res: Response) => {
   try {
     const userId = req.params.userId;
     if (!isValidObjectId(userId, res, "user")) return;
+
     const auctions = await Auction.find({ seller: userId })
       .populate("seller", "_id name")
-      .populate("bids.bidder", "_id name");
-    if (!auctions) {
-      return res.status(400).json({
-        error: "auctions not found",
-      });
+      .populate("bids.bidder", "_id name")
+      .exec();
+
+    if (auctions.length === 0) {
+      return res
+        .status(404)
+        .json({ error: "No auctions found for this seller" });
     }
-    res.json(auctions);
+
+    return res.json(auctions);
   } catch (error) {
-    return res.status(400).json({
-      error: getErrorMessage(error as IMongoError),
-    });
+    console.error("Error fetching auctions by seller:", error);
+    return res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
 export const getAuctionPhoto = async (req: Request, res: Response) => {
   try {
     const auctionId = req.params.auctionId;
-    console.log(auctionId);
 
     if (!isValidObjectId(auctionId, res, "auction")) return;
+
     const auction = await Auction.findById(auctionId);
     if (!auction) {
-      return res.status(404).json({ error: "auction not found" });
+      return res.status(404).json({ error: "Auction not found" });
     }
 
     if (auction.image && auction.image.data) {
@@ -101,9 +103,10 @@ export const getAuctionPhoto = async (req: Request, res: Response) => {
       // TODO: handle error if there is no default image file
       return res.sendFile(defaultImagePath);
     }
-  } catch (error: any) {
-    return res.status(400).json({
-      error: "could not retrieve shop photo",
+  } catch (error) {
+    console.error("Error fetching auction photo:", error);
+    return res.status(500).json({
+      error: "Internal Server Error",
     });
   }
 };
@@ -134,8 +137,11 @@ export const updateAuctionById = async (req: Request, res: Response) => {
       { new: true, runValidators: true }
     ).exec();
     return res.status(200).json(auction);
-  } catch (error: any) {
-    return res.status(400).json({ error: "error updating the auction" });
+  } catch (error) {
+    console.error("Error fetching auction photo:", error);
+    return res.status(500).json({
+      error: "Internal Server Error",
+    });
   }
 };
 
@@ -143,22 +149,24 @@ export const deleteAuctionById = async (req: Request, res: Response) => {
   try {
     const { auctionId } = req.params;
     if (!isValidObjectId(auctionId, res, "auction")) return;
+
     const auction = await Auction.findOne({ _id: auctionId });
     if (!auction) {
-      return res.status(404).json({ error: "auction not found" });
+      return res.status(404).json({ error: "Auction not found" });
     }
 
     await Auction.deleteOne({ _id: auctionId });
-    res.status(200).json({ message: "auction deleted successfully" });
+    return res.status(200).json({ message: "Auction deleted successfully" });
   } catch (error) {
-    return res.status(400).json({
-      error: getErrorMessage(error as IMongoError),
+    console.error("Error deleting auction:", error);
+    return res.status(500).json({
+      error: "Internal Server Error",
     });
   }
 };
 
 export const getOpenAuctions = async (
-  req: Request,
+  _req: Request,
   res: Response
 ): Promise<Response> => {
   try {
@@ -169,19 +177,24 @@ export const getOpenAuctions = async (
 
     return res.json(auctions);
   } catch (error) {
-    return res.status(400).json({
-      error: getErrorMessage(error as IMongoError),
+    console.error("Error fetching open auctions:", error);
+    return res.status(500).json({
+      error: "Internal Server Error",
     });
   }
 };
 
-export const getAllAuctions = async (req: Request, res: Response) => {
+export const getAllAuctions = async (
+  _req: Request,
+  res: Response
+): Promise<Response> => {
   try {
     const auctions = await Auction.find({});
-    res.json(auctions);
+    return res.json(auctions);
   } catch (error) {
-    return res.status(400).json({
-      error: getErrorMessage(error as IMongoError),
+    console.error("Error fetching all auctions:", error);
+    return res.status(500).json({
+      error: "Internal Server Error",
     });
   }
 };
@@ -195,10 +208,11 @@ export const getAuctionByBidder = async (req: Request, res: Response) => {
     })
       .populate("seller", "_id name")
       .populate("bids.bidder", "_id name");
-    res.json(auctions);
+    return res.json(auctions);
   } catch (error) {
-    return res.status(400).json({
-      error: getErrorMessage(error as IMongoError),
+    console.error("Error fetching all auctions:", error);
+    return res.status(500).json({
+      error: "Internal Server Error",
     });
   }
 };

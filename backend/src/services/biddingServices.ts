@@ -3,7 +3,19 @@ import { Socket } from "socket.io";
 import { Auction } from "../models/auctionModel";
 import { IAuction } from "../../interfaces/Auction";
 
+interface BidInfo {
+  bidder: string;
+  bid: number;
+  timestamp: Date;
+}
+
+interface NewBidData {
+  bidInfo: BidInfo;
+  room: string;
+}
+
 export default (server: Server) => {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const io = require("socket.io").listen(server);
 
   io.on("connection", (socket: Socket) => {
@@ -15,19 +27,19 @@ export default (server: Server) => {
       socket.leave(data.room);
     });
 
-    socket.on("new bid", (data: { bidInfo: any; room: string }) => {
+    socket.on("new bid", (data: NewBidData) => {
       bid(data.bidInfo, data.room);
     });
   });
 
-  const bid = async (bid: any, auction: string) => {
+  const bid = async (bidInfo: BidInfo, auction: string) => {
     try {
-      let result: IAuction | null = (await Auction.findOneAndUpdate(
+      const result: IAuction | null = (await Auction.findOneAndUpdate(
         {
           _id: auction,
-          $or: [{ "bids.0.bid": { $lt: bid.bid } }, { bids: { $eq: [] } }],
+          $or: [{ "bids.0.bid": { $lt: bidInfo.bid } }, { bids: { $eq: [] } }],
         },
-        { $push: { bids: { $each: [bid], $position: 0 } } },
+        { $push: { bids: { $each: [bidInfo], $position: 0 } } },
         { new: true }
       )
         .populate("bids.bidder", "_id name")

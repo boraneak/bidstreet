@@ -21,7 +21,7 @@ app.use(express.json());
 app.use(morgan("dev"));
 app.use("/api/v1", router);
 
-app.get("/health", (req, res) => {
+app.get("/health", (_req, res) => {
   res.status(200).json({
     message: "Server is healthy and running!",
     status: "OK",
@@ -29,7 +29,7 @@ app.get("/health", (req, res) => {
   });
 });
 
-app.get("/", (req, res) => {
+app.get("/", (_req, res) => {
   res.send("Welcome to the Express server!");
 });
 app.listen(port, async () => {

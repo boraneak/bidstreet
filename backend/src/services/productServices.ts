@@ -1,9 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import mongoose, { Types } from "mongoose";
 
-// import Shop from "../models/shopModel";
-import { getErrorMessage } from "../../utils/dbErrorHandler";
-import { IMongoError } from "../../interfaces/MongoError";
 import fs from "fs";
 import { IProduct } from "../../interfaces/Product";
 import { IProductRequest } from "../../interfaces/ProductRequest";
@@ -20,7 +17,9 @@ const defaultImagePath = path.join(
 export const createProduct = async (req: Request, res: Response) => {
   try {
     const shopId = req.params.shopId;
-    if (!isValidObjectId(shopId, res, "shop")) return;
+
+    if (!mongoose.Types.ObjectId.isValid(shopId)) return;
+
     let imageData;
     if (req.file) {
       imageData = fs.readFileSync(req.file.path);
@@ -41,8 +40,9 @@ export const createProduct = async (req: Request, res: Response) => {
     const result = await product.save();
     return res.status(200).json(result);
   } catch (error) {
-    return res.status(400).json({
-      error: getErrorMessage(error as IMongoError),
+    console.error("Error creating product:", error);
+    return res.status(500).json({
+      error: "Internal Server Error",
     });
   }
 };
@@ -50,19 +50,20 @@ export const createProduct = async (req: Request, res: Response) => {
 export const getProductById = async (req: IAuthRequest, res: Response) => {
   try {
     const productId = req.params.productId;
+
     if (!isValidObjectId(productId, res, "product")) return;
 
     const product = await Product.findById(productId);
+
     if (!product) {
-      return res.status(400).json({
-        error: "product not found",
-      });
+      return res.status(404).json({ error: "Product not found" });
     }
-    res.json(product);
+
+    return res.json(product);
   } catch (error) {
-    return res.status(400).json({
-      message: "could not retrieve product",
-      error: error,
+    console.error("Error retrieving product:", error);
+    return res.status(500).json({
+      error: "Internal Server Error",
     });
   }
 };
@@ -70,10 +71,13 @@ export const getProductById = async (req: IAuthRequest, res: Response) => {
 export const getProductPhoto = async (req: Request, res: Response) => {
   try {
     const productId = req.params.productId;
+
     if (!isValidObjectId(productId, res, "product")) return;
+
     const product = await Product.findById(productId);
+
     if (!product) {
-      return res.status(404).json({ error: "product not found" });
+      return res.status(404).json({ error: "Product not found" });
     }
 
     if (product.image && product.image.data) {
@@ -82,9 +86,10 @@ export const getProductPhoto = async (req: Request, res: Response) => {
     } else {
       return res.sendFile(defaultImagePath);
     }
-  } catch (error: any) {
-    return res.status(400).json({
-      error: "could not retrieve shop photo",
+  } catch (error) {
+    console.error("Error retrieving product photo:", error);
+    return res.status(500).json({
+      error: "Internal Server Error",
     });
   }
 };
@@ -104,21 +109,32 @@ export const updateProductById = async (req: Request, res: Response) => {
         contentType: req.file.mimetype,
       };
     }
+
     const existingProduct = await Product.findOne({
       _id: productId,
       shop: shopId,
-    }).exec();
+    });
+
     if (!existingProduct) {
-      return res.status(404).json({ error: "product not found" });
+      return res.status(404).json({ error: "Product not found" });
     }
+
     const product = await Product.findOneAndUpdate(
       { _id: productId, shop: shopId },
       updatedData,
       { new: true, runValidators: true }
-    ).exec();
+    );
+
+    if (!product) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+
     return res.status(200).json(product);
-  } catch (error: any) {
-    return res.status(400).json({ error: "error updating the product" });
+  } catch (error) {
+    console.error("Error updating product:", error);
+    return res.status(500).json({
+      error: "Internal Server Error",
+    });
   }
 };
 
@@ -127,29 +143,40 @@ export const deleteProductById = async (req: Request, res: Response) => {
     const { shopId, productId } = req.params;
     if (!isValidObjectId(shopId, res, "shop")) return;
     if (!isValidObjectId(productId, res, "product")) return;
+
     const product = await Product.findOne({ _id: productId, shop: shopId });
+
     if (!product) {
       return res
         .status(404)
-        .json({ error: "product not found in the specified shop" });
+        .json({ error: "Product not found in the specified shop" });
     }
 
     await Product.deleteOne({ _id: productId, shop: shopId });
-    res.status(200).json({ message: "product deleted successfully" });
+
+    return res.status(200).json({ message: "Product deleted successfully" });
   } catch (error) {
-    return res.status(400).json({
-      error: getErrorMessage(error as IMongoError),
+    console.error("Error deleting product:", error);
+    return res.status(500).json({
+      error: "Internal Server Error",
     });
   }
 };
 
-export const getAllProducts = async (req: Request, res: Response) => {
+export const getAllProducts = async (_req: Request, res: Response) => {
   try {
     const products = await Product.find();
-    res.json(products);
+    if (products.length === 0) {
+      return res.status(404).json({
+        error: "No products found",
+      });
+    }
+
+    return res.json(products);
   } catch (error) {
-    return res.status(400).json({
-      error: getErrorMessage(error as IMongoError),
+    console.error("Error fetching products:", error);
+    return res.status(500).json({
+      error: "Internal Server Error",
     });
   }
 };
@@ -163,20 +190,23 @@ export const getFilteredProducts = async (
       name?: RegExp;
       category?: string;
     } = {};
+
     if (req.query.productName)
       query.name = new RegExp(req.query.productName, "i");
     if (req.query.category) query.category = req.query.category;
+
     if (Object.keys(query).length === 0) {
-      res.json([]);
+      return res.json([]);
     } else {
       const products = await Product.find(query)
         .populate("shop", "_id name")
         .exec();
-      res.json(products);
+      return res.json(products);
     }
   } catch (error) {
+    console.error("Error fetching filtered products:", error);
     return res.status(400).json({
-      error: getErrorMessage(error as IMongoError),
+      error: "Internal Server Error",
     });
   }
 };
@@ -185,32 +215,38 @@ export const getProductByShop = async (req: IAuthRequest, res: Response) => {
   try {
     const shopId = req.params.shopId;
     if (!isValidObjectId(shopId, res, "shop")) return;
+
     const products = await Product.find({ shop: shopId })
       .populate("shop", "_id name")
       .select("-image")
       .exec();
-    res.json(products);
+
+    return res.json(products);
   } catch (error) {
+    console.error("Error fetching products by shop:", error);
     return res.status(400).json({
-      error: getErrorMessage(error as IMongoError),
+      error: "Internal Server Error",
     });
   }
 };
 
-export const getLatestProducts = async (req: Request, res: Response) => {
+export const getLatestProducts = async (_req: Request, res: Response) => {
   try {
     const products = await Product.find({})
       .sort({ created: -1 })
       .limit(5)
       .populate("shop", "_id name")
       .exec();
-    res.json(products);
-  } catch (err: any) {
-    return res.status(400).json({
-      error: getErrorMessage(err),
+
+    return res.json(products);
+  } catch (error) {
+    console.error("Error fetching latest products:", error);
+    return res.status(500).json({
+      error: "Internal Server Error",
     });
   }
 };
+
 export const getRelatedProducts = async (
   req: IProductRequest,
   res: Response
@@ -218,16 +254,14 @@ export const getRelatedProducts = async (
   try {
     const productId = req.params.productId;
     if (!isValidObjectId(productId, res, "product")) return;
-
-    // fetch the current product to get its shop & category
     const currentProduct: IProduct | null = await Product.findById(
       productId
     ).exec();
     if (!currentProduct) {
       throw new Error("product not found");
     }
-    const currentShopId: Types.ObjectId | undefined = currentProduct?.shop;
-    const currentCategory: string | undefined = currentProduct?.category;
+    const currentShopId: Types.ObjectId | undefined = currentProduct.shop;
+    const currentCategory: string | undefined = currentProduct.category;
 
     const query: {
       _id: { $ne: Types.ObjectId | string };
@@ -236,33 +270,34 @@ export const getRelatedProducts = async (
     } = {
       _id: { $ne: productId },
       shop: currentShopId,
-    } as {
-      _id: { $ne: Types.ObjectId | string };
-      shop: Types.ObjectId | undefined;
-      category?: string;
     };
+
     if (currentCategory) {
       query.category = currentCategory;
     }
+
     const relatedProducts = await Product.find(query)
       .limit(5)
       .populate("shop", "_id name")
       .exec();
-    res.json(relatedProducts);
-  } catch (err: any) {
-    return res.status(400).json({
-      error: getErrorMessage(err),
+
+    return res.json(relatedProducts);
+  } catch (error) {
+    console.error("Error fetching related products:", error);
+    return res.status(500).json({
+      error: "Internal Server Error",
     });
   }
 };
 
-export const getProductCategories = async (req: Request, res: Response) => {
+export const getProductCategories = async (_req: Request, res: Response) => {
   try {
     const productCategories = await Product.distinct("category", {});
-    res.json(productCategories);
-  } catch (err: any) {
-    return res.status(400).json({
-      error: getErrorMessage(err),
+    return res.json(productCategories);
+  } catch (error) {
+    console.error("Error fetching product categories:", error);
+    return res.status(500).json({
+      error: "Internal Server Error",
     });
   }
 };
@@ -275,28 +310,28 @@ export const increaseProductQuantity = async (
   try {
     const productId = req.params.productId;
     if (!isValidObjectId(productId, res, "product")) return;
-    const quantity = req.body.quantity;
-    // if (quantity == null) {
-    //   return res.status(400).json({error: "quantity is requried"});
-    // }
-    // if (typeof quantity !=='number') {
-    //   return res.status(400).json({error: "quantity must be a number"});
-    // }
-    // if (quantity <= 0) {
-    //   return res.status(400).json({error: "quantity must be a positive number"});
 
-    // }
-    await Product.findByIdAndUpdate(
+    const quantity = req.body.quantity;
+    if (quantity == null || typeof quantity !== "number" || quantity <= 0) {
+      return res.status(400).json({ error: "Invalid quantity value" });
+    }
+
+    const updatedProduct = await Product.findByIdAndUpdate(
       req.product?._id,
       { $inc: { quantity: quantity } },
       { new: true }
     ).exec();
-    next();
-  } catch (err: any) {
-    return res.status(400).json({
-      error: getErrorMessage(err),
-    });
-  }
-};
 
-// export const decreaseProductQuantity = async (req: Request, res: Response, next: NextFunction) => {};
+    if (!updatedProduct) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+
+    next();
+  } catch (error) {
+    console.error("Error increasing product quantity:", error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+
+  // If next() is not called due to an error
+  return res.status(500).json({ error: "Internal Server Error" });
+};

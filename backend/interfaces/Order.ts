@@ -12,7 +12,7 @@ export interface IOrder extends Document {
     zipcode: string;
     country: string;
   };
-  payment_id?: any;
+  payment_id?: never;
   updated?: Date;
   created: Date;
   user: Types.ObjectId;
