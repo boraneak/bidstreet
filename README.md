@@ -44,3 +44,8 @@ This project is mainly about letting people bid on different things in an online
 ## Getting Started
 
 To run the project locally, please go to each README file of backend and frontend for the instructions.
+
+## Issues
+
+Feel free to open new issues for feedback or suggested changes. We welcome contributions that improve the project! You can create a new issue [here](https://github.com/boraneak/bidstreet/issues/new).
+
