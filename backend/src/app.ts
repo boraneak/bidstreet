@@ -2,6 +2,8 @@ import express from "express";
 import cors from "cors";
 import "dotenv/config";
 import morgan from "morgan";
+import swaggerUi from "swagger-ui-express";
+import specs from "../swagger";
 import { connectToDatabase } from "../database/db";
 import router from "./routes/index";
 import cookieParser from "cookie-parser";
@@ -20,7 +22,7 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(morgan("dev"));
 app.use("/api/v1", router);
-
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 app.get("/health", (_req, res) => {
   res.status(200).json({
     message: "Server is healthy and running!",
