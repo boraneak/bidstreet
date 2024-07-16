@@ -31,15 +31,16 @@ This project is mainly about letting people bid on different things in an online
 
 ## Technologies Used
 
-- `Express.js` with `TypeScript`: Used as the backend framework to handle HTTP requests.
-- `Multer`: Middleware for handling file uploads.
-- `JWT`: Used for user authentication and authorization.
-- `MongoDB`: Database for storing application data.
-- `Mongoose`: ODM for MongoDB, used for database interactions.
-- `React` with `TypeScript`
-- `Material-UI` for read-to-use React components
-- `React Router` for routing
-- `Axios`: HTTP client for making requests from the frontend to the backend.
+- [Express.js](https://expressjs.com/) with [TypeScript](https://www.typescriptlang.org/) : Used as the backend framework to handle HTTP requests.
+- [Multer](https://github.com/expressjs/multer): Middleware for handling file uploads.
+- [JWT](https://jwt.io/): Used for user authentication and authorization.
+- [MongoDB](https://www.mongodb.com/): Database for storing application data.
+- [Mongoose](https://mongoosejs.com/): ODM for MongoDB, used for database interactions.
+- [React](https://react.dev/) with [TypeScript](https://www.typescriptlang.org/)
+- [Material-UI](https://mui.com/) for read-to-use React components
+- [React Router](https://reactrouter.com/en/main) for routing
+- [Axios](https://axios-http.com/): HTTP client for making requests from the frontend to the backend.
+- [Swagger](https://swagger.io/) for API documentation
 
 ## Getting Started
 
