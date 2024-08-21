@@ -2,6 +2,10 @@
 
 This project is mainly about letting people bid on different things in an online store.
 
+## Getting Started
+
+To run the project locally, please go to each README file of backend and frontend for the instructions.
+
 ## Features
 
 #### Authentication
@@ -29,7 +33,7 @@ This project is mainly about letting people bid on different things in an online
 - Offers functionality for managing auctions.
 - Provides endpoints for auction creation and retrieval.
 
-## Technologies Used
+## Tech Stack
 
 - [Express.js](https://expressjs.com/) with [TypeScript](https://www.typescriptlang.org/) : Used as the backend framework to handle HTTP requests.
 - [Multer](https://github.com/expressjs/multer): Middleware for handling file uploads.
@@ -42,11 +46,12 @@ This project is mainly about letting people bid on different things in an online
 - [Axios](https://axios-http.com/): HTTP client for making requests from the frontend to the backend.
 - [Swagger](https://swagger.io/) for API documentation
 
-## Getting Started
+## Contributing
 
-To run the project locally, please go to each README file of backend and frontend for the instructions.
+We welcome contributions that improve the project! If you have suggestions, bug reports, or would like to contribute code:
 
-## Issues
-
-Feel free to open new issues for feedback or suggested changes. We welcome contributions that improve the project! You can create a new issue [here](https://github.com/boraneak/bidstreet/issues/new).
-
+1. Fork the repository.
+2. Create your feature branch: `git checkout -b feature/new-feature`.
+3. Commit your changes: `git commit -am 'Add new feature'`.
+4. Push to the branch: `git push origin feature/new-feature`.
+5. Submit a pull request.
