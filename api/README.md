@@ -1,6 +1,6 @@
-# bidstreet backend
+# Bidstreet API
 
-This is a backend project built with TypeScript, Node.js, Express and MongoDB. The project uses `ts-node` for development, `typescript` for building, and `eslint` for linting.
+Bidstreet API built with TypeScript, Node.js, Express and MongoDB. The project uses `ts-node` for development, `typescript` for building, and `eslint` for linting.
 
 ## Getting Started
 
