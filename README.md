@@ -4,7 +4,9 @@ This project is mainly about letting people bid on different things in an online
 
 ## Getting Started
 
-To run the project locally, please go to each README file of backend and frontend for the instructions.
+To run the project locally:
+- <a href="https://github.com/boraneak/bidstreet/tree/master/api" target="_blank" rel="noopener noreferrer">API</a>
+- <a href="https://github.com/boraneak/bidstreet/tree/master/web" target="_blank" rel="noopener noreferrer">Web</a>
 
 ## Features
 
