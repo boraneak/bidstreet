@@ -1,6 +1,6 @@
-# Bidding System Web Application (🚧 In Progress)
+# Bidding web app (🚧 In Progress)
 
-This project is mainly about letting people bid on different things in an online store.
+This project is mainly about letting people bid on different items in an online store.
 
 ## Getting Started
 

@@ -50,7 +50,7 @@ export const createProduct = async (
 ): Promise<Product[]> => {
   try {
     const response = await axios.post<Product[]>(
-      `${config.BASE_URL}/products/create/by/${params.shopId}`,
+      `${config.API_BASE_URL}/products/create/by/${params.shopId}`,
       product,
       {
         headers: {
@@ -81,7 +81,7 @@ export const fetchProductById = async (
 ): Promise<Product[]> => {
   try {
     const response = await axios.get<Product[]>(
-      `${config.BASE_URL}/products/list/${params.productId}`,
+      `${config.API_BASE_URL}/products/list/${params.productId}`,
       {
         signal: signal,
       }
@@ -110,7 +110,7 @@ export const updateProduct = async (
 ): Promise<Product[]> => {
   try {
     const response = await axios.put<Product[]>(
-      `${config.BASE_URL}/products/update/${params.shopId}/${params.productId}`,
+      `${config.API_BASE_URL}/products/update/${params.shopId}/${params.productId}`,
       product,
       {
         headers: {
@@ -141,7 +141,7 @@ export const removeProduct = async (
 ): Promise<Product> => {
   try {
     const response = await axios.delete<Product>(
-      `${config.BASE_URL}/products/delete/${params.shopId}/${params.productId}`,
+      `${config.API_BASE_URL}/products/delete/${params.shopId}/${params.productId}`,
       {
         headers: {
           Accept: "application/json",
@@ -171,7 +171,7 @@ export const listProductsByShop = async (
 ): Promise<Product[]> => {
   try {
     const response = await axios.get<Product[]>(
-      `${config.BASE_URL}/products/list/by/${params.shopId}`,
+      `${config.API_BASE_URL}/products/list/by/${params.shopId}`,
       {
         signal: signal,
       }
@@ -194,7 +194,7 @@ export const listLatestProducts = async (
 ): Promise<Product[]> => {
   try {
     const response = await axios.get<Product[]>(
-      `${config.BASE_URL}/products/latest`,
+      `${config.API_BASE_URL}/products/latest`,
       {
         signal: signal,
       }
@@ -221,7 +221,7 @@ export const listRelatedProducts = async (
 ): Promise<Product[]> => {
   try {
     const response = await axios.get<Product[]>(
-      `${config.BASE_URL}/products/related/${params.productId}`,
+      `${config.API_BASE_URL}/products/related/${params.productId}`,
       {
         signal: signal,
       }
@@ -246,7 +246,7 @@ export const listProductCategories = async (
 ): Promise<ProductCategories> => {
   try {
     const response = await axios.get<ProductCategories>(
-      `${config.BASE_URL}/products/categories`,
+      `${config.API_BASE_URL}/products/categories`,
       {
         signal: signal,
       }
@@ -275,7 +275,7 @@ export const searchProduct = async (
   // const token = localStorage.getItem("jwt");
   try {
     const response = await axios.get<Product[]>(
-      `${config.BASE_URL}/products/search?${query}`,
+      `${config.API_BASE_URL}/products/search?${query}`,
       {
         // headers: {
         //   Authorization: `Bearer ${token}`,

@@ -14,7 +14,7 @@ Bidstreet API built with TypeScript, Node.js, Express and MongoDB. The project u
 1. Clone the repository:
    ```
    git clone git@github.com:boraneak/bidstreet.git
-   cd bidstreet/backend
+   cd bidstreet/api
    ```
 2. Install the dependencies:
 

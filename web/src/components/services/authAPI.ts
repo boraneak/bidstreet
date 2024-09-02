@@ -9,7 +9,7 @@ export interface User {
 
 export const signin = async (user: User): Promise<AxiosResponse<any>> => {
   try {
-    const response = await axios.post(`${config.BASE_URL}/auth/signin/`, user, {
+    const response = await axios.post(`${config.API_BASE_URL}/auth/signin/`, user, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -24,7 +24,7 @@ export const signin = async (user: User): Promise<AxiosResponse<any>> => {
 
 export const signup = async (user: User): Promise<AxiosResponse<any>> => {
   try {
-    const response = await axios.post(`${config.BASE_URL}/users/create`, user, {
+    const response = await axios.post(`${config.API_BASE_URL}/users/create`, user, {
       headers: {
         "Content-Type": "application/json",
       },
