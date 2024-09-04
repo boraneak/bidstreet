@@ -2,11 +2,11 @@
 
 ## Getting Started
 
-1. Change the repository:
+0. Change the repository:
    ```
    cd bidstreet/web
    ```
-2. Install the dependencies:
+1. Install the dependencies:
    ```
    yarn
    ```
@@ -14,9 +14,9 @@
    ```
    npm install
    ```
-3. Create `.env` by following `.env.example`
+2. Create `.env` by following `.env.example`
 
-4. Run the project
+3. Run the project
     ```
     yarn start
     ```
