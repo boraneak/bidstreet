@@ -5,6 +5,10 @@ This project is mainly about letting people bid on different items in an online 
 ## Getting Started
 
 To run the project locally:
+```
+# Clone the repo
+git@github.com:boraneak/bidstreet.git
+```
 - <a href="https://github.com/boraneak/bidstreet/tree/master/api" target="_blank" rel="noopener noreferrer">API</a>
 - <a href="https://github.com/boraneak/bidstreet/tree/master/web" target="_blank" rel="noopener noreferrer">Web</a>
 
@@ -52,8 +56,8 @@ To run the project locally:
 
 We welcome contributions that improve the project! If you have suggestions, bug reports, or would like to contribute code:
 
-1. Fork the repository.
-2. Create your feature branch: `git checkout -b feature/new-feature`.
-3. Commit your changes: `git commit -am 'Add new feature'`.
-4. Push to the branch: `git push origin feature/new-feature`.
-5. Submit a pull request.
+0. Fork the repository.
+1. Create your feature branch: `git checkout -b feature/new-feature`.
+2. Commit your changes: `git commit -am 'Add new feature'`.
+3. Push to the branch: `git push origin feature/new-feature`.
+4. Submit a pull request.
