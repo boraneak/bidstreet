@@ -11,6 +11,16 @@ import { getCurrentDate } from "../utils/date";
 
 const app = express();
 const port = process.env.PORT;
+
+// set up rate limiter: maximum of five requests per minute
+import { rateLimit } from "express-rate-limit"
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // max 100 requests per windowMs
+});
+
+// apply rate limiter to all requests
+app.use(limiter);
 app.use(
   cors({
     origin: "http://localhost:3000",
