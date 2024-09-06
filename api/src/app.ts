@@ -10,7 +10,7 @@ import cookieParser from "cookie-parser";
 import { getCurrentDate } from "../utils/date";
 
 const app = express();
-const port = process.env.PORT;
+const port = process.env.PORT || 5000;
 
 // set up rate limiter: maximum of five requests per minute
 import { rateLimit } from "express-rate-limit"
@@ -23,7 +23,7 @@ const limiter = rateLimit({
 app.use(limiter);
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: `http://localhost:${process.env.REACT_APP_PORT}`,
     // allow credentials (e.g., cookies, authorization headers)
     credentials: true,
   })

@@ -1,8 +1,0 @@
-{
-  "name": "bidstreet",
-  "version": "1.0.0",
-  "main": "index.js",
-  "repository": "git@github.com:boraneak/bidstreet.git",
-  "author": "boraneak",
-  "license": "MIT"
-}
