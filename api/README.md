@@ -29,6 +29,7 @@ Bidstreet API built with TypeScript, Node.js, Express and MongoDB. The project u
    MONGODB_URI="your_mongodb_connection_string"
    JWT_SECRET="your_jwt_secret"
    TOKEN_DURATION=your_jwt_token_duration
+   REACT_APP_PORT=3000
    ```
 ### Available Scripts
 
