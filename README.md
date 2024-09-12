@@ -1,5 +1,5 @@
 # Bidding web app (🚧 In Progress)
-
+[![CodeQL](https://github.com/boraneak/bidstreet/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/boraneak/bidstreet/actions/workflows/github-code-scanning/codeql) <br>
 This project is mainly about letting people bid on different items in an online store.
 
 ## Getting Started

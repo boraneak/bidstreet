@@ -9,6 +9,8 @@ import { ISearchRequest } from "../../interfaces/SearchRequest";
 import { Product } from "../models/productModel";
 import path from "path";
 import { isValidObjectId } from "../../utils/isValidObjectId";
+import escapeStringRegexp from "escape-string-regexp";
+
 const defaultImagePath = path.join(
   __dirname,
   "../../public/images/defaultProductImage.jpg"
@@ -191,9 +193,14 @@ export const getFilteredProducts = async (
       category?: string;
     } = {};
 
-    if (req.query.productName)
-      query.name = new RegExp(req.query.productName, "i");
-    if (req.query.category) query.category = req.query.category;
+    if (req.query.productName) {
+      const sanitizedName = escapeStringRegexp(req.query.productName);
+      query.name = new RegExp(sanitizedName, "i");
+    }
+    
+    if (req.query.category) {
+      query.category = req.query.category;
+    }
 
     if (Object.keys(query).length === 0) {
       return res.json([]);
