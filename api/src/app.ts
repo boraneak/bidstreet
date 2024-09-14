@@ -4,7 +4,7 @@ import "dotenv/config";
 import morgan from "morgan";
 import swaggerUi from "swagger-ui-express";
 import specs from "../swagger";
-import { connectToDatabase } from "../database/db";
+import { connectToDatabase } from "../database";
 import router from "./routes/index";
 import cookieParser from "cookie-parser";
 import { getCurrentDate } from "../utils/date";
