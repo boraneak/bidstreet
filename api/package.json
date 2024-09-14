@@ -16,7 +16,10 @@
     "dev": "nodemon --exec ts-node src/app.ts",
     "lint": "yarn eslint . --ignore-pattern 'dist/**'",
     "lint:fix": "yarn eslint --fix --ignore-pattern 'dist/**'",
-    "build": "tsc"
+    "build": "tsc",
+    "migrate:up": "migrate-mongo up",
+    "migrate:down": "migrate-mongo down",
+    "migrate:status": "migrate-mongo status"
   },
   "dependencies": {
     "@types/cookie-parser": "^1.4.7",

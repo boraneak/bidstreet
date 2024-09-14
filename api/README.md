@@ -75,3 +75,30 @@ In the project directory, you can run the following scripts:
       ```
       npm run build
       ```
+
+### Database Migrations
+
+- To apply all pending migrations:
+```
+npm run migrate:up
+```
+or if you use yarn:
+```
+yarn migrate:up
+```
+- To revert the last migration:
+```
+npm run migrate:down
+```
+or if you use yarn:
+```
+yarn migrate:down
+```
+- To check migration status
+```
+npm run migrate:status
+```
+or if you use yarn:
+```
+yarn migrate:status
+```
