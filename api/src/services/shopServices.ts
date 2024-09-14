@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 import Shop from "../models/shopModel";
 import fs from "fs";
 import { IShop } from "../../interfaces/Shop";
-import { IAuthRequest } from "../../interfaces/AuthRequest";
+import { IAuthRequest } from "../../interfaces/requests/AuthRequest";
 import path from "path";
 import { isValidObjectId } from "../../utils/isValidObjectId";
 const defaultImagePath = path.join(

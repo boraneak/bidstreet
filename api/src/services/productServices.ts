@@ -3,9 +3,9 @@ import mongoose, { Types } from "mongoose";
 
 import fs from "fs";
 import { IProduct } from "../../interfaces/Product";
-import { IProductRequest } from "../../interfaces/ProductRequest";
-import { IAuthRequest } from "../../interfaces/AuthRequest";
-import { ISearchRequest } from "../../interfaces/SearchRequest";
+import { IProductRequest } from "../../interfaces/requests/ProductRequest";
+import { IAuthRequest } from "../../interfaces/requests/AuthRequest";
+import { ISearchRequest } from "../../interfaces/requests/SearchRequest";
 import { Product } from "../models/productModel";
 import path from "path";
 import { isValidObjectId } from "../../utils/isValidObjectId";

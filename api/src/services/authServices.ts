@@ -1,7 +1,7 @@
 import User from "../models/userModel";
 import jwt, { TokenExpiredError, JsonWebTokenError } from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
-import { IAuthRequest } from "../../interfaces/AuthRequest";
+import { IAuthRequest } from "../../interfaces/requests/AuthRequest";
 import { IDecodedToken } from "../../interfaces/DecodedToken";
 const jwtSecret = process.env.JWT_SECRET!;
 const tokenDuration = process.env.TOKEN_DURATION;

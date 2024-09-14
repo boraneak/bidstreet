@@ -1,6 +1,6 @@
 import User from "../models/userModel";
 import { Request, Response, NextFunction } from "express";
-import { IUserRequest } from "../../interfaces/UserRequest";
+import { IUserRequest } from "../../interfaces/requests/UserRequest";
 import { isValidObjectId } from "../../utils/isValidObjectId";
 export const createUser = async (req: Request, res: Response) => {
   const user = new User(req.body);
