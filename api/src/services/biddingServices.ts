@@ -15,7 +15,8 @@ interface NewBidData {
 }
 
 export default (server: Server) => {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
+   
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const io = require("socket.io").listen(server);
 
   io.on("connection", (socket: Socket) => {
