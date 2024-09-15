@@ -109,12 +109,3 @@ export const isSeller = (
   }
   return next();
 };
-
-export default {
-  getUserById,
-  readUserProfile,
-  getAllUsers,
-  deleteUserById,
-  updateUserById,
-  isSeller,
-};
