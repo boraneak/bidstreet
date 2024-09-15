@@ -1,6 +1,7 @@
 # Bidding web app (🚧 In Progress)
 [![CodeQL](https://github.com/boraneak/bidstreet/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/boraneak/bidstreet/actions/workflows/github-code-scanning/codeql) <br>
-This project is mainly about letting people bid on different items in an online store.
+
+This project is an online bidding platform where users can create shops, list items for auction, and bid on products securely. It features user management, product listings, and auction handling, with robust authentication and authorization for a seamless and efficient experience for both buyers and sellers.
 
 ## Getting Started
 
