@@ -39,18 +39,26 @@ git@github.com:boraneak/bidstreet.git
 - Offers functionality for managing auctions.
 - Provides endpoints for auction creation and retrieval.
 
-## Tech Stack
+## Technology Stack
 
-- [Express.js](https://expressjs.com/) with [TypeScript](https://www.typescriptlang.org/) : Used as the backend framework to handle HTTP requests.
-- [Multer](https://github.com/expressjs/multer): Middleware for handling file uploads.
-- [JWT](https://jwt.io/): Used for user authentication and authorization.
-- [MongoDB](https://www.mongodb.com/): Database for storing application data.
-- [Mongoose](https://mongoosejs.com/): ODM for MongoDB, used for database interactions.
-- [React](https://react.dev/) with [TypeScript](https://www.typescriptlang.org/)
-- [Material-UI](https://mui.com/) for read-to-use React components
-- [React Router](https://reactrouter.com/en/main) for routing
-- [Axios](https://axios-http.com/): HTTP client for making requests from the frontend to the backend.
-- [Swagger](https://swagger.io/) for API documentation
+### Backend
+
+- **[Express.js](https://expressjs.com/) with [TypeScript](https://www.typescriptlang.org/)**: Core server-side framework for handling HTTP requests and API routing.
+- **[Multer](https://github.com/expressjs/multer)**: Middleware solution for efficient management of file uploads.
+- **[JSON Web Tokens (JWT)](https://jwt.io/)**: Implementation of secure user authentication and authorization protocols.
+- **[MongoDB](https://www.mongodb.com/)**: NoSQL database system for flexible and scalable data storage.
+- **[Mongoose](https://mongoosejs.com/)**: Object Data Modeling (ODM) library for MongoDB, facilitating structured database interactions.
+
+### Frontend
+
+- **[React](https://react.dev/) with [TypeScript](https://www.typescriptlang.org/)**: Primary library for building the user interface, enhanced with static typing.
+- **[Material-UI](https://mui.com/)**: Comprehensive library of pre-designed React components for rapid UI development.
+- **[React Router](https://reactrouter.com/en/main)**: Declarative routing solution for seamless navigation within the React application.
+- **[Axios](https://axios-http.com/)**: Promise-based HTTP client for streamlined communication between frontend and backend services.
+
+### Development Tools
+
+- **[Swagger](https://swagger.io/)**: OpenAPI specification tool for comprehensive API documentation and testing.
 
 ## Contributing
 
@@ -61,3 +69,7 @@ We welcome contributions that improve the project! If you have suggestions, bug 
 2. Commit your changes: `git commit -am 'Add new feature'`.
 3. Push to the branch: `git push origin feature/new-feature`.
 4. Submit a pull request.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
