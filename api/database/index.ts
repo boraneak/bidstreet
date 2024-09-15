@@ -4,9 +4,9 @@ const mongoDbUri = process.env.MONGODB_URI!;
 export const connectToDatabase = async (): Promise<void> => {
   try {
     await mongoose.connect(mongoDbUri);
-    console.log("\x1b[32m", "Successfully connected to MongoDB!", "\x1b[0m");
+    console.log("Successfully connected to MongoDB!");
   } catch (error) {
-    console.error("\x1b[31m", "Error connecting to MongoDB:", error, "\x1b[0m");
+    console.error("Error connecting to MongoDB:", error,);
     process.exit(1);
   }
 };

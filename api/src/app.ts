@@ -13,7 +13,7 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 // set up rate limiter: maximum of five requests per minute
-import { rateLimit } from "express-rate-limit"
+import { rateLimit } from "express-rate-limit";
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // max 100 requests per windowMs
@@ -46,9 +46,5 @@ app.get("/", (_req, res) => {
 });
 app.listen(port, async () => {
   await connectToDatabase();
-  console.log(
-    "\x1b[32m",
-    `Express is listening at http://localhost:${port}`,
-    "\x1b[0m"
-  );
+  console.log(`Express is listening at http://localhost:${port}`);
 });
