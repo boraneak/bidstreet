@@ -2,7 +2,7 @@
 
 ## Getting Started
 
-0. Change the repository:
+0. Change the directory:
    ```
    cd bidstreet/web
    ```
