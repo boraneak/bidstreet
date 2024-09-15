@@ -28,7 +28,7 @@ const userSchema: Schema<IUser> = new Schema(
       default: false,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 userSchema

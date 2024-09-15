@@ -13,7 +13,7 @@ import escapeStringRegexp from "escape-string-regexp";
 
 const defaultImagePath = path.join(
   __dirname,
-  "../../public/images/defaultProductImage.jpg"
+  "../../public/images/defaultProductImage.jpg",
 );
 
 export const createProduct = async (req: Request, res: Response) => {
@@ -124,7 +124,7 @@ export const updateProductById = async (req: Request, res: Response) => {
     const product = await Product.findOneAndUpdate(
       { _id: productId, shop: shopId },
       updatedData,
-      { new: true, runValidators: true }
+      { new: true, runValidators: true },
     );
 
     if (!product) {
@@ -185,7 +185,7 @@ export const getAllProducts = async (_req: Request, res: Response) => {
 
 export const getFilteredProducts = async (
   req: ISearchRequest,
-  res: Response
+  res: Response,
 ) => {
   try {
     const query: {
@@ -197,7 +197,7 @@ export const getFilteredProducts = async (
       const sanitizedName = escapeStringRegexp(req.query.productName);
       query.name = new RegExp(sanitizedName, "i");
     }
-    
+
     if (req.query.category) {
       query.category = req.query.category;
     }
@@ -256,14 +256,13 @@ export const getLatestProducts = async (_req: Request, res: Response) => {
 
 export const getRelatedProducts = async (
   req: IProductRequest,
-  res: Response
+  res: Response,
 ) => {
   try {
     const productId = req.params.productId;
     if (!isValidObjectId(productId, res, "product")) return;
-    const currentProduct: IProduct | null = await Product.findById(
-      productId
-    ).exec();
+    const currentProduct: IProduct | null =
+      await Product.findById(productId).exec();
     if (!currentProduct) {
       throw new Error("product not found");
     }
@@ -312,7 +311,7 @@ export const getProductCategories = async (_req: Request, res: Response) => {
 export const increaseProductQuantity = async (
   req: IProductRequest,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const productId = req.params.productId;
@@ -326,7 +325,7 @@ export const increaseProductQuantity = async (
     const updatedProduct = await Product.findByIdAndUpdate(
       req.product?._id,
       { $inc: { quantity: quantity } },
-      { new: true }
+      { new: true },
     ).exec();
 
     if (!updatedProduct) {

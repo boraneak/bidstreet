@@ -9,7 +9,7 @@ import path from "path";
 import { isValidObjectId } from "../../utils/isValidObjectId";
 const defaultImagePath = path.join(
   __dirname,
-  "../../public/images/defaultShopImage.jpg"
+  "../../public/images/defaultShopImage.jpg",
 );
 
 export const createShop = async (req: IAuthRequest, res: Response) => {
@@ -184,7 +184,7 @@ export const getShopByOwner = async (req: IAuthRequest, res: Response) => {
 export const isShopOwner = async (
   req: IAuthRequest,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const userId = req.user?._id;

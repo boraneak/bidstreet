@@ -28,7 +28,8 @@ export const auth = {
       return null;
     }
   },
-  authenticate(jwt: AxiosResponse<AuthResponse>, callback: () => void): void {  // Expecting AxiosResponse
+  authenticate(jwt: AxiosResponse<AuthResponse>, callback: () => void): void {
+    // Expecting AxiosResponse
     if (typeof window !== "undefined") {
       const token = jwt.data.token; // Extract the token from the AxiosResponse data
       sessionStorage.setItem("jwt", token); // Store the token in sessionStorage

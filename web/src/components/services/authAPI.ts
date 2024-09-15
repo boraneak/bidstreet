@@ -34,7 +34,10 @@ const apiClient: AxiosInstance = axios.create({
 
 // Custom error class for API errors
 class ApiError extends Error {
-  constructor(public status: number, message: string) {
+  constructor(
+    public status: number,
+    message: string,
+  ) {
     super(message);
     this.name = "ApiError";
   }
@@ -45,7 +48,7 @@ const handleApiError = (error: unknown): never => {
   if (axios.isAxiosError(error)) {
     throw new ApiError(
       error.response?.status || 500,
-      error.response?.data?.message || "An unexpected error occurred"
+      error.response?.data?.message || "An unexpected error occurred",
     );
   }
   throw error;
@@ -55,7 +58,10 @@ const handleApiError = (error: unknown): never => {
 export const AuthService = {
   async signIn(data: SignInData): Promise<AxiosResponse<AuthResponse>> {
     try {
-      const response: AxiosResponse<AuthResponse> = await apiClient.post("/auth/signin", data);
+      const response: AxiosResponse<AuthResponse> = await apiClient.post(
+        "/auth/signin",
+        data,
+      );
       return response;
     } catch (error) {
       console.error("Error signing in:", error);
@@ -65,7 +71,10 @@ export const AuthService = {
 
   async signUp(data: SignUpData): Promise<AuthResponse> {
     try {
-      const response: AxiosResponse<AuthResponse> = await apiClient.post("/auth/signup", data);
+      const response: AxiosResponse<AuthResponse> = await apiClient.post(
+        "/auth/signup",
+        data,
+      );
       return response.data;
     } catch (error) {
       console.error("Error creating account:", error);

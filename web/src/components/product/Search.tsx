@@ -52,7 +52,7 @@ const Search: React.FC<SearchProps> = (props) => {
           productName: values.productName || "",
           category: values.category,
         },
-        newAbortController.signal
+        newAbortController.signal,
       );
       setValues({ ...values, results: data, searched: true });
     } catch (error) {

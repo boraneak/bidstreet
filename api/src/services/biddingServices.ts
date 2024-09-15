@@ -15,7 +15,6 @@ interface NewBidData {
 }
 
 export default (server: Server) => {
-   
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const io = require("socket.io").listen(server);
 
@@ -41,7 +40,7 @@ export default (server: Server) => {
           $or: [{ "bids.0.bid": { $lt: bidInfo.bid } }, { bids: { $eq: [] } }],
         },
         { $push: { bids: { $each: [bidInfo], $position: 0 } } },
-        { new: true }
+        { new: true },
       )
         .populate("bids.bidder", "_id name")
         .populate("seller", "_id name")

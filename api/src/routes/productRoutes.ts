@@ -16,19 +16,19 @@ router.post(
   authServices.hasAuthorization,
   userServices.isSeller,
   shopServices.isShopOwner,
-  productServices.createProduct
+  productServices.createProduct,
 );
 
 router.get(
   "/list/:productId",
   authServices.hasAuthorization,
-  productServices.getProductById
+  productServices.getProductById,
 );
 
 router.get(
   "/photo/:productId",
   // authServices.hasAuthorization,
-  productServices.getProductPhoto
+  productServices.getProductPhoto,
 );
 
 router.put(
@@ -36,14 +36,14 @@ router.put(
   upload.single("image"),
   authServices.hasAuthorization,
   shopServices.isShopOwner,
-  productServices.updateProductById
+  productServices.updateProductById,
 );
 
 router.delete(
   "/delete/:shopId/:productId",
   authServices.hasAuthorization,
   shopServices.isShopOwner,
-  productServices.deleteProductById
+  productServices.deleteProductById,
 );
 router.get("/", productServices.getAllProducts);
 router.get("/search", productServices.getFilteredProducts);

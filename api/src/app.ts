@@ -26,7 +26,7 @@ app.use(
     origin: `http://localhost:${process.env.REACT_APP_PORT}`,
     // allow credentials (e.g., cookies, authorization headers)
     credentials: true,
-  })
+  }),
 );
 app.use(cookieParser());
 app.use(express.json());

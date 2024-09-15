@@ -18,7 +18,7 @@ const CartItemSchema = new Schema<ICartItem>(
       ],
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export const CartItem = model<ICartItem>("CartItem", CartItemSchema);
@@ -47,7 +47,7 @@ const OrderSchema = new Schema<IOrder>(
     payment_id: {},
     user: { type: Schema.Types.ObjectId, ref: "User", required: true },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export const Order = model<IOrder>("Order", OrderSchema);

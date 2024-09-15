@@ -8,7 +8,7 @@ import { Auction } from "../models/auctionModel";
 import path from "path";
 const defaultImagePath = path.join(
   __dirname,
-  "../../public/images/defaultAuctionImage.jpg"
+  "../../public/images/defaultAuctionImage.jpg",
 );
 
 export const createAuction = async (req: Request, res: Response) => {
@@ -134,7 +134,7 @@ export const updateAuctionById = async (req: Request, res: Response) => {
     const auction = await Auction.findOneAndUpdate(
       { _id: auctionId },
       updateAuctiondData,
-      { new: true, runValidators: true }
+      { new: true, runValidators: true },
     ).exec();
     return res.status(200).json(auction);
   } catch (error) {
@@ -167,7 +167,7 @@ export const deleteAuctionById = async (req: Request, res: Response) => {
 
 export const getOpenAuctions = async (
   _req: Request,
-  res: Response
+  res: Response,
 ): Promise<Response> => {
   try {
     const auctions = await Auction.find({ bidEnd: { $gt: new Date() } })
@@ -186,7 +186,7 @@ export const getOpenAuctions = async (
 
 export const getAllAuctions = async (
   _req: Request,
-  res: Response
+  res: Response,
 ): Promise<Response> => {
   try {
     const auctions = await Auction.find({});

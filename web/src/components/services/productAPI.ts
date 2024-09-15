@@ -46,7 +46,7 @@ export interface SearchParams {
 export const createProduct = async (
   params: Params,
   credentials: Credentials,
-  product: Product
+  product: Product,
 ): Promise<Product[]> => {
   try {
     const response = await axios.post<Product[]>(
@@ -57,7 +57,7 @@ export const createProduct = async (
           Accept: "application/json",
           Authorization: `Bearer ${credentials.token}`,
         },
-      }
+      },
     );
     return response.data;
   } catch (error) {
@@ -77,14 +77,14 @@ export const createProduct = async (
 
 export const fetchProductById = async (
   params: Params,
-  signal?: AbortSignal | undefined
+  signal?: AbortSignal | undefined,
 ): Promise<Product[]> => {
   try {
     const response = await axios.get<Product[]>(
       `${config.API_BASE_URL}/products/list/${params.productId}`,
       {
         signal: signal,
-      }
+      },
     );
     return response.data;
   } catch (error) {
@@ -106,7 +106,7 @@ export const fetchProductById = async (
 export const updateProduct = async (
   params: Params,
   credentials: Credentials,
-  product: Product
+  product: Product,
 ): Promise<Product[]> => {
   try {
     const response = await axios.put<Product[]>(
@@ -117,7 +117,7 @@ export const updateProduct = async (
           Accept: "application/json",
           Authorization: `Bearer ${credentials.token}`,
         },
-      }
+      },
     );
     return response.data;
   } catch (error) {
@@ -137,7 +137,7 @@ export const updateProduct = async (
 
 export const removeProduct = async (
   params: Params,
-  credentials: Credentials
+  credentials: Credentials,
 ): Promise<Product> => {
   try {
     const response = await axios.delete<Product>(
@@ -147,7 +147,7 @@ export const removeProduct = async (
           Accept: "application/json",
           Authorization: `Bearer ${credentials.token}`,
         },
-      }
+      },
     );
     return response.data;
   } catch (error) {
@@ -167,14 +167,14 @@ export const removeProduct = async (
 
 export const listProductsByShop = async (
   params: Params,
-  signal?: AbortSignal | undefined
+  signal?: AbortSignal | undefined,
 ): Promise<Product[]> => {
   try {
     const response = await axios.get<Product[]>(
       `${config.API_BASE_URL}/products/list/by/${params.shopId}`,
       {
         signal: signal,
-      }
+      },
     );
     return response.data;
   } catch (error) {
@@ -190,14 +190,14 @@ export const listProductsByShop = async (
  * @throws Will throw an error if the request fails.
  */
 export const listLatestProducts = async (
-  signal?: AbortSignal | undefined
+  signal?: AbortSignal | undefined,
 ): Promise<Product[]> => {
   try {
     const response = await axios.get<Product[]>(
       `${config.API_BASE_URL}/products/latest`,
       {
         signal: signal,
-      }
+      },
     );
     return response.data;
   } catch (error) {
@@ -217,14 +217,14 @@ export const listLatestProducts = async (
 
 export const listRelatedProducts = async (
   params: Params,
-  signal?: AbortSignal | undefined
+  signal?: AbortSignal | undefined,
 ): Promise<Product[]> => {
   try {
     const response = await axios.get<Product[]>(
       `${config.API_BASE_URL}/products/related/${params.productId}`,
       {
         signal: signal,
-      }
+      },
     );
     return response.data;
   } catch (error) {
@@ -242,14 +242,14 @@ export const listRelatedProducts = async (
  */
 
 export const listProductCategories = async (
-  signal?: AbortSignal | undefined
+  signal?: AbortSignal | undefined,
 ): Promise<ProductCategories> => {
   try {
     const response = await axios.get<ProductCategories>(
       `${config.API_BASE_URL}/products/categories`,
       {
         signal: signal,
-      }
+      },
     );
     return response.data;
   } catch (error) {
@@ -269,7 +269,7 @@ export const listProductCategories = async (
 
 export const searchProduct = async (
   params: SearchParams,
-  signal?: AbortSignal | undefined
+  signal?: AbortSignal | undefined,
 ): Promise<Product[]> => {
   const query = queryString.stringify(params);
   // const token = localStorage.getItem("jwt");
@@ -282,7 +282,7 @@ export const searchProduct = async (
         // },
 
         signal: signal,
-      }
+      },
     );
     return response.data;
   } catch (error) {

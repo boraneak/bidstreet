@@ -18,7 +18,7 @@ interface CategoryProps {
 const Categories: React.FC<CategoryProps> = (props) => {
   const [products, setProducts] = useState<Product[]>([]);
   const [selected, setSelected] = useState<string>(
-    props.categories.length > 0 ? props.categories[0] : ""
+    props.categories.length > 0 ? props.categories[0] : "",
   );
 
   useEffect(() => {

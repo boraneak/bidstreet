@@ -29,7 +29,7 @@ const ProductSchema = new Schema<IProduct>(
     },
     shop: { type: Schema.Types.ObjectId, ref: "Shop", required: true },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export const Product = model<IProduct>("Product", ProductSchema);

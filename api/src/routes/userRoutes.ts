@@ -63,18 +63,18 @@ router.get("/list", authServices.hasAuthorization, userServices.getAllUsers);
 router.get(
   "/profile/:userId",
   authServices.hasAuthorization,
-  userServices.readUserProfile
+  userServices.readUserProfile,
 );
 
 router.put(
   "/update/:userId",
   authServices.hasAuthorization,
-  userServices.updateUserById
+  userServices.updateUserById,
 );
 router.delete(
   "/delete/:userId",
   authServices.hasAuthorization,
-  userServices.deleteUserById
+  userServices.deleteUserById,
 );
 router.get("/:userId", userServices.getUserById);
 export default router;

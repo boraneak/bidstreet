@@ -1,0 +1,14 @@
+{
+  "name": "bidstreet",
+  "version": "1.0.0",
+  "scripts": {
+    "prettier": "prettier . --write",
+    "prettier:check": "prettier --check ."
+  },
+  "repository": "git@github.com:boraneak/bidstreet.git",
+  "author": "boraneak",
+  "license": "MIT",
+  "devDependencies": {
+    "prettier": "3.3.3"
+  }
+}

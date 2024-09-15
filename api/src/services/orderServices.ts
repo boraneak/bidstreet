@@ -87,7 +87,7 @@ export const getOrderStatusValues = (_req: Request, res: Response) => {
       enumValues: string[];
     };
     const statusPath = CartItem.schema.path(
-      "status"
+      "status",
     ) as SchemaTypeWithEnumValues;
     return res.json(statusPath.enumValues);
   } catch (error) {

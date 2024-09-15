@@ -19,7 +19,7 @@ export const signUp = async (req: Request, res: Response) => {
         seller: user.seller,
       },
       jwtSecret,
-      { expiresIn: tokenDuration }
+      { expiresIn: tokenDuration },
     );
 
     res.cookie("authCookie", token, { httpOnly: true });
@@ -66,7 +66,7 @@ export const signIn = async (req: Request, res: Response) => {
         seller: user.seller,
       },
       jwtSecret,
-      { expiresIn: tokenDuration }
+      { expiresIn: tokenDuration },
     );
 
     res.cookie("authCookie", token, { httpOnly: true });
@@ -92,7 +92,7 @@ export const signIn = async (req: Request, res: Response) => {
 export const hasAuthorization = (
   req: IAuthRequest,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   if (!req.headers.authorization) {
     return res.status(401).json("Unauthorized request");
@@ -106,7 +106,7 @@ export const hasAuthorization = (
   try {
     const decodedToken: IDecodedToken = jwt.verify(
       token,
-      jwtSecret
+      jwtSecret,
     ) as IDecodedToken;
     req.user = decodedToken;
     return next();

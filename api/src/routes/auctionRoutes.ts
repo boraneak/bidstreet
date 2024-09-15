@@ -11,31 +11,31 @@ router.post(
   upload.single("image"),
   authServices.hasAuthorization,
   userServices.isSeller,
-  auctionServices.createAuction
+  auctionServices.createAuction,
 );
 
 router.get(
   "/list/by/:userId",
   authServices.hasAuthorization,
-  auctionServices.getAuctionBySeller
+  auctionServices.getAuctionBySeller,
 );
 
 router.get(
   "/open-auctions",
   authServices.hasAuthorization,
-  auctionServices.getOpenAuctions
+  auctionServices.getOpenAuctions,
 );
 
 router.get(
   "/bidder/:userId",
   authServices.hasAuthorization,
-  auctionServices.getAuctionByBidder
+  auctionServices.getAuctionByBidder,
 );
 router.get("/", auctionServices.getAllAuctions);
 router.get(
   "/:auctionId",
   authServices.hasAuthorization,
-  auctionServices.getAuctionById
+  auctionServices.getAuctionById,
 );
 
 router.put(
@@ -43,20 +43,20 @@ router.put(
   upload.single("image"),
   authServices.hasAuthorization,
   userServices.isSeller,
-  auctionServices.updateAuctionById
+  auctionServices.updateAuctionById,
 );
 
 router.delete(
   "/delete/:auctionId",
   authServices.hasAuthorization,
   userServices.isSeller,
-  auctionServices.deleteAuctionById
+  auctionServices.deleteAuctionById,
 );
 
 router.get(
   "/img/:auctionId",
   authServices.hasAuthorization,
-  auctionServices.getAuctionPhoto
+  auctionServices.getAuctionPhoto,
 );
 
 export default router;

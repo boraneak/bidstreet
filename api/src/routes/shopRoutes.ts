@@ -13,13 +13,13 @@ router.post(
   upload.single("image"),
   authServices.hasAuthorization,
   userServices.isSeller,
-  shopServices.createShop
+  shopServices.createShop,
 );
 
 router.get(
   "/list/owner/:userId",
   authServices.hasAuthorization,
-  shopServices.getShopByOwner
+  shopServices.getShopByOwner,
 );
 
 router.put(
@@ -27,14 +27,14 @@ router.put(
   upload.single("image"),
   authServices.hasAuthorization,
   shopServices.isShopOwner,
-  shopServices.updateShopById
+  shopServices.updateShopById,
 );
 
 router.delete(
   "/delete/:shopId",
   authServices.hasAuthorization,
   shopServices.isShopOwner,
-  shopServices.deleteShopById
+  shopServices.deleteShopById,
 );
 
 router.get("/photo/:shopId", shopServices.getShopPhoto);

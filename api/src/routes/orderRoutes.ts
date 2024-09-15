@@ -7,33 +7,33 @@ const router = express.Router();
 router.post(
   "/create/:userId",
   authServices.hasAuthorization,
-  orderServices.createOrder
+  orderServices.createOrder,
 );
 
 router.get(
   "/shop/:shopId",
   authServices.hasAuthorization,
   shopServices.isShopOwner,
-  orderServices.getOrderByShop
+  orderServices.getOrderByShop,
 );
 
 router.get(
   "/user/:userId",
   authServices.hasAuthorization,
-  orderServices.getOrderByUser
+  orderServices.getOrderByUser,
 );
 
 router.get(
   "/status-values",
   authServices.hasAuthorization,
-  orderServices.getOrderStatusValues
+  orderServices.getOrderStatusValues,
 );
 
 // router.put("/status/:orderId");
 router.get(
   "/list/:orderId",
   authServices.hasAuthorization,
-  orderServices.getOrderById
+  orderServices.getOrderById,
 );
 
 export default router;

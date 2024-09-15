@@ -1,4 +1,5 @@
 # Bidding web app (🚧 In Progress)
+
 [![CodeQL](https://github.com/boraneak/bidstreet/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/boraneak/bidstreet/actions/workflows/github-code-scanning/codeql) <br>
 
 This project is an online bidding platform where users can create shops, list items for auction, and bid on products securely. It features user management, product listings, and auction handling, with robust authentication and authorization for a seamless and efficient experience for both buyers and sellers.
@@ -6,10 +7,12 @@ This project is an online bidding platform where users can create shops, list it
 ## Getting Started
 
 To run the project locally:
+
 ```
 # Clone the repo
 git@github.com:boraneak/bidstreet.git
 ```
+
 - <a href="https://github.com/boraneak/bidstreet/tree/master/api" target="_blank" rel="noopener noreferrer">API</a>
 - <a href="https://github.com/boraneak/bidstreet/tree/master/web" target="_blank" rel="noopener noreferrer">Web</a>
 
@@ -60,16 +63,49 @@ git@github.com:boraneak/bidstreet.git
 ### Development Tools
 
 - **[Swagger](https://swagger.io/)**: OpenAPI specification tool for comprehensive API documentation and testing.
+- **[Prettier](https://prettier.io/)**: Code formatter to enforce a consistent style across the project.
+
+## Code Formatting
+
+This project uses **Prettier** for code formatting. The following scripts are available:
+
+- To format the codebase, run:
+
+```
+yarn prettier
+```
+
+- To check if the code is correctly formatted, run:
+
+```
+yarn prettier:check
+```
 
 ## Contributing
 
 We welcome contributions that improve the project! If you have suggestions, bug reports, or would like to contribute code:
 
 0. Fork the repository.
-1. Create your feature branch: `git checkout -b feature/new-feature`.
-2. Commit your changes: `git commit -am 'Add new feature'`.
-3. Push to the branch: `git push origin feature/new-feature`.
-4. Submit a pull request.
+
+1. Create your feature branch.
+
+```
+git checkout -b feature/new-feature
+```
+
+3. Commit your changes.
+
+```
+git commit -am 'Add new feature'
+```
+
+4. Push to the branch.
+
+```
+git push origin feature/new-feature
+```
+
+5. Submit a pull request.
 
 ## License
 

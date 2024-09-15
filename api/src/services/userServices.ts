@@ -6,7 +6,7 @@ import { isValidObjectId } from "../../utils/isValidObjectId";
 export const getUserById = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const userId = req.params.userId;
@@ -99,7 +99,7 @@ export const deleteUserById = async (req: Request, res: Response) => {
 export const isSeller = (
   req: IUserRequest,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   const isSeller = req.user && req.user.seller;
   if (!isSeller) {

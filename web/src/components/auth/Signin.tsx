@@ -29,11 +29,15 @@ const Signin: React.FC = () => {
   });
   const [apiError, setApiError] = useState<string>("");
 
-  const handleChange = (id: keyof FormValues) => (event: ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target;
-    setValues({ ...values, [id]: value });
-    setErrors({ ...errors, [id]: value.trim() === "" ? `${id} is required` : "" });
-  };
+  const handleChange =
+    (id: keyof FormValues) => (event: ChangeEvent<HTMLInputElement>) => {
+      const { value } = event.target;
+      setValues({ ...values, [id]: value });
+      setErrors({
+        ...errors,
+        [id]: value.trim() === "" ? `${id} is required` : "",
+      });
+    };
 
   const navigateToSignUp = () => {
     navigate("/signup");
@@ -56,21 +60,21 @@ const Signin: React.FC = () => {
 
   const onSignin = async () => {
     if (!validateForm()) return;
-  
+
     const userData: SignInData = {
       email: values.email,
       password: values.password,
     };
-  
+
     try {
       // Get the AxiosResponse and extract the data
       const response = await AuthService.signIn(userData);
-  
+
       // Authenticate and store the JWT
       auth.authenticate(response, () => {
         setApiError("");
       });
-  
+
       // Navigate to the home page
       navigate("/home");
     } catch (error) {
@@ -82,8 +86,8 @@ const Signin: React.FC = () => {
       }
     }
   };
-   
-  const isFormValid = !Object.values(errors).some(error => error !== "");
+
+  const isFormValid = !Object.values(errors).some((error) => error !== "");
 
   return (
     <Box
@@ -136,7 +140,10 @@ const Signin: React.FC = () => {
           >
             Don't have an account?
           </Typography>
-          <Typography align="center" sx={{ cursor: "pointer", color: "text.secondary", mt: 1 }}>
+          <Typography
+            align="center"
+            sx={{ cursor: "pointer", color: "text.secondary", mt: 1 }}
+          >
             Forgot password?
           </Typography>
         </Box>

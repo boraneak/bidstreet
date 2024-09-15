@@ -21,7 +21,7 @@ const ShopSchema: Schema<IShop> = new Schema(
       ref: "User",
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export default mongoose.model<IShop>("Shop", ShopSchema);

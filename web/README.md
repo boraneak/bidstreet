@@ -17,10 +17,10 @@
 2. Create `.env` by following `.env.example`
 
 3. Run the project
-    ```
-    yarn start
-    ```
-    or if you use npm:
-    ```
-    npm start
-    ```
+   ```
+   yarn start
+   ```
+   or if you use npm:
+   ```
+   npm start
+   ```

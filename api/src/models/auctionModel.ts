@@ -51,6 +51,6 @@ const AuctionSchema = new Schema<IAuction>(
       },
     ],
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 export const Auction = model<IAuction>("Auction", AuctionSchema);
