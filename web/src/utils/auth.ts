@@ -1,5 +1,6 @@
 import { JwtPayload, jwtDecode } from "jwt-decode";
 import { AxiosResponse } from "axios";
+import { AuthResponse } from "../components/services/authAPI";
 
 interface User {
   id: string;
@@ -27,9 +28,10 @@ export const auth = {
       return null;
     }
   },
-  authenticate(jwt: AxiosResponse, callback: () => void): void {
+  authenticate(jwt: AxiosResponse<AuthResponse>, callback: () => void): void {  // Expecting AxiosResponse
     if (typeof window !== "undefined") {
-      sessionStorage.setItem("jwt", JSON.stringify(jwt));
+      const token = jwt.data.token; // Extract the token from the AxiosResponse data
+      sessionStorage.setItem("jwt", token); // Store the token in sessionStorage
     }
     callback();
   },

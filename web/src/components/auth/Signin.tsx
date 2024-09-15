@@ -1,7 +1,5 @@
 import React, { useState, ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import axios, { AxiosResponse } from "axios";
-
 import {
   Card,
   CardContent,
@@ -11,65 +9,82 @@ import {
   Button,
   Box,
 } from "@mui/material";
-import { signin } from "../services/authAPI";
+import AuthService, { SignInData } from "../services/authAPI";
 import { auth } from "../../utils/auth";
 
 interface FormValues {
   email: string;
   password: string;
-  error: string;
-}
-
-interface User {
-  email: string;
-  password: string;
 }
 
 const Signin: React.FC = () => {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
   const [values, setValues] = useState<FormValues>({
     email: "",
     password: "",
-    error: "",
   });
-  const [errors, setErrors] = useState<{ [key: string]: boolean }>({
-    email: false,
-    password: false,
+  const [errors, setErrors] = useState<{ [key: string]: string }>({
+    email: "",
+    password: "",
   });
-  const handleChange =
-    (id: string) => (event: ChangeEvent<HTMLInputElement>) => {
-      const { id, value } = event.target;
-      setValues({ ...values, [id]: value });
-      setErrors({ ...errors, [id]: value.trim() === "" });
-    };
-  const goToSignup = () => {
+  const [apiError, setApiError] = useState<string>("");
+
+  const handleChange = (id: keyof FormValues) => (event: ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    setValues({ ...values, [id]: value });
+    setErrors({ ...errors, [id]: value.trim() === "" ? `${id} is required` : "" });
+  };
+
+  const navigateToSignUp = () => {
     navigate("/signup");
   };
+
+  const validateForm = (): boolean => {
+    const newErrors: { [key: string]: string } = {};
+    let isValid = true;
+
+    Object.keys(values).forEach((key) => {
+      if (values[key as keyof FormValues].trim() === "") {
+        newErrors[key] = `${key} is required`;
+        isValid = false;
+      }
+    });
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
   const onSignin = async () => {
-    const user: User = {
-      email: values.email || "",
-      password: values.password || "",
+    if (!validateForm()) return;
+  
+    const userData: SignInData = {
+      email: values.email,
+      password: values.password,
     };
+  
     try {
-      const response: AxiosResponse<any, any> = await signin(user);
+      // Get the AxiosResponse and extract the data
+      const response = await AuthService.signIn(userData);
+  
+      // Authenticate and store the JWT
       auth.authenticate(response, () => {
-        setValues({ ...values, error: "" });
+        setApiError("");
       });
-      // go home
+  
+      // Navigate to the home page
       navigate("/home");
     } catch (error) {
-      console.error("error signing in:", error);
-      if (axios.isAxiosError(error) && error.response) {
-        setValues({
-          ...values,
-          error: error.response.data.error || "signin failed",
-        });
+      console.error("Error signing in:", error);
+      if (error instanceof Error) {
+        setApiError(error.message || "Sign-in failed");
       } else {
-        setValues({ ...values, error: "signin failed" });
+        setApiError("An unexpected error occurred");
       }
     }
   };
-  const isFormValid = !(errors.email || errors.password);
+   
+  const isFormValid = !Object.values(errors).some(error => error !== "");
+
   return (
     <Box
       display="flex"
@@ -77,58 +92,54 @@ const Signin: React.FC = () => {
       alignItems="center"
       minHeight="100vh"
     >
-      <Card>
+      <Card sx={{ width: 300, padding: 2 }}>
         <CardContent>
-          <Typography variant="h5" style={{ fontWeight: "bold" }}>
+          <Typography variant="h5" sx={{ fontWeight: "bold", mb: 2 }}>
             Sign In
           </Typography>
-          {["email", "password"].map((id) => (
+          {(["email", "password"] as const).map((id) => (
             <TextField
               key={id}
               label={id === "email" ? "Email" : "Password"}
               id={id}
               type={id === "password" ? "password" : "email"}
-              value={values[id as keyof FormValues]}
+              value={values[id]}
               onChange={handleChange(id)}
               margin="normal"
               fullWidth
-              error={errors[id]}
-              helperText={
-                errors[id]
-                  ? `${id.charAt(0).toUpperCase() + id.slice(1)} is required`
-                  : ""
-              }
+              error={!!errors[id]}
+              helperText={errors[id]}
             />
           ))}
+          {apiError && (
+            <Typography color="error" align="center" sx={{ mt: 2 }}>
+              {apiError}
+            </Typography>
+          )}
         </CardContent>
         <CardActions>
-          <Box display="flex" justifyContent="center" width="100%">
-            <Button
-              color="primary"
-              variant="contained"
-              fullWidth
-              disabled={!isFormValid}
-              onClick={onSignin}
-            >
-              Login
-            </Button>
-          </Box>
+          <Button
+            color="primary"
+            variant="contained"
+            fullWidth
+            disabled={!isFormValid}
+            onClick={onSignin}
+          >
+            Login
+          </Button>
         </CardActions>
-        <Typography
-          align="center"
-          style={{ cursor: "pointer", color: "blue" }}
-          onClick={goToSignup}
-        >
-          Do not have an account?
-        </Typography>
-        <Typography align="center" style={{ cursor: "pointer", color: "gray" }}>
-          Forgot password?
-        </Typography>
-        {values.error && (
-          <Typography color="error" align="center">
-            {values.error}!
+        <Box sx={{ mt: 2 }}>
+          <Typography
+            align="center"
+            sx={{ cursor: "pointer", color: "primary.main" }}
+            onClick={navigateToSignUp}
+          >
+            Don't have an account?
           </Typography>
-        )}
+          <Typography align="center" sx={{ cursor: "pointer", color: "text.secondary", mt: 1 }}>
+            Forgot password?
+          </Typography>
+        </Box>
       </Card>
     </Box>
   );

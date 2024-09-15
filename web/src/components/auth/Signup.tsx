@@ -1,5 +1,4 @@
 import React, { useState, ChangeEvent } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import {
   Card,
@@ -15,69 +14,82 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
-import { signup } from "../services/authAPI";
+import AuthService, { SignUpData } from "../services/authAPI";
 
 interface FormValues {
-  name: string;
-  password: string;
-  email: string;
-  open: boolean;
-  error: string;
-}
-
-interface User {
   name: string;
   email: string;
   password: string;
 }
 
 const Signup: React.FC = () => {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
   const [values, setValues] = useState<FormValues>({
     name: "",
-    password: "",
     email: "",
-    open: false,
-    error: "",
+    password: "",
   });
-
-  const [errors, setErrors] = useState<{ [key: string]: boolean }>({
-    name: false,
-    email: false,
-    password: false,
+  const [errors, setErrors] = useState<{ [key: string]: string }>({
+    name: "",
+    email: "",
+    password: "",
   });
+  const [apiError, setApiError] = useState<string>("");
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const handleChange =
-    (id: string) => (event: ChangeEvent<HTMLInputElement>) => {
+    (id: keyof FormValues) => (event: ChangeEvent<HTMLInputElement>) => {
       const { value } = event.target;
       setValues({ ...values, [id]: value });
-      setErrors({ ...errors, [id]: value.trim() === "" });
+      setErrors({
+        ...errors,
+        [id]: value.trim() === "" ? `${id} is required` : "",
+      });
     };
 
-  const goToSignin = () => {
+  const navigateToSignIn = () => {
     navigate("/signin");
   };
+
+  const validateForm = (): boolean => {
+    const newErrors: { [key: string]: string } = {};
+    let isValid = true;
+
+    Object.keys(values).forEach((key) => {
+      if (values[key as keyof FormValues].trim() === "") {
+        newErrors[key] = `${key} is required`;
+        isValid = false;
+      }
+    });
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
   const onSignup = async () => {
+    if (!validateForm()) return;
+
+    const userData: SignUpData = {
+      name: values.name,
+      email: values.email,
+      password: values.password,
+    };
+
     try {
-      const user: User = {
-        name: values.name || "",
-        email: values.email || "",
-        password: values.password || "",
-      };
-      await signup(user);
-      setValues({ ...values, error: "", open: true });
+      await AuthService.signUp(userData);
+      setApiError("");
+      setIsDialogOpen(true);
     } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
-        setValues({
-          ...values,
-          error: error.response.data.error,
-        });
+      console.error("Error signing up:", error);
+      if (error instanceof Error) {
+        setApiError(error.message || "Sign-up failed");
       } else {
-        setValues({ ...values, error: "sign up failed" });
+        setApiError("An unexpected error occurred");
       }
     }
   };
-  const isFormValid = !(errors.name || errors.email || errors.password);
+
+  const isFormValid = !Object.values(errors).some((error) => error !== "");
 
   return (
     <Box
@@ -86,65 +98,53 @@ const Signup: React.FC = () => {
       alignItems="center"
       minHeight="100vh"
     >
-      <Card>
+      <Card sx={{ width: 300, padding: 2 }}>
         <CardContent>
-          <Typography variant="h5" style={{ fontWeight: "bold" }}>
+          <Typography variant="h5" sx={{ fontWeight: "bold", mb: 2 }}>
             Sign Up
           </Typography>
-          {["name", "email", "password"].map((id) => (
+          {(["name", "email", "password"] as const).map((id) => (
             <TextField
               key={id}
               id={id}
-              label={
-                id === "name" ? "Name" : id === "email" ? "Email" : "Password"
-              }
-              type={
-                id === "email"
-                  ? "email"
-                  : id === "password"
-                  ? "password"
-                  : "text"
-              }
-              value={values[id as keyof FormValues]}
+              label={id.charAt(0).toUpperCase() + id.slice(1)}
+              type={id === "password" ? "password" : "text"}
+              value={values[id]}
               onChange={handleChange(id)}
               margin="normal"
               fullWidth
-              error={errors[id]}
-              helperText={
-                errors[id]
-                  ? `${id.charAt(0).toUpperCase() + id.slice(1)} is required`
-                  : ""
-              }
+              error={!!errors[id]}
+              helperText={errors[id]}
             />
           ))}
-          {values.error && (
-            <Typography color="error" style={{ verticalAlign: "middle" }}>
-              {values.error}
+          {apiError && (
+            <Typography color="error" align="center" sx={{ mt: 2 }}>
+              {apiError}
             </Typography>
           )}
         </CardContent>
         <CardActions>
-          <Box display="flex" justifyContent="center" width="100%">
-            <Button
-              color="primary"
-              variant="contained"
-              fullWidth
-              onClick={onSignup}
-              disabled={!isFormValid}
-            >
-              create account
-            </Button>
-          </Box>
+          <Button
+            color="primary"
+            variant="contained"
+            fullWidth
+            onClick={onSignup}
+            disabled={!isFormValid}
+          >
+            Create Account
+          </Button>
         </CardActions>
-        <Typography
-          align="center"
-          style={{ cursor: "pointer", color: "blue" }}
-          onClick={goToSignin}
-        >
-          Already have an account?
-        </Typography>
+        <Box sx={{ mt: 2 }}>
+          <Typography
+            align="center"
+            sx={{ cursor: "pointer", color: "primary.main" }}
+            onClick={navigateToSignIn}
+          >
+            Already have an account?
+          </Typography>
+        </Box>
       </Card>
-      <Dialog open={values.open}>
+      <Dialog open={isDialogOpen} onClose={navigateToSignIn}>
         <DialogTitle>Account Created</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -153,17 +153,14 @@ const Signup: React.FC = () => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Typography style={{ cursor: "pointer", color: "blue" }}>
-            <Button
-              style={{ textTransform: "none" }}
-              color="primary"
-              variant="contained"
-              fullWidth
-              onClick={goToSignin}
-            >
-              Sign In
-            </Button>
-          </Typography>
+          <Button
+            color="primary"
+            variant="contained"
+            fullWidth
+            onClick={navigateToSignIn}
+          >
+            Sign In
+          </Button>
         </DialogActions>
       </Dialog>
     </Box>
