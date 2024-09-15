@@ -3,7 +3,7 @@ import { authServices } from "../services/index";
 
 const router = express.Router();
 
-router.post("/signin", authServices.signin);
-router.get("/signout", authServices.signout);
+router.post("/signup", authServices.signUp);
+router.post("/signin", authServices.signIn);
 
 export default router;

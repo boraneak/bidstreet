@@ -6,19 +6,54 @@ import { IDecodedToken } from "../../interfaces/DecodedToken";
 const jwtSecret = process.env.JWT_SECRET!;
 const tokenDuration = process.env.TOKEN_DURATION;
 
-export const signin = async (req: Request, res: Response) => {
+export const signUp = async (req: Request, res: Response) => {
   try {
-    const user = await User.findOne({
-      email: req.body.email,
-    });
+    const user = new User(req.body);
+    await user.save();
 
-    if (!user)
+    const token = jwt.sign(
+      {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        seller: user.seller,
+      },
+      jwtSecret,
+      { expiresIn: tokenDuration }
+    );
+
+    res.cookie("authCookie", token, { httpOnly: true });
+
+    return res.status(201).json({
+      message: "Successfully signed up!",
+      token,
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        seller: user.seller,
+      },
+    });
+  } catch (error) {
+    console.error("Error in signUp:", error);
+    return res.status(400).json({
+      error: "Could not sign up. Please try again.",
+    });
+  }
+};
+
+export const signIn = async (req: Request, res: Response) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+
+    if (!user) {
       return res.status(401).json({
         error: "User not found",
       });
+    }
 
     if (!user.authenticate(req.body.password)) {
-      return res.status(401).send({
+      return res.status(401).json({
         error: "Email and password don't match.",
       });
     }
@@ -31,14 +66,13 @@ export const signin = async (req: Request, res: Response) => {
         seller: user.seller,
       },
       jwtSecret,
-      {
-        expiresIn: tokenDuration,
-      }
+      { expiresIn: tokenDuration }
     );
-    res.cookie("authCookie", token, {
-      httpOnly: true,
-    });
-    return res.json({
+
+    res.cookie("authCookie", token, { httpOnly: true });
+
+    return res.status(200).json({
+      message: "Successfully signed in!",
       token,
       user: {
         _id: user._id,
@@ -47,27 +81,10 @@ export const signin = async (req: Request, res: Response) => {
         seller: user.seller,
       },
     });
-  } catch (err) {
-    return res.status(401).json({
-      error: "Could not sign in",
-    });
-  }
-};
-
-export const signout = (req: Request, res: Response) => {
-  try {
-    if (req.cookies && req.cookies.authCookie) {
-      res.clearCookie("authCookie");
-      return res.status(200).json({
-        message: "signed out",
-      });
-    }
-    return res.status(200).json({
-      message: "no user was signed in",
-    });
-  } catch (err) {
-    return res.status(500).json({
-      error: "Could not sign out",
+  } catch (error) {
+    console.error("Error in signIn:", error);
+    return res.status(400).json({
+      error: "Could not sign in. Please try again.",
     });
   }
 };

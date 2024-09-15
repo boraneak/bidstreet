@@ -59,7 +59,6 @@ const router = express.Router();
  *                   type: string
  */
 router.get("/list", authServices.hasAuthorization, userServices.getAllUsers);
-router.post("/create", userServices.createUser);
 
 router.get(
   "/profile/:userId",

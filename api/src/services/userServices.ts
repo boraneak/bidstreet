@@ -2,20 +2,6 @@ import User from "../models/userModel";
 import { Request, Response, NextFunction } from "express";
 import { IUserRequest } from "../../interfaces/requests/UserRequest";
 import { isValidObjectId } from "../../utils/isValidObjectId";
-export const createUser = async (req: Request, res: Response) => {
-  const user = new User(req.body);
-  try {
-    await user.save();
-    return res.status(200).json({
-      message: "Successfully signed up!",
-    });
-  } catch (error) {
-    console.error("Error creating user:", error);
-    return res.status(500).json({
-      error: "Internal Server Error",
-    });
-  }
-};
 
 export const getUserById = async (
   req: Request,
@@ -125,7 +111,6 @@ export const isSeller = (
 };
 
 export default {
-  createUser,
   getUserById,
   readUserProfile,
   getAllUsers,
