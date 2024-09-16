@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Grid } from "@mui/material";
-import {
-  listProductCategories,
-  ProductCategories,
-} from "../components/services/productAPI";
+import { listProductCategories } from "../API/productAPI";
 import Categories from "../components/product/Categories";
 import Search from "../components/product/Search";
+import { ProductCategories } from "../types/ProductCategories";
 
 const Home: React.FC = () => {
   const [categories, setCategories] = useState<ProductCategories>([]);

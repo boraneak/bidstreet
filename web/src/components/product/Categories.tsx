@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Product } from "../services/productAPI";
+import { Product } from "../../API/productAPI";
 import {
   Card,
   Typography,
@@ -8,9 +8,8 @@ import {
   CardContent,
   Divider,
 } from "@mui/material";
-import { searchProduct } from "../services/productAPI";
 import Products from "./Products";
-
+import { searchProduct } from "../../API/productAPI";
 interface CategoryProps {
   categories: string[];
 }

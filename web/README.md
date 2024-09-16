@@ -14,7 +14,11 @@
    ```
    npm install
    ```
-2. Create `.env` by following `.env.example`
+2. Create `.env`
+
+   ```
+   cp .env.example .env
+   ```
 
 3. Run the project
    ```

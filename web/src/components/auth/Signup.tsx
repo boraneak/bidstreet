@@ -1,5 +1,6 @@
 import React, { useState, ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
+import { SignUpFormValues } from "../../types/SignUpFormValues";
 import {
   Card,
   CardContent,
@@ -14,17 +15,11 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
-import AuthService, { SignUpData } from "../services/authAPI";
-
-interface FormValues {
-  name: string;
-  email: string;
-  password: string;
-}
+import AuthService, { SignUpData } from "../../API/authAPI";
 
 const Signup: React.FC = () => {
   const navigate = useNavigate();
-  const [values, setValues] = useState<FormValues>({
+  const [values, setValues] = useState<SignUpFormValues>({
     name: "",
     email: "",
     password: "",
@@ -38,7 +33,7 @@ const Signup: React.FC = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const handleChange =
-    (id: keyof FormValues) => (event: ChangeEvent<HTMLInputElement>) => {
+    (id: keyof SignUpFormValues) => (event: ChangeEvent<HTMLInputElement>) => {
       const { value } = event.target;
       setValues({ ...values, [id]: value });
       setErrors({
@@ -51,12 +46,12 @@ const Signup: React.FC = () => {
     navigate("/signin");
   };
 
-  const validateForm = (): boolean => {
+  const isValidateForm = (): boolean => {
     const newErrors: { [key: string]: string } = {};
     let isValid = true;
 
     Object.keys(values).forEach((key) => {
-      if (values[key as keyof FormValues].trim() === "") {
+      if (values[key as keyof SignUpFormValues].trim() === "") {
         newErrors[key] = `${key} is required`;
         isValid = false;
       }
@@ -67,16 +62,16 @@ const Signup: React.FC = () => {
   };
 
   const onSignup = async () => {
-    if (!validateForm()) return;
+    if (!isValidateForm()) return;
 
-    const userData: SignUpData = {
+    const signUpData: SignUpData = {
       name: values.name,
       email: values.email,
       password: values.password,
     };
 
     try {
-      await AuthService.signUp(userData);
+      await AuthService.signUp(signUpData);
       setApiError("");
       setIsDialogOpen(true);
     } catch (error) {

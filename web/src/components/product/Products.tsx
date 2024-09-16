@@ -7,7 +7,7 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 
-import { Product } from "../services/productAPI";
+import { Product } from "../../API/productAPI";
 
 interface ProductsProps {
   products: Product[];

@@ -54,7 +54,7 @@ export const signIn = async (req: Request, res: Response) => {
 
     if (!user.authenticate(req.body.password)) {
       return res.status(401).json({
-        error: "Email and password don't match.",
+        error: "Password does not match.",
       });
     }
 

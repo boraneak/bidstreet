@@ -1,6 +1,6 @@
 import { JwtPayload, jwtDecode } from "jwt-decode";
 import { AxiosResponse } from "axios";
-import { AuthResponse } from "../components/services/authAPI";
+import { AuthResponse } from "../API/authAPI";
 
 interface User {
   id: string;

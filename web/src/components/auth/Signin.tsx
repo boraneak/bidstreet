@@ -1,5 +1,6 @@
 import React, { useState, ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
+import { SignInFormValues } from "../../types/SignInFormValues";
 import {
   Card,
   CardContent,
@@ -9,17 +10,13 @@ import {
   Button,
   Box,
 } from "@mui/material";
-import AuthService, { SignInData } from "../services/authAPI";
 import { auth } from "../../utils/auth";
-
-interface FormValues {
-  email: string;
-  password: string;
-}
+import { isFormValid } from "../../utils/isFormValid";
+import AuthService, { SignInData } from "../../API/authAPI";
 
 const Signin: React.FC = () => {
   const navigate = useNavigate();
-  const [values, setValues] = useState<FormValues>({
+  const [values, setValues] = useState<SignInFormValues>({
     email: "",
     password: "",
   });
@@ -30,7 +27,7 @@ const Signin: React.FC = () => {
   const [apiError, setApiError] = useState<string>("");
 
   const handleChange =
-    (id: keyof FormValues) => (event: ChangeEvent<HTMLInputElement>) => {
+    (id: keyof SignInFormValues) => (event: ChangeEvent<HTMLInputElement>) => {
       const { value } = event.target;
       setValues({ ...values, [id]: value });
       setErrors({
@@ -48,7 +45,7 @@ const Signin: React.FC = () => {
     let isValid = true;
 
     Object.keys(values).forEach((key) => {
-      if (values[key as keyof FormValues].trim() === "") {
+      if (values[key as keyof SignInFormValues].trim() === "") {
         newErrors[key] = `${key} is required`;
         isValid = false;
       }
@@ -61,21 +58,20 @@ const Signin: React.FC = () => {
   const onSignin = async () => {
     if (!validateForm()) return;
 
-    const userData: SignInData = {
+    const signInData: SignInData = {
       email: values.email,
       password: values.password,
     };
 
     try {
       // Get the AxiosResponse and extract the data
-      const response = await AuthService.signIn(userData);
+      const response = await AuthService.signIn(signInData);
 
       // Authenticate and store the JWT
       auth.authenticate(response, () => {
         setApiError("");
       });
 
-      // Navigate to the home page
       navigate("/home");
     } catch (error) {
       console.error("Error signing in:", error);
@@ -86,8 +82,6 @@ const Signin: React.FC = () => {
       }
     }
   };
-
-  const isFormValid = !Object.values(errors).some((error) => error !== "");
 
   return (
     <Box

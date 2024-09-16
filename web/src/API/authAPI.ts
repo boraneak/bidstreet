@@ -1,6 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
 
-// Define more specific types for the API responses
 export interface User {
   id: string;
   name: string;
