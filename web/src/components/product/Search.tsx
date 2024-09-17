@@ -1,5 +1,7 @@
 import React, { useState, ChangeEvent, KeyboardEvent } from "react";
-import { searchProduct, Product } from "../../API/productAPI";
+import { searchProduct } from "../../API/productAPI";
+import { Product } from "../../types/Product";
+
 import {
   Card,
   MenuItem,

@@ -6,8 +6,7 @@ import {
   ImageListItemBar,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-
-import { Product } from "../../API/productAPI";
+import { Product } from "../../types/Product";
 
 interface ProductsProps {
   products: Product[];
@@ -40,14 +39,14 @@ const Products: React.FC<ProductsProps> = (props) => {
                 <ImageListItem key={i}>
                   <img
                     style={{ height: "100%" }}
-                    src={`http://localhost:9000/api/v1/products/photo/${product._id}`}
+                    src={`${process.env.REACT_APP_API_BASE_URL}/products/photo/${product._id}`}
                     alt={product.name}
                     loading="lazy"
                   />
                   <ImageListItemBar
                     title={
                       <Link
-                        to={`http://localhost:9000/api/v1/products/photo/${product._id}`}
+                        to={`${process.env.REACT_APP_API_BASE_URL}/products/photo/${product._id}`}
                         style={{
                           fontSize: "1.1em",
                           marginBottom: "5px",

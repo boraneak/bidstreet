@@ -1,6 +1,7 @@
 import React, { useState, ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { SignInFormValues } from "../../types/SignInFormValues";
+import { SignInData } from "../../types/SignInData";
 import {
   Card,
   CardContent,
@@ -12,7 +13,7 @@ import {
 } from "@mui/material";
 import { auth } from "../../utils/auth";
 import { isFormValid } from "../../utils/isFormValid";
-import AuthService, { SignInData } from "../../API/authAPI";
+import AuthService from "../../API/authAPI";
 
 const Signin: React.FC = () => {
   const navigate = useNavigate();

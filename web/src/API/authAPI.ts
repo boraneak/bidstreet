@@ -1,27 +1,7 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
-
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-}
-
-export interface AuthResponse {
-  token: string;
-  user: User;
-}
-
-export interface SignUpData {
-  name: string;
-  email: string;
-  password: string;
-}
-
-export interface SignInData {
-  email: string;
-  password: string;
-}
-
+import { AuthResponse } from "../types/AuthResponse";
+import { SignUpData } from "../types/SignUpData";
+import { SignInData } from "../types/SignInData";
 // Create a custom API client
 const apiClient: AxiosInstance = axios.create({
   baseURL: process.env.REACT_APP_API_BASE_URL,

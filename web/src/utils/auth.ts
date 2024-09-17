@@ -1,13 +1,7 @@
 import { JwtPayload, jwtDecode } from "jwt-decode";
 import { AxiosResponse } from "axios";
-import { AuthResponse } from "../API/authAPI";
-
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  seller: boolean;
-}
+import { AuthResponse } from "../types/AuthResponse";
+import { User } from "../types/User";
 
 export const auth = {
   isAuthenticated() {

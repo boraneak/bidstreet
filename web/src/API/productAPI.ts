@@ -1,46 +1,23 @@
 import axios from "axios";
 import queryString from "query-string";
 import { ProductCategories } from "../types/ProductCategories";
-interface Credentials {
-  token: string;
-}
-
-interface Params {
-  shopId: string;
-  productId: string;
-}
-
-export interface Product {
-  _id: string;
-  name: string;
-  image?: {
-    data: Buffer;
-    contentType: string;
-  };
-  description?: string;
-  category?: string;
-  quantity: number;
-  price: number;
-  shop: string;
-}
-
-export interface SearchParams {
-  productName?: string;
-  category?: string;
-}
+import { AuthCredentials } from "../types/AuthCredentials";
+import { ShopProductParams } from "../types/ShopProductParams";
+import { Product } from "../types/Product";
+import { ProductSearchParams } from "../types/ProductSearchParams";
 
 /**
  * Creates a new product for a specific shop.
  *
- * @param params - The parameters containing the shop ID.
- * @param credentials - The credentials containing the authentication token.
+ * @param params - The parameters containing the shop ID and product ID.
+ * @param credentials - The authentication credentials for the API request.
  * @param product - The product details to be created.
- * @returns The created product data.
+ * @returns A promise that resolves to an array of created product data.
  * @throws An error if the request fails.
  */
 export const createProduct = async (
-  params: Params,
-  credentials: Credentials,
+  params: ShopProductParams,
+  credentials: AuthCredentials,
   product: Product,
 ): Promise<Product[]> => {
   try {
@@ -64,14 +41,14 @@ export const createProduct = async (
 /**
  * Fetches a product by its ID.
  *
- * @param params - The parameters containing the product ID.
+ * @param params - The parameters containing the shop ID and product ID.
  * @param signal - An optional AbortSignal to allow request cancellation.
  * @returns The product data.
  * @throws An error if the request fails.
  */
 
 export const fetchProductById = async (
-  params: Params,
+  params: ShopProductParams,
   signal?: AbortSignal | undefined,
 ): Promise<Product[]> => {
   try {
@@ -99,8 +76,8 @@ export const fetchProductById = async (
  */
 
 export const updateProduct = async (
-  params: Params,
-  credentials: Credentials,
+  params: ShopProductParams,
+  credentials: AuthCredentials,
   product: Product,
 ): Promise<Product[]> => {
   try {
@@ -131,8 +108,8 @@ export const updateProduct = async (
  */
 
 export const removeProduct = async (
-  params: Params,
-  credentials: Credentials,
+  params: ShopProductParams,
+  credentials: AuthCredentials,
 ): Promise<Product> => {
   try {
     const response = await axios.delete<Product>(
@@ -154,14 +131,14 @@ export const removeProduct = async (
 /**
  * Lists products by shop ID.
  *
- * @param params - The parameters containing the shop ID.
+ * @param params - The parameters containing the shop ID and product ID.
  * @param signal - An optional AbortSignal to allow request cancellation.
  * @returns An array of products belonging to the specified shop.
  * @throws Will throw an error if the request fails.
  */
 
 export const listProductsByShop = async (
-  params: Params,
+  params: ShopProductParams,
   signal?: AbortSignal | undefined,
 ): Promise<Product[]> => {
   try {
@@ -204,14 +181,14 @@ export const listLatestProducts = async (
 /**
  * Lists related products based on the provided product ID.
  *
- * @param params - The parameters containing the product ID.
+ * @param params - The parameters containing the shop ID and product ID.
  * @param signal - An optional AbortSignal to allow request cancellation.
  * @returns An array of related products.
  * @throws Will throw an error if the request fails.
  */
 
 export const listRelatedProducts = async (
-  params: Params,
+  params: ShopProductParams,
   signal?: AbortSignal | undefined,
 ): Promise<Product[]> => {
   try {
@@ -263,19 +240,14 @@ export const listProductCategories = async (
  */
 
 export const searchProduct = async (
-  params: SearchParams,
+  params: ProductSearchParams,
   signal?: AbortSignal | undefined,
 ): Promise<Product[]> => {
   const query = queryString.stringify(params);
-  // const token = localStorage.getItem("jwt");
   try {
     const response = await axios.get<Product[]>(
       `${process.env.REACT_APP_API_BASE_URL}/products/search?${query}`,
       {
-        // headers: {
-        //   Authorization: `Bearer ${token}`,
-        // },
-
         signal: signal,
       },
     );

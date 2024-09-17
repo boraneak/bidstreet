@@ -1,6 +1,7 @@
 import React, { useState, ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { SignUpFormValues } from "../../types/SignUpFormValues";
+import { SignUpData } from "../../types/SignUpData";
 import {
   Card,
   CardContent,
@@ -15,7 +16,7 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
-import AuthService, { SignUpData } from "../../API/authAPI";
+import AuthService from "../../API/authAPI";
 
 const Signup: React.FC = () => {
   const navigate = useNavigate();
