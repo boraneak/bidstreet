@@ -1,6 +1,5 @@
 import React, { useState, ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { SignUpFormValues } from "../../types/SignUpFormValues";
 import { SignUpData } from "../../types/SignUpData";
 import {
   Card,
@@ -18,9 +17,38 @@ import {
 } from "@mui/material";
 import AuthService from "../../API/authAPI";
 
+const useStyles = {
+  container: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    minHeight: "100vh",
+  },
+  card: {
+    width: 300,
+    padding: 2,
+  },
+  title: {
+    fontWeight: "bold",
+    marginBottom: 2,
+  },
+  apiError: {
+    marginTop: 2,
+  },
+  signInLink: {
+    cursor: "pointer",
+    color: "primary.main",
+    textAlign: "center",
+  },
+  dialogActions: {
+    display: "flex",
+    justifyContent: "flex-end",
+  },
+};
+
 const Signup: React.FC = () => {
   const navigate = useNavigate();
-  const [values, setValues] = useState<SignUpFormValues>({
+  const [values, setValues] = useState<SignUpData>({
     name: "",
     email: "",
     password: "",
@@ -34,7 +62,7 @@ const Signup: React.FC = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const handleChange =
-    (id: keyof SignUpFormValues) => (event: ChangeEvent<HTMLInputElement>) => {
+    (id: keyof SignUpData) => (event: ChangeEvent<HTMLInputElement>) => {
       const { value } = event.target;
       setValues({ ...values, [id]: value });
       setErrors({
@@ -52,7 +80,7 @@ const Signup: React.FC = () => {
     let isValid = true;
 
     Object.keys(values).forEach((key) => {
-      if (values[key as keyof SignUpFormValues].trim() === "") {
+      if (values[key as keyof SignUpData].trim() === "") {
         newErrors[key] = `${key} is required`;
         isValid = false;
       }
@@ -88,15 +116,10 @@ const Signup: React.FC = () => {
   const isFormValid = !Object.values(errors).some((error) => error !== "");
 
   return (
-    <Box
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      minHeight="100vh"
-    >
-      <Card sx={{ width: 300, padding: 2 }}>
+    <Box sx={useStyles.container}>
+      <Card sx={useStyles.card}>
         <CardContent>
-          <Typography variant="h5" sx={{ fontWeight: "bold", mb: 2 }}>
+          <Typography variant="h5" sx={useStyles.title}>
             Sign Up
           </Typography>
           {(["name", "email", "password"] as const).map((id) => (
@@ -114,7 +137,7 @@ const Signup: React.FC = () => {
             />
           ))}
           {apiError && (
-            <Typography color="error" align="center" sx={{ mt: 2 }}>
+            <Typography color="error" align="center" sx={useStyles.apiError}>
               {apiError}
             </Typography>
           )}
@@ -131,11 +154,7 @@ const Signup: React.FC = () => {
           </Button>
         </CardActions>
         <Box sx={{ mt: 2 }}>
-          <Typography
-            align="center"
-            sx={{ cursor: "pointer", color: "primary.main" }}
-            onClick={navigateToSignIn}
-          >
+          <Typography sx={useStyles.signInLink} onClick={navigateToSignIn}>
             Already have an account?
           </Typography>
         </Box>
@@ -148,11 +167,10 @@ const Signup: React.FC = () => {
             below to get started.
           </DialogContentText>
         </DialogContent>
-        <DialogActions>
+        <DialogActions sx={useStyles.dialogActions}>
           <Button
             color="primary"
             variant="contained"
-            fullWidth
             onClick={navigateToSignIn}
           >
             Sign In

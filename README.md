@@ -8,12 +8,18 @@ This project is an online bidding platform where users can create shops, list it
 
 To run the project locally:
 
+0. Clone the Repository
+
 ```
-# Clone the repo
-git@github.com:boraneak/bidstreet.git
+git clone git@github.com:boraneak/bidstreet.git
 ```
 
+1. Set up the api
+
 - <a href="https://github.com/boraneak/bidstreet/tree/master/api" target="_blank" rel="noopener noreferrer">API</a>
+
+2. Set up the web
+
 - <a href="https://github.com/boraneak/bidstreet/tree/master/web" target="_blank" rel="noopener noreferrer">Web</a>
 
 ## Features
