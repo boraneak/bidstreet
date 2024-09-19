@@ -1,10 +1,10 @@
-import axios from "axios";
-import queryString from "query-string";
-import { ProductCategories } from "../types/ProductCategories";
-import { AuthCredentials } from "../types/AuthCredentials";
-import { ShopProductParams } from "../types/ShopProductParams";
-import { Product } from "../types/Product";
-import { ProductSearchParams } from "../types/ProductSearchParams";
+import axios from 'axios';
+import queryString from 'query-string';
+import { ProductCategories } from '../types/ProductCategories';
+import { AuthCredentials } from '../types/AuthCredentials';
+import { ShopProductParams } from '../types/ShopProductParams';
+import { Product } from '../types/Product';
+import { ProductSearchParams } from '../types/ProductSearchParams';
 
 /**
  * Creates a new product for a specific shop.
@@ -26,7 +26,7 @@ export const createProduct = async (
       product,
       {
         headers: {
-          Accept: "application/json",
+          Accept: 'application/json',
           Authorization: `Bearer ${credentials.token}`,
         },
       },
@@ -86,7 +86,7 @@ export const updateProduct = async (
       product,
       {
         headers: {
-          Accept: "application/json",
+          Accept: 'application/json',
           Authorization: `Bearer ${credentials.token}`,
         },
       },
@@ -116,7 +116,7 @@ export const removeProduct = async (
       `${process.env.REACT_APP_API_BASE_URL}/products/delete/${params.shopId}/${params.productId}`,
       {
         headers: {
-          Accept: "application/json",
+          Accept: 'application/json',
           Authorization: `Bearer ${credentials.token}`,
         },
       },

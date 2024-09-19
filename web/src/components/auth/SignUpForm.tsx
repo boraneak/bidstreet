@@ -1,6 +1,6 @@
-import React, { useState, ChangeEvent } from "react";
-import { useNavigate } from "react-router-dom";
-import { SignUpData } from "../../types/SignUpData";
+import React, { useState, ChangeEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { SignUpData } from '../../types/SignUpData';
 import {
   Card,
   CardContent,
@@ -14,51 +14,51 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-} from "@mui/material";
-import AuthService from "../../API/authAPI";
+} from '@mui/material';
+import AuthService from '../../API/authAPI';
 
 const useStyles = {
   container: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    minHeight: "100vh",
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    minHeight: '100vh',
   },
   card: {
     width: 300,
     padding: 2,
   },
   title: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: 2,
   },
   apiError: {
     marginTop: 2,
   },
   signInLink: {
-    cursor: "pointer",
-    color: "primary.main",
-    textAlign: "center",
+    cursor: 'pointer',
+    color: 'primary.main',
+    textAlign: 'center',
   },
   dialogActions: {
-    display: "flex",
-    justifyContent: "flex-end",
+    display: 'flex',
+    justifyContent: 'flex-end',
   },
 };
 
-const Signup: React.FC = () => {
+const SignUpForm: React.FC = () => {
   const navigate = useNavigate();
   const [values, setValues] = useState<SignUpData>({
-    name: "",
-    email: "",
-    password: "",
+    name: '',
+    email: '',
+    password: '',
   });
   const [errors, setErrors] = useState<{ [key: string]: string }>({
-    name: "",
-    email: "",
-    password: "",
+    name: '',
+    email: '',
+    password: '',
   });
-  const [apiError, setApiError] = useState<string>("");
+  const [apiError, setApiError] = useState<string>('');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const handleChange =
@@ -67,12 +67,12 @@ const Signup: React.FC = () => {
       setValues({ ...values, [id]: value });
       setErrors({
         ...errors,
-        [id]: value.trim() === "" ? `${id} is required` : "",
+        [id]: value.trim() === '' ? `${id} is required` : '',
       });
     };
 
   const navigateToSignIn = () => {
-    navigate("/signin");
+    navigate('/signin');
   };
 
   const isValidateForm = (): boolean => {
@@ -80,7 +80,7 @@ const Signup: React.FC = () => {
     let isValid = true;
 
     Object.keys(values).forEach((key) => {
-      if (values[key as keyof SignUpData].trim() === "") {
+      if (values[key as keyof SignUpData].trim() === '') {
         newErrors[key] = `${key} is required`;
         isValid = false;
       }
@@ -101,19 +101,19 @@ const Signup: React.FC = () => {
 
     try {
       await AuthService.signUp(signUpData);
-      setApiError("");
+      setApiError('');
       setIsDialogOpen(true);
     } catch (error) {
-      console.error("Error signing up:", error);
+      console.error('Error signing up:', error);
       if (error instanceof Error) {
-        setApiError(error.message || "Sign-up failed");
+        setApiError(error.message || 'Sign-up failed');
       } else {
-        setApiError("An unexpected error occurred");
+        setApiError('An unexpected error occurred');
       }
     }
   };
 
-  const isFormValid = !Object.values(errors).some((error) => error !== "");
+  const isFormValid = !Object.values(errors).some((error) => error !== '');
 
   return (
     <Box sx={useStyles.container}>
@@ -122,12 +122,12 @@ const Signup: React.FC = () => {
           <Typography variant="h5" sx={useStyles.title}>
             Sign Up
           </Typography>
-          {(["name", "email", "password"] as const).map((id) => (
+          {(['name', 'email', 'password'] as const).map((id) => (
             <TextField
               key={id}
               id={id}
               label={id.charAt(0).toUpperCase() + id.slice(1)}
-              type={id === "password" ? "password" : "text"}
+              type={id === 'password' ? 'password' : 'text'}
               value={values[id]}
               onChange={handleChange(id)}
               margin="normal"
@@ -181,4 +181,4 @@ const Signup: React.FC = () => {
   );
 };
 
-export default Signup;
+export default SignUpForm;

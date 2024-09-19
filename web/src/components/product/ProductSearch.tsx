@@ -1,7 +1,6 @@
-import React, { useState, ChangeEvent, KeyboardEvent } from "react";
-import { searchProduct } from "../../API/productAPI";
-import { Product } from "../../types/Product";
-
+import React, { useState, ChangeEvent, KeyboardEvent } from 'react';
+import { searchProduct } from '../../API/productAPI';
+import { Product } from '../../types/Product';
 import {
   Card,
   MenuItem,
@@ -11,19 +10,42 @@ import {
   Box,
   CircularProgress,
   Grid,
-} from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
-import ClearIcon from "@mui/icons-material/Clear";
-import Products from "./Products";
+} from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
+import ClearIcon from '@mui/icons-material/Clear';
+import Products from './ProductsGrid';
 
 interface SearchProps {
   productCategories: string[];
 }
 
-const Search: React.FC<SearchProps> = (props) => {
+const useStyles = {
+  card: {
+    margin: 'auto',
+    marginTop: 2,
+    padding: 2,
+  },
+  buttonIcon: {
+    fontSize: 55,
+  },
+  button: {
+    height: '56px',
+  },
+  loadingBox: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100px',
+  },
+  divider: {
+    marginY: 2,
+  },
+};
+
+const ProductSearch: React.FC<SearchProps> = (props) => {
   const [values, setValues] = useState({
-    category: "",
-    productName: "",
+    category: '',
+    productName: '',
     results: [] as Product[],
     searched: false,
   });
@@ -51,14 +73,14 @@ const Search: React.FC<SearchProps> = (props) => {
     try {
       const data = await searchProduct(
         {
-          productName: values.productName || "",
+          productName: values.productName || '',
           category: values.category,
         },
         newAbortController.signal,
       );
       setValues({ ...values, results: data, searched: true });
     } catch (error) {
-      console.error("error searching products", error);
+      console.error('error searching products', error);
     } finally {
       setLoading(false);
     }
@@ -66,15 +88,15 @@ const Search: React.FC<SearchProps> = (props) => {
 
   const clearFilter = () => {
     setValues({
-      category: "",
-      productName: "",
+      category: '',
+      productName: '',
       results: [],
       searched: false,
     });
   };
 
   const enterKey = (event: KeyboardEvent) => {
-    if (event.key === "Enter") {
+    if (event.key === 'Enter') {
       event.preventDefault();
       if (values.productName) {
         searchProducts();
@@ -83,7 +105,7 @@ const Search: React.FC<SearchProps> = (props) => {
   };
 
   return (
-    <Card style={{ margin: "auto", marginTop: 20, padding: 16 }}>
+    <Card sx={useStyles.card}>
       <Grid container spacing={1} alignItems="flex-end">
         <Grid item xs={12} sm={5}>
           <TextField
@@ -91,7 +113,7 @@ const Search: React.FC<SearchProps> = (props) => {
             select
             label="Select category"
             value={values.category}
-            onChange={handleChange("category")}
+            onChange={handleChange('category')}
             fullWidth
             margin="normal"
           >
@@ -109,7 +131,7 @@ const Search: React.FC<SearchProps> = (props) => {
             label="Enter product name"
             value={values.productName}
             onKeyDown={enterKey}
-            onChange={handleChange("productName")}
+            onChange={handleChange('productName')}
             fullWidth
             margin="normal"
           />
@@ -119,9 +141,9 @@ const Search: React.FC<SearchProps> = (props) => {
             color="primary"
             onClick={searchProducts}
             disabled={!values.category && !values.productName}
-            sx={{ height: "56px" }}
+            sx={useStyles.button}
           >
-            <SearchIcon sx={{ fontSize: 55 }} />
+            <SearchIcon sx={useStyles.buttonIcon} />
           </Button>
         </Grid>
         <Grid item xs={12} sm={1}>
@@ -129,20 +151,15 @@ const Search: React.FC<SearchProps> = (props) => {
             color="secondary"
             onClick={clearFilter}
             disabled={!values.category && !values.productName}
-            sx={{ height: "56px" }}
+            sx={useStyles.button}
           >
-            <ClearIcon sx={{ fontSize: 55 }} />
+            <ClearIcon sx={useStyles.buttonIcon} />
           </Button>
         </Grid>
       </Grid>
-      <Divider sx={{ marginY: 2 }} />
+      <Divider sx={useStyles.divider} />
       {loading ? (
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          height="100px"
-        >
+        <Box sx={useStyles.loadingBox}>
           <CircularProgress />
         </Box>
       ) : (
@@ -152,4 +169,4 @@ const Search: React.FC<SearchProps> = (props) => {
   );
 };
 
-export default Search;
+export default ProductSearch;

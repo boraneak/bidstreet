@@ -1,5 +1,5 @@
-import { Types, Document } from "mongoose";
-import { ICartItem } from "./CartItem";
+import { Types, Document } from 'mongoose';
+import { ICartItem } from './CartItem';
 
 export interface IOrder extends Document {
   products: Types.DocumentArray<ICartItem>;

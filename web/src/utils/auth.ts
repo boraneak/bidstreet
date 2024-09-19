@@ -1,14 +1,14 @@
-import { JwtPayload, jwtDecode } from "jwt-decode";
-import { AxiosResponse } from "axios";
-import { AuthResponse } from "../types/AuthResponse";
-import { User } from "../types/User";
+import { JwtPayload, jwtDecode } from 'jwt-decode';
+import { AxiosResponse } from 'axios';
+import { AuthResponse } from '../types/AuthResponse';
+import { User } from '../types/User';
 
 export const auth = {
   isAuthenticated() {
-    if (typeof window === "undefined") {
+    if (typeof window === 'undefined') {
       return null;
     }
-    const token = sessionStorage.getItem("jwt");
+    const token = sessionStorage.getItem('jwt');
     if (token !== null) {
       const decodedToken: any = jwtDecode<JwtPayload>(token);
       const user: User = {
@@ -24,15 +24,15 @@ export const auth = {
   },
   authenticate(jwt: AxiosResponse<AuthResponse>, callback: () => void): void {
     // Expecting AxiosResponse
-    if (typeof window !== "undefined") {
+    if (typeof window !== 'undefined') {
       const token = jwt.data.token; // Extract the token from the AxiosResponse data
-      sessionStorage.setItem("jwt", token); // Store the token in sessionStorage
+      sessionStorage.setItem('jwt', token); // Store the token in sessionStorage
     }
     callback();
   },
   clearJwt(callback: () => void): void {
-    if (typeof window !== "undefined") {
-      sessionStorage.removeItem("jwt");
+    if (typeof window !== 'undefined') {
+      sessionStorage.removeItem('jwt');
     }
     callback();
   },

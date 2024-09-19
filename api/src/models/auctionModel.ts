@@ -1,12 +1,12 @@
-import { Schema, model } from "mongoose";
+import { Schema, model } from 'mongoose';
 
-import { IAuction } from "../../interfaces/Auction";
+import { IAuction } from '../../interfaces/Auction';
 const AuctionSchema = new Schema<IAuction>(
   {
     itemName: {
       type: String,
       trim: true,
-      required: [true, "Item name is required"],
+      required: [true, 'Item name is required'],
     },
     description: {
       type: String,
@@ -22,11 +22,11 @@ const AuctionSchema = new Schema<IAuction>(
     },
     bidEnd: {
       type: Date,
-      required: [true, "Auction end time is required"],
+      required: [true, 'Auction end time is required'],
     },
     seller: {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
       required: true,
     },
     startingBid: {
@@ -37,7 +37,7 @@ const AuctionSchema = new Schema<IAuction>(
       {
         bidder: {
           type: Schema.Types.ObjectId,
-          ref: "User",
+          ref: 'User',
           required: true,
         },
         bid: {
@@ -53,4 +53,4 @@ const AuctionSchema = new Schema<IAuction>(
   },
   { timestamps: true },
 );
-export const Auction = model<IAuction>("Auction", AuctionSchema);
+export const Auction = model<IAuction>('Auction', AuctionSchema);

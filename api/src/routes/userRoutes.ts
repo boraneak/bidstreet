@@ -1,6 +1,6 @@
-import express from "express";
-import { userServices } from "../services/index";
-import { authServices } from "../services/index";
+import express from 'express';
+import { userServices } from '../services/index';
+import { authServices } from '../services/index';
 const router = express.Router();
 
 /**
@@ -58,23 +58,23 @@ const router = express.Router();
  *                 error:
  *                   type: string
  */
-router.get("/list", authServices.hasAuthorization, userServices.getAllUsers);
+router.get('/list', authServices.hasAuthorization, userServices.getAllUsers);
 
 router.get(
-  "/profile/:userId",
+  '/profile/:userId',
   authServices.hasAuthorization,
   userServices.readUserProfile,
 );
 
 router.put(
-  "/update/:userId",
+  '/update/:userId',
   authServices.hasAuthorization,
   userServices.updateUserById,
 );
 router.delete(
-  "/delete/:userId",
+  '/delete/:userId',
   authServices.hasAuthorization,
   userServices.deleteUserById,
 );
-router.get("/:userId", userServices.getUserById);
+router.get('/:userId', userServices.getUserById);
 export default router;

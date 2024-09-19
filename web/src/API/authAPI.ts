@@ -1,12 +1,12 @@
-import axios, { AxiosInstance, AxiosResponse } from "axios";
-import { AuthResponse } from "../types/AuthResponse";
-import { SignUpData } from "../types/SignUpData";
-import { SignInData } from "../types/SignInData";
+import axios, { AxiosInstance, AxiosResponse } from 'axios';
+import { AuthResponse } from '../types/AuthResponse';
+import { SignUpData } from '../types/SignUpData';
+import { SignInData } from '../types/SignInData';
 // Create a custom API client
 const apiClient: AxiosInstance = axios.create({
   baseURL: process.env.REACT_APP_API_BASE_URL,
   headers: {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   },
   withCredentials: true,
 });
@@ -18,7 +18,7 @@ class ApiError extends Error {
     message: string,
   ) {
     super(message);
-    this.name = "ApiError";
+    this.name = 'ApiError';
   }
 }
 
@@ -27,7 +27,7 @@ const handleApiError = (error: unknown): never => {
   if (axios.isAxiosError(error)) {
     throw new ApiError(
       error.response?.status || 500,
-      error.response?.data?.message || "An unexpected error occurred",
+      error.response?.data?.message || 'An unexpected error occurred',
     );
   }
   throw error;
@@ -38,12 +38,12 @@ export const AuthService = {
   async signIn(data: SignInData): Promise<AxiosResponse<AuthResponse>> {
     try {
       const response: AxiosResponse<AuthResponse> = await apiClient.post(
-        "/auth/signin",
+        '/auth/signin',
         data,
       );
       return response;
     } catch (error) {
-      console.error("Error signing in:", error);
+      console.error('Error signing in:', error);
       throw handleApiError(error);
     }
   },
@@ -51,12 +51,12 @@ export const AuthService = {
   async signUp(data: SignUpData): Promise<AuthResponse> {
     try {
       const response: AxiosResponse<AuthResponse> = await apiClient.post(
-        "/auth/signup",
+        '/auth/signup',
         data,
       );
       return response.data;
     } catch (error) {
-      console.error("Error creating account:", error);
+      console.error('Error creating account:', error);
       throw handleApiError(error);
     }
   },

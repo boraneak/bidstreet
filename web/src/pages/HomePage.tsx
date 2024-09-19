@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { Grid } from "@mui/material";
-import { listProductCategories } from "../API/productAPI";
-import Categories from "../components/product/Categories";
-import Search from "../components/product/Search";
-import { ProductCategories } from "../types/ProductCategories";
+import React, { useState, useEffect } from 'react';
+import { Grid } from '@mui/material';
+import { listProductCategories } from '../API/productAPI';
+import Categories from '../components/product/ProductCategory';
+import Search from '../components/product/ProductSearch';
+import { ProductCategories } from '../types/ProductCategories';
 
-const Home: React.FC = () => {
+const HomePage: React.FC = () => {
   const [categories, setCategories] = useState<ProductCategories>([]);
   useEffect(() => {
     const getProductCategories = async () => {
@@ -13,7 +13,7 @@ const Home: React.FC = () => {
         const data = await listProductCategories();
         setCategories(data);
       } catch (error) {
-        console.error("error fetching categories:", error);
+        console.error('error fetching categories:', error);
       }
     };
     getProductCategories();
@@ -30,4 +30,4 @@ const Home: React.FC = () => {
     </div>
   );
 };
-export default Home;
+export default HomePage;

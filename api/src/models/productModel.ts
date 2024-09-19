@@ -1,12 +1,12 @@
-import { Schema, model } from "mongoose";
-import { IProduct } from "../../interfaces/Product";
+import { Schema, model } from 'mongoose';
+import { IProduct } from '../../interfaces/Product';
 
 const ProductSchema = new Schema<IProduct>(
   {
     name: {
       type: String,
       trim: true,
-      required: [true, "Name is required"],
+      required: [true, 'Name is required'],
     },
     image: {
       data: Buffer,
@@ -21,15 +21,15 @@ const ProductSchema = new Schema<IProduct>(
     },
     quantity: {
       type: Number,
-      required: [true, "Quantity is required"],
+      required: [true, 'Quantity is required'],
     },
     price: {
       type: Number,
-      required: [true, "Price is required"],
+      required: [true, 'Price is required'],
     },
-    shop: { type: Schema.Types.ObjectId, ref: "Shop", required: true },
+    shop: { type: Schema.Types.ObjectId, ref: 'Shop', required: true },
   },
   { timestamps: true },
 );
 
-export const Product = model<IProduct>("Product", ProductSchema);
+export const Product = model<IProduct>('Product', ProductSchema);

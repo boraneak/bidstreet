@@ -11,11 +11,11 @@ name: ESLint
 
 on:
   push:
-    branches: ["master", "master_br_prot"]
+    branches: ['master', 'master_br_prot']
   pull_request:
-    branches: ["master"]
+    branches: ['master']
   schedule:
-    - cron: "16 4 * * 1"
+    - cron: '16 4 * * 1'
 
 jobs:
   eslint:

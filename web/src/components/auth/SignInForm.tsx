@@ -1,6 +1,6 @@
-import React, { useState, ChangeEvent } from "react";
-import { useNavigate } from "react-router-dom";
-import { SignInData } from "../../types/SignInData";
+import React, { useState, ChangeEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { SignInData } from '../../types/SignInData';
 import {
   Card,
   CardContent,
@@ -9,53 +9,53 @@ import {
   CardActions,
   Button,
   Box,
-} from "@mui/material";
-import { auth } from "../../utils/auth";
-import { isFormValid } from "../../utils/isFormValid";
-import AuthService from "../../API/authAPI";
+} from '@mui/material';
+import { auth } from '../../utils/auth';
+import { isFormValid } from '../../utils/isFormValid';
+import AuthService from '../../API/authAPI';
 
 const useStyles = {
   container: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    minHeight: "100vh",
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    minHeight: '100vh',
   },
   card: {
     width: 300,
     padding: 2,
   },
   title: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: 2,
   },
   apiError: {
     marginTop: 2,
   },
   signUpLink: {
-    cursor: "pointer",
-    color: "primary.main",
-    textAlign: "center",
+    cursor: 'pointer',
+    color: 'primary.main',
+    textAlign: 'center',
   },
   forgotPasswordLink: {
-    cursor: "pointer",
-    color: "text.secondary",
-    textAlign: "center",
+    cursor: 'pointer',
+    color: 'text.secondary',
+    textAlign: 'center',
     marginTop: 1,
   },
 };
 
-const Signin: React.FC = () => {
+const SignInForm: React.FC = () => {
   const navigate = useNavigate();
   const [values, setValues] = useState<SignInData>({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   });
   const [errors, setErrors] = useState<{ [key: string]: string }>({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   });
-  const [apiError, setApiError] = useState<string>("");
+  const [apiError, setApiError] = useState<string>('');
 
   const handleChange =
     (id: keyof SignInData) => (event: ChangeEvent<HTMLInputElement>) => {
@@ -63,12 +63,12 @@ const Signin: React.FC = () => {
       setValues({ ...values, [id]: value });
       setErrors({
         ...errors,
-        [id]: value.trim() === "" ? `${id} is required` : "",
+        [id]: value.trim() === '' ? `${id} is required` : '',
       });
     };
 
   const navigateToSignUp = () => {
-    navigate("/signup");
+    navigate('/signup');
   };
 
   const validateForm = (): boolean => {
@@ -76,7 +76,7 @@ const Signin: React.FC = () => {
     let isValid = true;
 
     Object.keys(values).forEach((key) => {
-      if (values[key as keyof SignInData].trim() === "") {
+      if (values[key as keyof SignInData].trim() === '') {
         newErrors[key] = `${key} is required`;
         isValid = false;
       }
@@ -97,16 +97,16 @@ const Signin: React.FC = () => {
     try {
       const response = await AuthService.signIn(signInData);
       auth.authenticate(response, () => {
-        setApiError("");
+        setApiError('');
       });
 
-      navigate("/home");
+      navigate('/home');
     } catch (error) {
-      console.error("Error signing in:", error);
+      console.error('Error signing in:', error);
       if (error instanceof Error) {
-        setApiError(error.message || "Sign-in failed");
+        setApiError(error.message || 'Sign-in failed');
       } else {
-        setApiError("An unexpected error occurred");
+        setApiError('An unexpected error occurred');
       }
     }
   };
@@ -118,12 +118,12 @@ const Signin: React.FC = () => {
           <Typography variant="h5" sx={useStyles.title}>
             Sign In
           </Typography>
-          {(["email", "password"] as const).map((id) => (
+          {(['email', 'password'] as const).map((id) => (
             <TextField
               key={id}
-              label={id === "email" ? "Email" : "Password"}
+              label={id === 'email' ? 'Email' : 'Password'}
               id={id}
-              type={id === "password" ? "password" : "email"}
+              type={id === 'password' ? 'password' : 'email'}
               value={values[id]}
               onChange={handleChange(id)}
               margin="normal"
@@ -162,4 +162,4 @@ const Signin: React.FC = () => {
   );
 };
 
-export default Signin;
+export default SignInForm;

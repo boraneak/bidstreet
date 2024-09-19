@@ -1,44 +1,44 @@
-import express from "express";
-import { shopServices, authServices, userServices } from "../services/index";
-import multer from "multer";
+import express from 'express';
+import { shopServices, authServices, userServices } from '../services/index';
+import multer from 'multer';
 
-const upload = multer({ dest: "uploads/" });
+const upload = multer({ dest: 'uploads/' });
 
 const router = express.Router();
 
-router.get("/", shopServices.getAllShops);
+router.get('/', shopServices.getAllShops);
 
 router.post(
-  "/create/by/:userId",
-  upload.single("image"),
+  '/create/by/:userId',
+  upload.single('image'),
   authServices.hasAuthorization,
   userServices.isSeller,
   shopServices.createShop,
 );
 
 router.get(
-  "/list/owner/:userId",
+  '/list/owner/:userId',
   authServices.hasAuthorization,
   shopServices.getShopByOwner,
 );
 
 router.put(
-  "/update/:shopId",
-  upload.single("image"),
+  '/update/:shopId',
+  upload.single('image'),
   authServices.hasAuthorization,
   shopServices.isShopOwner,
   shopServices.updateShopById,
 );
 
 router.delete(
-  "/delete/:shopId",
+  '/delete/:shopId',
   authServices.hasAuthorization,
   shopServices.isShopOwner,
   shopServices.deleteShopById,
 );
 
-router.get("/photo/:shopId", shopServices.getShopPhoto);
+router.get('/photo/:shopId', shopServices.getShopPhoto);
 
-router.get("/list/:shopId", shopServices.getShopById);
+router.get('/list/:shopId', shopServices.getShopById);
 
 export default router;

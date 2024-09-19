@@ -1,37 +1,37 @@
-import express from "express";
+import express from 'express';
 
-import { shopServices, authServices, orderServices } from "../services/index";
+import { shopServices, authServices, orderServices } from '../services/index';
 
 const router = express.Router();
 
 router.post(
-  "/create/:userId",
+  '/create/:userId',
   authServices.hasAuthorization,
   orderServices.createOrder,
 );
 
 router.get(
-  "/shop/:shopId",
+  '/shop/:shopId',
   authServices.hasAuthorization,
   shopServices.isShopOwner,
   orderServices.getOrderByShop,
 );
 
 router.get(
-  "/user/:userId",
+  '/user/:userId',
   authServices.hasAuthorization,
   orderServices.getOrderByUser,
 );
 
 router.get(
-  "/status-values",
+  '/status-values',
   authServices.hasAuthorization,
   orderServices.getOrderStatusValues,
 );
 
 // router.put("/status/:orderId");
 router.get(
-  "/list/:orderId",
+  '/list/:orderId',
   authServices.hasAuthorization,
   orderServices.getOrderById,
 );

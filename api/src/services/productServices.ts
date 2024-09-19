@@ -1,19 +1,19 @@
-import { NextFunction, Request, Response } from "express";
-import mongoose, { Types } from "mongoose";
+import { NextFunction, Request, Response } from 'express';
+import mongoose, { Types } from 'mongoose';
 
-import fs from "fs";
-import { IProduct } from "../../interfaces/Product";
-import { IProductRequest } from "../../interfaces/requests/ProductRequest";
-import { IAuthRequest } from "../../interfaces/requests/AuthRequest";
-import { ISearchRequest } from "../../interfaces/requests/SearchRequest";
-import { Product } from "../models/productModel";
-import path from "path";
-import { isValidObjectId } from "../../utils/isValidObjectId";
-import escapeStringRegexp from "escape-string-regexp";
+import fs from 'fs';
+import { IProduct } from '../../interfaces/Product';
+import { IProductRequest } from '../../interfaces/requests/ProductRequest';
+import { IAuthRequest } from '../../interfaces/requests/AuthRequest';
+import { ISearchRequest } from '../../interfaces/requests/SearchRequest';
+import { Product } from '../models/productModel';
+import path from 'path';
+import { isValidObjectId } from '../../utils/isValidObjectId';
+import escapeStringRegexp from 'escape-string-regexp';
 
 const defaultImagePath = path.join(
   __dirname,
-  "../../public/images/defaultProductImage.jpg",
+  '../../public/images/defaultProductImage.jpg',
 );
 
 export const createProduct = async (req: Request, res: Response) => {
@@ -42,9 +42,9 @@ export const createProduct = async (req: Request, res: Response) => {
     const result = await product.save();
     return res.status(200).json(result);
   } catch (error) {
-    console.error("Error creating product:", error);
+    console.error('Error creating product:', error);
     return res.status(500).json({
-      error: "Internal Server Error",
+      error: 'Internal Server Error',
     });
   }
 };
@@ -53,19 +53,19 @@ export const getProductById = async (req: IAuthRequest, res: Response) => {
   try {
     const productId = req.params.productId;
 
-    if (!isValidObjectId(productId, res, "product")) return;
+    if (!isValidObjectId(productId, res, 'product')) return;
 
     const product = await Product.findById(productId);
 
     if (!product) {
-      return res.status(404).json({ error: "Product not found" });
+      return res.status(404).json({ error: 'Product not found' });
     }
 
     return res.json(product);
   } catch (error) {
-    console.error("Error retrieving product:", error);
+    console.error('Error retrieving product:', error);
     return res.status(500).json({
-      error: "Internal Server Error",
+      error: 'Internal Server Error',
     });
   }
 };
@@ -74,24 +74,24 @@ export const getProductPhoto = async (req: Request, res: Response) => {
   try {
     const productId = req.params.productId;
 
-    if (!isValidObjectId(productId, res, "product")) return;
+    if (!isValidObjectId(productId, res, 'product')) return;
 
     const product = await Product.findById(productId);
 
     if (!product) {
-      return res.status(404).json({ error: "Product not found" });
+      return res.status(404).json({ error: 'Product not found' });
     }
 
     if (product.image && product.image.data) {
-      res.set("Content-Type", product.image.contentType);
+      res.set('Content-Type', product.image.contentType);
       return res.send(product.image.data);
     } else {
       return res.sendFile(defaultImagePath);
     }
   } catch (error) {
-    console.error("Error retrieving product photo:", error);
+    console.error('Error retrieving product photo:', error);
     return res.status(500).json({
-      error: "Internal Server Error",
+      error: 'Internal Server Error',
     });
   }
 };
@@ -99,8 +99,8 @@ export const getProductPhoto = async (req: Request, res: Response) => {
 export const updateProductById = async (req: Request, res: Response) => {
   try {
     const { shopId, productId } = req.params;
-    if (!isValidObjectId(shopId, res, "shop")) return;
-    if (!isValidObjectId(productId, res, "product")) return;
+    if (!isValidObjectId(shopId, res, 'shop')) return;
+    if (!isValidObjectId(productId, res, 'product')) return;
 
     const updatedData: Partial<IProduct> = { ...req.body };
 
@@ -118,7 +118,7 @@ export const updateProductById = async (req: Request, res: Response) => {
     });
 
     if (!existingProduct) {
-      return res.status(404).json({ error: "Product not found" });
+      return res.status(404).json({ error: 'Product not found' });
     }
 
     const product = await Product.findOneAndUpdate(
@@ -128,14 +128,14 @@ export const updateProductById = async (req: Request, res: Response) => {
     );
 
     if (!product) {
-      return res.status(404).json({ error: "Product not found" });
+      return res.status(404).json({ error: 'Product not found' });
     }
 
     return res.status(200).json(product);
   } catch (error) {
-    console.error("Error updating product:", error);
+    console.error('Error updating product:', error);
     return res.status(500).json({
-      error: "Internal Server Error",
+      error: 'Internal Server Error',
     });
   }
 };
@@ -143,24 +143,24 @@ export const updateProductById = async (req: Request, res: Response) => {
 export const deleteProductById = async (req: Request, res: Response) => {
   try {
     const { shopId, productId } = req.params;
-    if (!isValidObjectId(shopId, res, "shop")) return;
-    if (!isValidObjectId(productId, res, "product")) return;
+    if (!isValidObjectId(shopId, res, 'shop')) return;
+    if (!isValidObjectId(productId, res, 'product')) return;
 
     const product = await Product.findOne({ _id: productId, shop: shopId });
 
     if (!product) {
       return res
         .status(404)
-        .json({ error: "Product not found in the specified shop" });
+        .json({ error: 'Product not found in the specified shop' });
     }
 
     await Product.deleteOne({ _id: productId, shop: shopId });
 
-    return res.status(200).json({ message: "Product deleted successfully" });
+    return res.status(200).json({ message: 'Product deleted successfully' });
   } catch (error) {
-    console.error("Error deleting product:", error);
+    console.error('Error deleting product:', error);
     return res.status(500).json({
-      error: "Internal Server Error",
+      error: 'Internal Server Error',
     });
   }
 };
@@ -170,15 +170,15 @@ export const getAllProducts = async (_req: Request, res: Response) => {
     const products = await Product.find();
     if (products.length === 0) {
       return res.status(404).json({
-        error: "No products found",
+        error: 'No products found',
       });
     }
 
     return res.json(products);
   } catch (error) {
-    console.error("Error fetching products:", error);
+    console.error('Error fetching products:', error);
     return res.status(500).json({
-      error: "Internal Server Error",
+      error: 'Internal Server Error',
     });
   }
 };
@@ -195,7 +195,7 @@ export const getFilteredProducts = async (
 
     if (req.query.productName) {
       const sanitizedName = escapeStringRegexp(req.query.productName);
-      query.name = new RegExp(sanitizedName, "i");
+      query.name = new RegExp(sanitizedName, 'i');
     }
 
     if (req.query.category) {
@@ -206,14 +206,14 @@ export const getFilteredProducts = async (
       return res.json([]);
     } else {
       const products = await Product.find(query)
-        .populate("shop", "_id name")
+        .populate('shop', '_id name')
         .exec();
       return res.json(products);
     }
   } catch (error) {
-    console.error("Error fetching filtered products:", error);
+    console.error('Error fetching filtered products:', error);
     return res.status(400).json({
-      error: "Internal Server Error",
+      error: 'Internal Server Error',
     });
   }
 };
@@ -221,18 +221,18 @@ export const getFilteredProducts = async (
 export const getProductByShop = async (req: IAuthRequest, res: Response) => {
   try {
     const shopId = req.params.shopId;
-    if (!isValidObjectId(shopId, res, "shop")) return;
+    if (!isValidObjectId(shopId, res, 'shop')) return;
 
     const products = await Product.find({ shop: shopId })
-      .populate("shop", "_id name")
-      .select("-image")
+      .populate('shop', '_id name')
+      .select('-image')
       .exec();
 
     return res.json(products);
   } catch (error) {
-    console.error("Error fetching products by shop:", error);
+    console.error('Error fetching products by shop:', error);
     return res.status(400).json({
-      error: "Internal Server Error",
+      error: 'Internal Server Error',
     });
   }
 };
@@ -242,14 +242,14 @@ export const getLatestProducts = async (_req: Request, res: Response) => {
     const products = await Product.find({})
       .sort({ created: -1 })
       .limit(5)
-      .populate("shop", "_id name")
+      .populate('shop', '_id name')
       .exec();
 
     return res.json(products);
   } catch (error) {
-    console.error("Error fetching latest products:", error);
+    console.error('Error fetching latest products:', error);
     return res.status(500).json({
-      error: "Internal Server Error",
+      error: 'Internal Server Error',
     });
   }
 };
@@ -260,11 +260,11 @@ export const getRelatedProducts = async (
 ) => {
   try {
     const productId = req.params.productId;
-    if (!isValidObjectId(productId, res, "product")) return;
+    if (!isValidObjectId(productId, res, 'product')) return;
     const currentProduct: IProduct | null =
       await Product.findById(productId).exec();
     if (!currentProduct) {
-      throw new Error("product not found");
+      throw new Error('product not found');
     }
     const currentShopId: Types.ObjectId | undefined = currentProduct.shop;
     const currentCategory: string | undefined = currentProduct.category;
@@ -284,26 +284,26 @@ export const getRelatedProducts = async (
 
     const relatedProducts = await Product.find(query)
       .limit(5)
-      .populate("shop", "_id name")
+      .populate('shop', '_id name')
       .exec();
 
     return res.json(relatedProducts);
   } catch (error) {
-    console.error("Error fetching related products:", error);
+    console.error('Error fetching related products:', error);
     return res.status(500).json({
-      error: "Internal Server Error",
+      error: 'Internal Server Error',
     });
   }
 };
 
 export const getProductCategories = async (_req: Request, res: Response) => {
   try {
-    const productCategories = await Product.distinct("category", {});
+    const productCategories = await Product.distinct('category', {});
     return res.json(productCategories);
   } catch (error) {
-    console.error("Error fetching product categories:", error);
+    console.error('Error fetching product categories:', error);
     return res.status(500).json({
-      error: "Internal Server Error",
+      error: 'Internal Server Error',
     });
   }
 };
@@ -315,11 +315,11 @@ export const increaseProductQuantity = async (
 ) => {
   try {
     const productId = req.params.productId;
-    if (!isValidObjectId(productId, res, "product")) return;
+    if (!isValidObjectId(productId, res, 'product')) return;
 
     const quantity = req.body.quantity;
-    if (quantity == null || typeof quantity !== "number" || quantity <= 0) {
-      return res.status(400).json({ error: "Invalid quantity value" });
+    if (quantity == null || typeof quantity !== 'number' || quantity <= 0) {
+      return res.status(400).json({ error: 'Invalid quantity value' });
     }
 
     const updatedProduct = await Product.findByIdAndUpdate(
@@ -329,15 +329,15 @@ export const increaseProductQuantity = async (
     ).exec();
 
     if (!updatedProduct) {
-      return res.status(404).json({ error: "Product not found" });
+      return res.status(404).json({ error: 'Product not found' });
     }
 
     next();
   } catch (error) {
-    console.error("Error increasing product quantity:", error);
-    return res.status(500).json({ error: "Internal Server Error" });
+    console.error('Error increasing product quantity:', error);
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 
   // If next() is not called due to an error
-  return res.status(500).json({ error: "Internal Server Error" });
+  return res.status(500).json({ error: 'Internal Server Error' });
 };

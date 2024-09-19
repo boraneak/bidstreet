@@ -1,36 +1,36 @@
-import React from "react";
+import React from 'react';
 import {
   Typography,
   ImageList,
   ImageListItem,
   ImageListItemBar,
-} from "@mui/material";
-import { Link } from "react-router-dom";
-import { Product } from "../../types/Product";
+} from '@mui/material';
+import { Link } from 'react-router-dom';
+import { Product } from '../../types/Product';
 
 interface ProductsProps {
   products: Product[];
   searched: boolean;
 }
 
-const Products: React.FC<ProductsProps> = (props) => {
+const ProductsGrid: React.FC<ProductsProps> = (props) => {
   return (
     <div
       style={{
-        display: "flex",
-        flexWrap: "wrap",
-        justifyContent: "space-around",
-        overflow: "hidden",
-        background: "lightgray",
-        textAlign: "left",
-        padding: "0 8px",
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'space-around',
+        overflow: 'hidden',
+        background: 'lightgray',
+        textAlign: 'left',
+        padding: '0 8px',
       }}
     >
       {props.products && props.products.length > 0 ? (
         <div
           style={{
-            minWidth: "100%",
-            paddingBottom: "14px",
+            minWidth: '100%',
+            paddingBottom: '14px',
           }}
         >
           <ImageList cols={3} rowHeight={255}>
@@ -38,7 +38,7 @@ const Products: React.FC<ProductsProps> = (props) => {
               props.products.map((product, i) => (
                 <ImageListItem key={i}>
                   <img
-                    style={{ height: "100%" }}
+                    style={{ height: '100%' }}
                     src={`${process.env.REACT_APP_API_BASE_URL}/products/photo/${product._id}`}
                     alt={product.name}
                     loading="lazy"
@@ -48,17 +48,17 @@ const Products: React.FC<ProductsProps> = (props) => {
                       <Link
                         to={`${process.env.REACT_APP_API_BASE_URL}/products/photo/${product._id}`}
                         style={{
-                          fontSize: "1.1em",
-                          marginBottom: "5px",
-                          color: "rgb(189, 222, 219)",
-                          display: "block",
+                          fontSize: '1.1em',
+                          marginBottom: '5px',
+                          color: 'rgb(189, 222, 219)',
+                          display: 'block',
                         }}
                       >
                         {product.name}
                       </Link>
                     }
                     subtitle={
-                      <span style={{ fontSize: "1.1em" }}>
+                      <span style={{ fontSize: '1.1em' }}>
                         $ {product.price}
                       </span>
                     }
@@ -69,7 +69,7 @@ const Products: React.FC<ProductsProps> = (props) => {
         </div>
       ) : (
         props.searched && (
-          <Typography variant="h5" align="center" style={{ color: "red" }}>
+          <Typography variant="h5" align="center" style={{ color: 'red' }}>
             No products found!
           </Typography>
         )
@@ -78,4 +78,4 @@ const Products: React.FC<ProductsProps> = (props) => {
   );
 };
 
-export default Products;
+export default ProductsGrid;

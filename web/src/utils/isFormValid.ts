@@ -1,1 +1,1 @@
-export const isFormValid = !Object.values(Error).some((error) => error !== "");
+export const isFormValid = !Object.values(Error).some((error) => error !== '');

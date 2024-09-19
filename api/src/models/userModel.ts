@@ -1,24 +1,24 @@
-import mongoose, { Schema } from "mongoose";
-import crypto from "crypto";
-import { IUser } from "../../interfaces/User";
+import mongoose, { Schema } from 'mongoose';
+import crypto from 'crypto';
+import { IUser } from '../../interfaces/User';
 
 const userSchema: Schema<IUser> = new Schema(
   {
     name: {
       type: String,
       trim: true,
-      required: [true, "Name is required"],
+      required: [true, 'Name is required'],
     },
     email: {
       type: String,
       trim: true,
       unique: true,
-      match: [/.+@.+\..+/, "Please fill a valid email address"],
-      required: [true, "Email is required"],
+      match: [/.+@.+\..+/, 'Please fill a valid email address'],
+      required: [true, 'Email is required'],
     },
     hashed_password: {
       type: String,
-      required: [true, "Password is required"],
+      required: [true, 'Password is required'],
     },
     salt: {
       type: String,
@@ -32,7 +32,7 @@ const userSchema: Schema<IUser> = new Schema(
 );
 
 userSchema
-  .virtual("password")
+  .virtual('password')
   .set(function (this: IUser, password: string) {
     this._password = password;
     this.salt = this.genSalt();
@@ -42,12 +42,12 @@ userSchema
     return this._password;
   });
 
-userSchema.path("hashed_password").validate(function (this: IUser) {
+userSchema.path('hashed_password').validate(function (this: IUser) {
   if (this._password && this._password.length < 6) {
-    this.invalidate("password", "Password must be at least 6 characters.");
+    this.invalidate('password', 'Password must be at least 6 characters.');
   }
   if (this.isNew && !this._password) {
-    this.invalidate("password", "Password is required");
+    this.invalidate('password', 'Password is required');
   }
 });
 
@@ -56,19 +56,19 @@ userSchema.methods = {
     return this.encryptPassword(plainText) === this.hashed_password;
   },
   encryptPassword: function (this: IUser, password: string): string {
-    if (!password) return "";
+    if (!password) return '';
     try {
       return crypto
-        .createHmac("sha1", this.salt)
+        .createHmac('sha1', this.salt)
         .update(password)
-        .digest("hex");
+        .digest('hex');
     } catch {
-      return "";
+      return '';
     }
   },
   genSalt: function (this: IUser): string {
-    return Math.round(new Date().valueOf() * Math.random()) + "";
+    return Math.round(new Date().valueOf() * Math.random()) + '';
   },
 };
 
-export default mongoose.model<IUser>("User", userSchema);
+export default mongoose.model<IUser>('User', userSchema);

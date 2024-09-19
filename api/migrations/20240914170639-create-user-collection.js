@@ -3,36 +3,36 @@ module.exports = {
   async up(db, client) {
     // Check if the 'users' collection already exists
     const collectionExists = await db
-      .listCollections({ name: "users" })
+      .listCollections({ name: 'users' })
       .toArray();
     if (collectionExists.length === 0) {
       // Create the 'users' collection with schema validation
-      await db.createCollection("users", {
+      await db.createCollection('users', {
         validator: {
           $jsonSchema: {
-            bsonType: "object",
-            required: ["name", "email", "hashed_password"],
+            bsonType: 'object',
+            required: ['name', 'email', 'hashed_password'],
             properties: {
               name: {
-                bsonType: "string",
-                description: "Name is required and must be a string",
+                bsonType: 'string',
+                description: 'Name is required and must be a string',
               },
               email: {
-                bsonType: "string",
+                bsonType: 'string',
                 description:
-                  "Email is required and must be a valid email address",
+                  'Email is required and must be a valid email address',
               },
               hashed_password: {
-                bsonType: "string",
-                description: "Hashed password is required",
+                bsonType: 'string',
+                description: 'Hashed password is required',
               },
               salt: {
-                bsonType: "string",
-                description: "Salt for password hashing",
+                bsonType: 'string',
+                description: 'Salt for password hashing',
               },
               seller: {
-                bsonType: "bool",
-                description: "Boolean indicating if the user is a seller",
+                bsonType: 'bool',
+                description: 'Boolean indicating if the user is a seller',
               },
             },
           },
@@ -43,6 +43,6 @@ module.exports = {
 
   async down(db, client) {
     // Drop the 'users' collection
-    await db.collection("users").drop();
+    await db.collection('users').drop();
   },
 };

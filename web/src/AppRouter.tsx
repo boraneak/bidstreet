@@ -1,26 +1,25 @@
-import React from "react";
-import { Route, Routes } from "react-router-dom";
-import Signin from "./components/auth/Signin";
-import Home from "./pages/Home";
-import Menu from "./pages/Menu";
-import Signup from "./components/auth/Signup";
-import Shops from "./components/shop/Shops";
-import Auctions from "./components/auction/Auctions";
-import MyAuctions from "./components/auction/MyAuction";
-import MyShop from "./components/shop/MyShop";
-
+import React from 'react';
+import { Route, Routes } from 'react-router-dom';
+import HomePage from './pages/HomePage';
+import MenuPage from './pages/MenuPage';
+import SignInForm from './components/auth/SignInForm';
+import SignUpForm from './components/auth/SignUpForm';
+import ShopGrid from './components/shop/ShopGrid';
+import AuctionGrid from './components/auction/AuctionGrid';
+import UserShop from './components/shop/UserShop';
+import UserAuction from './components/auction/UserAuction';
 export const Router: React.FC = () => {
   return (
     <div>
-      <Menu />
+      <MenuPage />
       <Routes>
-        <Route path="/home" element={<Home />} />
-        <Route path="/signin" element={<Signin />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/shops" element={<Shops />} />
-        <Route path="/auctions" element={<Auctions />} />
-        <Route path="/seller/shop" element={<MyShop />} />
-        <Route path="//seller/auctions" element={<MyAuctions />} />
+        <Route path="/home" element={<HomePage />} />
+        <Route path="/signin" element={<SignInForm />} />
+        <Route path="/signup" element={<SignUpForm />} />
+        <Route path="/shops" element={<ShopGrid />} />
+        <Route path="/auctions" element={<AuctionGrid />} />
+        <Route path="/seller/shop" element={<UserShop />} />
+        <Route path="/seller/auctions" element={<UserAuction />} />
       </Routes>
     </div>
   );

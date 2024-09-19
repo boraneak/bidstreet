@@ -1,13 +1,13 @@
-import React from "react";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import Button from "@mui/material/Button";
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import { auth } from "../utils/auth";
+import React from 'react';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import Button from '@mui/material/Button';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { auth } from '../utils/auth';
 
 const isActive = (location: any, path: string) => {
-  if (location.pathname === path) return { color: "#00ff00" };
-  return { color: "#ffffff", fontWeight: "bold", fontSize: "16px" };
+  if (location.pathname === path) return { color: '#00ff00' };
+  return { color: '#ffffff', fontWeight: 'bold', fontSize: '16px' };
 };
 
 const Menu: React.FC = () => {
@@ -21,7 +21,7 @@ const Menu: React.FC = () => {
         <div>
           <Link to="/shops">
             <Button
-              style={{ ...isActive(location, "/shops"), textTransform: "none" }}
+              style={{ ...isActive(location, '/shops'), textTransform: 'none' }}
             >
               Shops
             </Button>
@@ -29,23 +29,23 @@ const Menu: React.FC = () => {
           <Link to="/auctions">
             <Button
               style={{
-                ...isActive(location, "/auctions"),
-                textTransform: "none",
+                ...isActive(location, '/auctions'),
+                textTransform: 'none',
               }}
             >
               Auctions
             </Button>
           </Link>
         </div>
-        <div style={{ position: "absolute", right: "10px" }}>
-          <span style={{ float: "right" }}>
+        <div style={{ position: 'absolute', right: '10px' }}>
+          <span style={{ float: 'right' }}>
             {!user && (
               <span>
                 <Link to="/signup">
                   <Button
                     style={{
-                      ...isActive(location, "/signup"),
-                      textTransform: "none",
+                      ...isActive(location, '/signup'),
+                      textTransform: 'none',
                     }}
                   >
                     Sign up
@@ -54,8 +54,8 @@ const Menu: React.FC = () => {
                 <Link to="/signin">
                   <Button
                     style={{
-                      ...isActive(location, "/signin"),
-                      textTransform: "none",
+                      ...isActive(location, '/signin'),
+                      textTransform: 'none',
                     }}
                   >
                     Login
@@ -70,8 +70,8 @@ const Menu: React.FC = () => {
                     <Link to="/seller/shop">
                       <Button
                         style={{
-                          ...isActive(location, "/seller/shop"),
-                          textTransform: "none",
+                          ...isActive(location, '/seller/shop'),
+                          textTransform: 'none',
                         }}
                       >
                         My Shop
@@ -80,8 +80,8 @@ const Menu: React.FC = () => {
                     <Link to="/seller/auctions">
                       <Button
                         style={{
-                          ...isActive(location, "/seller/auctions"),
-                          textTransform: "none",
+                          ...isActive(location, '/seller/auctions'),
+                          textTransform: 'none',
                         }}
                       >
                         My Auctions
@@ -91,13 +91,13 @@ const Menu: React.FC = () => {
                 )}
                 <Button
                   style={{
-                    textTransform: "none",
-                    fontWeight: "bold",
-                    fontSize: "16px",
+                    textTransform: 'none',
+                    fontWeight: 'bold',
+                    fontSize: '16px',
                   }}
                   color="inherit"
                   onClick={() => {
-                    auth.clearJwt(() => navigate("/"));
+                    auth.clearJwt(() => navigate('/'));
                   }}
                 >
                   Logout
