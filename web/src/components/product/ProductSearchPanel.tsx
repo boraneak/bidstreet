@@ -13,11 +13,8 @@ import {
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
-import Products from './ProductsGrid';
-
-interface SearchProps {
-  productCategories: string[];
-}
+import ProductGridDisplay from './ProductGridDisplay';
+import { ProductSearchPanelProps } from '../../types/props/ProductSearchPanelProps';
 
 const useStyles = {
   card: {
@@ -42,8 +39,8 @@ const useStyles = {
   },
 };
 
-const ProductSearch: React.FC<SearchProps> = (props) => {
-  const [values, setValues] = useState({
+const ProductSearchPanel: React.FC<ProductSearchPanelProps> = (props) => {
+  const [searchState, setSearchState] = useState({
     category: '',
     productName: '',
     results: [] as Product[],
@@ -53,11 +50,11 @@ const ProductSearch: React.FC<SearchProps> = (props) => {
   const [abortController, setAbortController] =
     useState<AbortController | null>(null);
 
-  const handleChange =
+  const handleInputChange =
     (name: string) => (event: ChangeEvent<HTMLInputElement>) => {
       event.preventDefault();
-      setValues({
-        ...values,
+      setSearchState({
+        ...searchState,
         [name]: event.target.value,
       });
     };
@@ -73,12 +70,12 @@ const ProductSearch: React.FC<SearchProps> = (props) => {
     try {
       const data = await searchProduct(
         {
-          productName: values.productName || '',
-          category: values.category,
+          productName: searchState.productName || '',
+          category: searchState.category,
         },
         newAbortController.signal,
       );
-      setValues({ ...values, results: data, searched: true });
+      setSearchState({ ...searchState, results: data, searched: true });
     } catch (error) {
       console.error('error searching products', error);
     } finally {
@@ -87,7 +84,7 @@ const ProductSearch: React.FC<SearchProps> = (props) => {
   };
 
   const clearFilter = () => {
-    setValues({
+    setSearchState({
       category: '',
       productName: '',
       results: [],
@@ -95,10 +92,10 @@ const ProductSearch: React.FC<SearchProps> = (props) => {
     });
   };
 
-  const enterKey = (event: KeyboardEvent) => {
+  const handleEnterKeyPress = (event: KeyboardEvent) => {
     if (event.key === 'Enter') {
       event.preventDefault();
-      if (values.productName) {
+      if (searchState.productName) {
         searchProducts();
       }
     }
@@ -112,8 +109,8 @@ const ProductSearch: React.FC<SearchProps> = (props) => {
             id="category"
             select
             label="Select category"
-            value={values.category}
-            onChange={handleChange('category')}
+            value={searchState.category}
+            onChange={handleInputChange('category')}
             fullWidth
             margin="normal"
           >
@@ -129,9 +126,9 @@ const ProductSearch: React.FC<SearchProps> = (props) => {
           <TextField
             id="product"
             label="Enter product name"
-            value={values.productName}
-            onKeyDown={enterKey}
-            onChange={handleChange('productName')}
+            value={searchState.productName}
+            onKeyDown={handleEnterKeyPress}
+            onChange={handleInputChange('productName')}
             fullWidth
             margin="normal"
           />
@@ -140,7 +137,7 @@ const ProductSearch: React.FC<SearchProps> = (props) => {
           <Button
             color="primary"
             onClick={searchProducts}
-            disabled={!values.category && !values.productName}
+            disabled={!searchState.category && !searchState.productName}
             sx={useStyles.button}
           >
             <SearchIcon sx={useStyles.buttonIcon} />
@@ -150,7 +147,7 @@ const ProductSearch: React.FC<SearchProps> = (props) => {
           <Button
             color="secondary"
             onClick={clearFilter}
-            disabled={!values.category && !values.productName}
+            disabled={!searchState.category && !searchState.productName}
             sx={useStyles.button}
           >
             <ClearIcon sx={useStyles.buttonIcon} />
@@ -163,10 +160,13 @@ const ProductSearch: React.FC<SearchProps> = (props) => {
           <CircularProgress />
         </Box>
       ) : (
-        <Products products={values.results} searched={values.searched} />
+        <ProductGridDisplay
+          products={searchState.results}
+          isSearched={searchState.searched}
+        />
       )}
     </Card>
   );
 };
 
-export default ProductSearch;
+export default ProductSearchPanel;

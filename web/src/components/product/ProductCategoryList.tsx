@@ -8,12 +8,9 @@ import {
   CardContent,
   Divider,
 } from '@mui/material';
-import Products from './ProductsGrid';
+import ProductGridDisplay from './ProductGridDisplay';
 import { searchProduct } from '../../API/productAPI';
-
-interface CategoryProps {
-  categories: string[];
-}
+import { ProductCategoryListProps } from '../../types/props/ProductCategoryListProps';
 
 const useStyles = {
   card: {
@@ -38,31 +35,31 @@ const useStyles = {
   },
 };
 
-const ProductCategory: React.FC<CategoryProps> = (props) => {
+const ProductCategoryList: React.FC<ProductCategoryListProps> = (props) => {
   const [products, setProducts] = useState<Product[]>([]);
-  const [selected, setSelected] = useState<string>(
+  const [selectedCategory, setSelectedCategory] = useState<string>(
     props.categories.length > 0 ? props.categories[0] : '',
   );
 
   useEffect(() => {
-    const fetchProduct = async () => {
+    const fetchInitialProducts = async () => {
       try {
-        const data = await searchProduct({ category: selected });
+        const data = await searchProduct({ category: selectedCategory });
         setProducts(data);
       } catch (error) {
-        console.error('Error fetching product by selected category:', error);
+        console.error('Error fetching initial products:', error);
       }
     };
-    fetchProduct();
-  }, [selected]);
+    fetchInitialProducts();
+  }, [selectedCategory]);
 
-  const listbyCategory = (category: string) => async () => {
-    setSelected(category);
+  const fetchProductsByCategory = (category: string) => async () => {
+    setSelectedCategory(category);
     try {
       const data = await searchProduct({ category });
       setProducts(data);
     } catch (error) {
-      console.error(error);
+      console.error('Error fetching products by category:', error);
     }
   };
 
@@ -81,8 +78,10 @@ const ProductCategory: React.FC<CategoryProps> = (props) => {
           {props.categories &&
             props.categories.map((category, i) => (
               <Grid item xs={12} sm={6} md={4} key={i}>
-                <Card sx={useStyles.categoryCard(selected === category)}>
-                  <CardActionArea onClick={listbyCategory(category)}>
+                <Card
+                  sx={useStyles.categoryCard(selectedCategory === category)}
+                >
+                  <CardActionArea onClick={fetchProductsByCategory(category)}>
                     <CardContent>
                       <Typography variant="h6" sx={useStyles.categoryText}>
                         {category}
@@ -94,10 +93,10 @@ const ProductCategory: React.FC<CategoryProps> = (props) => {
             ))}
         </Grid>
         <Divider sx={useStyles.divider} />
-        <Products products={products} searched={false} />
+        <ProductGridDisplay products={products} isSearched={false} />
       </Card>
     </div>
   );
 };
 
-export default ProductCategory;
+export default ProductCategoryList;

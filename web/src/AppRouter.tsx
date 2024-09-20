@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import HomePage from './pages/HomePage';
-import MenuPage from './pages/MenuPage';
+import NavigationBar from './components/layout/NavigationBar';
 import SignInForm from './components/auth/SignInForm';
 import SignUpForm from './components/auth/SignUpForm';
 import ShopGrid from './components/shop/ShopGrid';
@@ -11,7 +11,7 @@ import UserAuction from './components/auction/UserAuction';
 export const Router: React.FC = () => {
   return (
     <div>
-      <MenuPage />
+      <NavigationBar />
       <Routes>
         <Route path="/home" element={<HomePage />} />
         <Route path="/signin" element={<SignInForm />} />

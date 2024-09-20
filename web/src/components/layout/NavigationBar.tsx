@@ -3,17 +3,17 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { auth } from '../utils/auth';
+import { auth } from '../../utils/auth';
 
-const isActive = (location: any, path: string) => {
+const getActiveStyleForPath = (location: any, path: string) => {
   if (location.pathname === path) return { color: '#00ff00' };
   return { color: '#ffffff', fontWeight: 'bold', fontSize: '16px' };
 };
 
-const Menu: React.FC = () => {
+const NavigationBar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const user = auth.isAuthenticated();
+  const authenticatedUser = auth.isAuthenticated();
 
   return (
     <AppBar position="fixed">
@@ -21,7 +21,10 @@ const Menu: React.FC = () => {
         <div>
           <Link to="/shops">
             <Button
-              style={{ ...isActive(location, '/shops'), textTransform: 'none' }}
+              style={{
+                ...getActiveStyleForPath(location, '/shops'),
+                textTransform: 'none',
+              }}
             >
               Shops
             </Button>
@@ -29,7 +32,7 @@ const Menu: React.FC = () => {
           <Link to="/auctions">
             <Button
               style={{
-                ...isActive(location, '/auctions'),
+                ...getActiveStyleForPath(location, '/auctions'),
                 textTransform: 'none',
               }}
             >
@@ -39,12 +42,12 @@ const Menu: React.FC = () => {
         </div>
         <div style={{ position: 'absolute', right: '10px' }}>
           <span style={{ float: 'right' }}>
-            {!user && (
+            {!authenticatedUser && (
               <span>
                 <Link to="/signup">
                   <Button
                     style={{
-                      ...isActive(location, '/signup'),
+                      ...getActiveStyleForPath(location, '/signup'),
                       textTransform: 'none',
                     }}
                   >
@@ -54,7 +57,7 @@ const Menu: React.FC = () => {
                 <Link to="/signin">
                   <Button
                     style={{
-                      ...isActive(location, '/signin'),
+                      ...getActiveStyleForPath(location, '/signin'),
                       textTransform: 'none',
                     }}
                   >
@@ -63,14 +66,14 @@ const Menu: React.FC = () => {
                 </Link>
               </span>
             )}
-            {user && (
+            {authenticatedUser && (
               <span>
-                {user.seller && (
+                {authenticatedUser.seller && (
                   <>
                     <Link to="/seller/shop">
                       <Button
                         style={{
-                          ...isActive(location, '/seller/shop'),
+                          ...getActiveStyleForPath(location, '/seller/shop'),
                           textTransform: 'none',
                         }}
                       >
@@ -80,7 +83,10 @@ const Menu: React.FC = () => {
                     <Link to="/seller/auctions">
                       <Button
                         style={{
-                          ...isActive(location, '/seller/auctions'),
+                          ...getActiveStyleForPath(
+                            location,
+                            '/seller/auctions',
+                          ),
                           textTransform: 'none',
                         }}
                       >
@@ -111,4 +117,4 @@ const Menu: React.FC = () => {
   );
 };
 
-export default Menu;
+export default NavigationBar;

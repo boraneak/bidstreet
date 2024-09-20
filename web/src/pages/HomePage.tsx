@@ -1,19 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { Grid } from '@mui/material';
 import { listProductCategories } from '../API/productAPI';
-import Categories from '../components/product/ProductCategory';
-import Search from '../components/product/ProductSearch';
+import ProductCategoryList from '../components/product/ProductCategoryList';
+import ProductSearchPanel from '../components/product/ProductSearchPanel';
 import { ProductCategories } from '../types/ProductCategories';
 
 const HomePage: React.FC = () => {
-  const [categories, setCategories] = useState<ProductCategories>([]);
+  const [productCategories, setProductCategories] = useState<ProductCategories>(
+    [],
+  );
+
   useEffect(() => {
     const getProductCategories = async () => {
       try {
         const data = await listProductCategories();
-        setCategories(data);
+        setProductCategories(data);
       } catch (error) {
-        console.error('error fetching categories:', error);
+        console.error('Error fetching product categories:', error);
       }
     };
     getProductCategories();
@@ -23,11 +26,12 @@ const HomePage: React.FC = () => {
     <div style={{ flexGrow: 1, marginTop: 70 }}>
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <Search productCategories={categories} />
-          <Categories categories={categories} />
+          <ProductSearchPanel productCategories={productCategories} />
+          <ProductCategoryList categories={productCategories} />
         </Grid>
       </Grid>
     </div>
   );
 };
+
 export default HomePage;
