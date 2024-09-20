@@ -4,30 +4,24 @@ import { Request, Response, NextFunction } from 'express';
 import { IAuthRequest } from '../../interfaces/requests/AuthRequest';
 import { IDecodedToken } from '../../interfaces/DecodedToken';
 import { config } from '../../config/config';
+
 const jwtSecret = config.jwtSecret!;
 const tokenDuration = config.tokenDuration;
 
 export const signUp = async (req: Request, res: Response) => {
   try {
+    const existingUser = await User.findOne({ email: req.body.email });
+    if (existingUser) {
+      return res.status(400).json({
+        error: 'Email already exists',
+      });
+    }
+
     const user = new User(req.body);
     await user.save();
 
-    const token = jwt.sign(
-      {
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        seller: user.seller,
-      },
-      jwtSecret,
-      { expiresIn: tokenDuration },
-    );
-
-    res.cookie('authCookie', token, { httpOnly: true });
-
     return res.status(201).json({
       message: 'Successfully signed up!',
-      token,
       user: {
         _id: user._id,
         name: user.name,
@@ -70,7 +64,11 @@ export const signIn = async (req: Request, res: Response) => {
       { expiresIn: tokenDuration },
     );
 
-    res.cookie('authCookie', token, { httpOnly: true });
+    // Add secure flag for cookies in production
+    res.cookie('authCookie', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+    });
 
     return res.status(200).json({
       message: 'Successfully signed in!',
