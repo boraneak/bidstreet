@@ -6,7 +6,7 @@ import specs from '../swagger';
 import { connectToDatabase } from '../database';
 import router from './routes/index';
 import cookieParser from 'cookie-parser';
-import { getCurrentDate } from '../utils/date';
+import { getCurrentDate } from '../utils/getCurrentDate';
 import { rateLimit } from 'express-rate-limit';
 import { config } from 'config/config';
 const app = express();
