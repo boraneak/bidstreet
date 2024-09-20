@@ -7,7 +7,7 @@ type EnvironmentConfig = {
 const config: EnvironmentConfig = {
   development: {
     windowMs: 1 * 60 * 1000, // 1 minute
-    max: 1000, // 100 requests per minute
+    max: 100, // 100 requests per minute
   },
   production: {
     windowMs: 1 * 60 * 1000, // 1 minute
