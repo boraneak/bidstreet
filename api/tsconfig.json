@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "target": "es2017",
+    "types": ["jest"],
     "module": "commonjs",
     "lib": ["dom", "es6", "es2017", "esnext.asynciterable"],
     "skipLibCheck": true,
@@ -29,5 +30,5 @@
     }
   },
   "exclude": ["node_modules"],
-  "include": ["./src/**/*.ts", "./config/**/*.ts"]
+  "include": ["./src/**/*.ts", "./config/**/*.ts", "**/*.ts", "**/*.test.ts"]
 }

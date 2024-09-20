@@ -64,6 +64,14 @@ In the project directory, you can run the following scripts:
     ```
     npm run build
     ```
+4.  Test
+    ```
+    yarn test
+    ```
+    or if you use npm:
+    ```
+    npm run test
+    ```
 
 ### Database Migrations
 
