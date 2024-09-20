@@ -3,8 +3,9 @@ import jwt, { TokenExpiredError, JsonWebTokenError } from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
 import { IAuthRequest } from '../../interfaces/requests/AuthRequest';
 import { IDecodedToken } from '../../interfaces/DecodedToken';
-const jwtSecret = process.env.JWT_SECRET!;
-const tokenDuration = process.env.TOKEN_DURATION;
+import { config } from '../../config/config';
+const jwtSecret = config.jwtSecret!;
+const tokenDuration = config.tokenDuration;
 
 export const signUp = async (req: Request, res: Response) => {
   try {
