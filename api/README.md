@@ -23,13 +23,9 @@ Bidstreet API built with TypeScript, Node.js, Express and MongoDB. The project u
    ```
    npm install
    ```
-2. Create a .env.dev file in the root directory of the project and add the following environment variables:
+2. Create a .env.dev
    ```
-   PORT=your_development_server_port
-   MONGODB_URI="your_development_mongodb_connection_string"
-   JWT_SECRET="your_development_super_secret_key"
-   TOKEN_DURATION=your_jwt_token_duration
-   REACT_APP_PORT=3000
+   cp .env.dev.example .env.dev
    ```
 
 ### Available Scripts
@@ -106,3 +102,13 @@ or if you use yarn:
 ```
 yarn migrate:status
 ```
+
+### API Documentation
+
+The API documentation is available and accessible via Swagger at the following route after starting the server:
+
+```
+http://localhost:<your_server_port>/api-docs
+```
+
+This documentation provides details on all the available API endpoints, request/response formats, and more. Ensure the server is running to access the interactive docs.

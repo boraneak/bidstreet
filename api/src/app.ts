@@ -2,13 +2,13 @@ import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import swaggerUi from 'swagger-ui-express';
-import specs from '../swagger';
 import { connectToDatabase } from '../database';
 import router from './routes/index';
 import cookieParser from 'cookie-parser';
 import { getCurrentDate } from '../utils/getCurrentDate';
 import { rateLimit } from 'express-rate-limit';
 import { config } from 'config/config';
+import { specs } from '../openApi';
 const app = express();
 const port = config.port;
 
@@ -46,6 +46,7 @@ app.get('/', (_req, res) => {
 
 app.listen(port, async () => {
   console.log('Current NODE_ENV:', config.nodeEnv);
+  // console.log(JSON.stringify(specs, null, 2));
   await connectToDatabase();
   console.log(`Express is listening at http://localhost:${port}`);
 });

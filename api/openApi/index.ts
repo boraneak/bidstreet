@@ -1,7 +1,7 @@
 import swaggerJsdoc from 'swagger-jsdoc';
 
 const options: swaggerJsdoc.Options = {
-  swaggerDefinition: {
+  definition: {
     openapi: '3.0.0',
     info: {
       title: 'Bidstreet API Documentation',
@@ -19,9 +19,7 @@ const options: swaggerJsdoc.Options = {
     },
     security: [{ bearerAuth: [] }],
   },
-  apis: ['src/routes/*.ts'],
+  apis: ['/src/routes/*.ts', './openApi/*.ts'],
 };
 
-const specs = swaggerJsdoc(options);
-
-export default specs;
+export const specs = swaggerJsdoc(options);
