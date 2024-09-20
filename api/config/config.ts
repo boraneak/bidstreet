@@ -18,4 +18,5 @@ export const config = {
   tokenDuration: process.env.TOKEN_DURATION,
   nodeEnv: process.env.NODE_ENV,
   reactAppPort: process.env.REACT_APP_PORT || 3000,
+  mongoDbUri: process.env.MONGODB_URI,
 };
