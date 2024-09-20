@@ -6,20 +6,13 @@ import { connectToDatabase } from '../database';
 import router from './routes/index';
 import cookieParser from 'cookie-parser';
 import { getCurrentDate } from '../utils/getCurrentDate';
-import { rateLimit } from 'express-rate-limit';
 import { config } from 'config/config';
 import { specs } from '../openApi';
+import { rateLimiter } from '../middleware';
+
 const app = express();
 const port = config.port;
-
-// Set up rate limiter: maximum of five requests per minute
-const limiter = rateLimit({
-  windowMs: 1 * 60 * 1000, // 1 minute
-  max: 5, // max 5 requests per windowMs
-});
-
-// Apply rate limiter to all requests
-app.use(limiter);
+app.use(rateLimiter);
 app.use(
   cors({
     origin: `http://localhost:${config.reactAppPort}`,
