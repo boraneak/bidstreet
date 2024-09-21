@@ -18,8 +18,8 @@
     "typescript-eslint": "^8.5.0"
   },
   "scripts": {
-    "start": "cross-env NODE_ENV=production node -r tsconfig-paths/register -r ts-node/register/transpile-only dist/src/app.js",
-    "dev": "cross-env NODE_ENV=development nodemon --watch . -e ts --exec ts-node -r tsconfig-paths/register src/app.ts",
+    "start": "cross-env NODE_ENV=production node -r tsconfig-paths/register -r ts-node/register/transpile-only dist/server.js",
+    "dev": "cross-env NODE_ENV=development nodemon --watch . -e ts --exec ts-node -r tsconfig-paths/register server.ts",
     "lint": "yarn eslint . --ignore-pattern 'dist/**'",
     "lint:fix": "yarn eslint --fix --ignore-pattern 'dist/**'",
     "build": "tsc",
