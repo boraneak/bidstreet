@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
-import { ICartItem } from '../../interfaces/CartItem';
-import { IOrder } from '../../interfaces/Order';
+import { ICartItem } from 'interfaces/CartItem';
+import { IOrder } from 'interfaces/Order';
 const CartItemSchema = new Schema<ICartItem>(
   {
     product: { type: Schema.Types.ObjectId, ref: 'Product', required: true },

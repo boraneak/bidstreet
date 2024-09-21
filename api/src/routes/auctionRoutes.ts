@@ -1,5 +1,5 @@
 import express from 'express';
-import { userServices, auctionServices } from '../services/index';
+import { userServices, auctionServices } from 'services/index';
 import multer from 'multer';
 import hasAuthorization from 'middleware/hasAuthorization';
 

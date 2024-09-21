@@ -1,14 +1,14 @@
 import { Request, Response } from 'express';
-import { isValidObjectId } from '../../utils/isValidObjectId';
+import { isValidObjectId } from 'utils/isValidObjectId';
 
 import mongoose from 'mongoose';
 import fs from 'fs';
-import { IAuction } from '../../interfaces/Auction';
-import { Auction } from '../models/auctionModel';
+import { IAuction } from 'interfaces/Auction';
+import { Auction } from 'models/auctionModel';
 import path from 'path';
 const defaultImagePath = path.join(
   __dirname,
-  '../../public/images/defaultAuctionImage.jpg',
+  'public/images/defaultAuctionImage.jpg',
 );
 
 export const createAuction = async (req: Request, res: Response) => {

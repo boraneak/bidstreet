@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { shopServices, orderServices } from '../services/index';
+import { shopServices, orderServices } from 'services/index';
 import hasAuthorization from 'middleware/hasAuthorization';
 
 const router = express.Router();

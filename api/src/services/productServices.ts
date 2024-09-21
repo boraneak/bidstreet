@@ -2,18 +2,18 @@ import { NextFunction, Request, Response } from 'express';
 import mongoose, { Types } from 'mongoose';
 
 import fs from 'fs';
-import { IProduct } from '../../interfaces/Product';
-import { IProductRequest } from '../../interfaces/requests/ProductRequest';
-import { IAuthRequest } from '../../interfaces/requests/AuthRequest';
-import { ISearchRequest } from '../../interfaces/requests/SearchRequest';
-import { Product } from '../models/productModel';
+import { IProduct } from 'interfaces/Product';
+import { IProductRequest } from 'interfaces/requests/ProductRequest';
+import { IAuthRequest } from 'interfaces/requests/AuthRequest';
+import { ISearchRequest } from 'interfaces/requests/SearchRequest';
+import { Product } from 'models/productModel';
 import path from 'path';
-import { isValidObjectId } from '../../utils/isValidObjectId';
+import { isValidObjectId } from 'utils/isValidObjectId';
 import escapeStringRegexp from 'escape-string-regexp';
 
 const defaultImagePath = path.join(
   __dirname,
-  '../../public/images/defaultProductImage.jpg',
+  'public/images/defaultProductImage.jpg',
 );
 
 export const createProduct = async (req: Request, res: Response) => {

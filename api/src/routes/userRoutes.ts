@@ -1,5 +1,5 @@
 import express from 'express';
-import { userServices } from '../services/index';
+import { userServices } from 'services/index';
 import hasAuthorization from 'middleware/hasAuthorization';
 
 const router = express.Router();

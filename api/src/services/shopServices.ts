@@ -1,15 +1,15 @@
 import { NextFunction, Request, Response } from 'express';
 import mongoose from 'mongoose';
 
-import Shop from '../models/shopModel';
+import Shop from 'models/shopModel';
 import fs from 'fs';
-import { IShop } from '../../interfaces/Shop';
-import { IAuthRequest } from '../../interfaces/requests/AuthRequest';
+import { IShop } from 'interfaces/Shop';
+import { IAuthRequest } from 'interfaces/requests/AuthRequest';
 import path from 'path';
-import { isValidObjectId } from '../../utils/isValidObjectId';
+import { isValidObjectId } from 'utils/isValidObjectId';
 const defaultImagePath = path.join(
   __dirname,
-  '../../public/images/defaultShopImage.jpg',
+  'public/images/defaultShopImage.jpg',
 );
 
 export const createShop = async (req: IAuthRequest, res: Response) => {

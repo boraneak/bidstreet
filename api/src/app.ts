@@ -5,7 +5,7 @@ import swaggerUi from 'swagger-ui-express';
 import { connectToDatabase } from '../database';
 import router from './routes/index';
 import cookieParser from 'cookie-parser';
-import { getCurrentDate } from '../utils/getCurrentDate';
+import { getCurrentDate } from 'utils/getCurrentDate';
 import { config } from 'config/config';
 import { specs } from '../openApi';
 import { rateLimiter } from '../middleware';

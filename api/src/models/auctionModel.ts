@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 
-import { IAuction } from '../../interfaces/Auction';
+import { IAuction } from 'interfaces/Auction';
 const AuctionSchema = new Schema<IAuction>(
   {
     itemName: {

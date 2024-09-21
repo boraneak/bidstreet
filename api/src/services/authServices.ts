@@ -1,8 +1,8 @@
-import User from '../models/userModel';
+import User from 'models/userModel';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { Request, Response } from 'express';
-import { config } from '../../config/config';
+import { config } from 'config/config';
 
 export const signUp = async (req: Request, res: Response) => {
   try {

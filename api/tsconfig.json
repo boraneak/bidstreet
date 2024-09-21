@@ -28,7 +28,13 @@
       "src/*": ["src/*"],
       "config/*": ["config/*"],
       "interfaces/*": ["interfaces/*"],
-      "middleware/*": ["middleware/*"]
+      "middleware/*": ["middleware/*"],
+      "models/*": ["src/models/*"],
+      "services/*": ["src/services/*"],
+      "routes/*": ["src/routes/*"],
+      "utils/*": ["utils/*"],
+      "public/*": ["public/*"],
+      "openApi/*": ["openApi/*"]
     }
   },
   "exclude": ["node_modules"],

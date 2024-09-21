@@ -1,7 +1,7 @@
 import { Server } from 'http';
 import { Socket } from 'socket.io';
-import { Auction } from '../models/auctionModel';
-import { IAuction } from '../../interfaces/Auction';
+import { Auction } from 'models/auctionModel';
+import { IAuction } from 'interfaces/Auction';
 
 interface BidInfo {
   bidder: string;

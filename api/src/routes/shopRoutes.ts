@@ -1,5 +1,5 @@
 import express from 'express';
-import { shopServices, userServices } from '../services/index';
+import { shopServices, userServices } from 'services/index';
 import multer from 'multer';
 import hasAuthorization from 'middleware/hasAuthorization';
 

@@ -1,7 +1,7 @@
-import User from '../models/userModel';
+import User from 'models/userModel';
 import { Request, Response, NextFunction } from 'express';
-import { IUserRequest } from '../../interfaces/requests/UserRequest';
-import { isValidObjectId } from '../../utils/isValidObjectId';
+import { IUserRequest } from 'interfaces/requests/UserRequest';
+import { isValidObjectId } from 'utils/isValidObjectId';
 
 export const getUserById = async (
   req: Request,
