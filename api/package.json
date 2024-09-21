@@ -1,6 +1,7 @@
 {
   "name": "backend",
   "version": "1.0.0",
+  "private": true,
   "license": "MIT",
   "devDependencies": {
     "@eslint/js": "^9.10.0",
