@@ -1,6 +1,7 @@
 import express from 'express';
-import { shopServices, authServices, userServices } from '../services/index';
+import { shopServices, userServices } from '../services/index';
 import multer from 'multer';
+import hasAuthorization from 'middleware/hasAuthorization';
 
 const upload = multer({ dest: 'uploads/' });
 
@@ -11,28 +12,28 @@ router.get('/', shopServices.getAllShops);
 router.post(
   '/create/by/:userId',
   upload.single('image'),
-  authServices.hasAuthorization,
+  hasAuthorization,
   userServices.isSeller,
   shopServices.createShop,
 );
 
 router.get(
   '/list/owner/:userId',
-  authServices.hasAuthorization,
+  hasAuthorization,
   shopServices.getShopByOwner,
 );
 
 router.put(
   '/update/:shopId',
   upload.single('image'),
-  authServices.hasAuthorization,
+  hasAuthorization,
   shopServices.isShopOwner,
   shopServices.updateShopById,
 );
 
 router.delete(
   '/delete/:shopId',
-  authServices.hasAuthorization,
+  hasAuthorization,
   shopServices.isShopOwner,
   shopServices.deleteShopById,
 );

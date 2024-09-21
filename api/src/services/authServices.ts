@@ -1,9 +1,7 @@
 import User from '../models/userModel';
-import jwt, { TokenExpiredError, JsonWebTokenError } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
-import { Request, Response, NextFunction } from 'express';
-import { IAuthRequest } from '../../interfaces/requests/AuthRequest';
-import { IDecodedToken } from '../../interfaces/DecodedToken';
+import { Request, Response } from 'express';
 import { config } from '../../config/config';
 
 export const signUp = async (req: Request, res: Response) => {
@@ -97,38 +95,5 @@ export const signIn = async (req: Request, res: Response) => {
     return res.status(400).json({
       error: 'Could not sign in. Please try again.',
     });
-  }
-};
-
-// Authorization
-export const hasAuthorization = (
-  req: IAuthRequest,
-  res: Response,
-  next: NextFunction,
-) => {
-  if (!req.headers.authorization) {
-    return res.status(401).json('Unauthorized request');
-  }
-
-  const token: string = req.headers['authorization']?.split(' ')[1];
-  if (!token) {
-    return res.status(401).json('Access denied. No token provided.');
-  }
-
-  try {
-    const decodedToken: IDecodedToken = jwt.verify(
-      token,
-      config.jwtSecret!,
-    ) as IDecodedToken;
-    req.user = decodedToken;
-    return next();
-  } catch (err) {
-    if (err instanceof TokenExpiredError) {
-      return res.status(401).send('Access denied. Token expired.');
-    } else if (err instanceof JsonWebTokenError) {
-      return res.status(400).send('Invalid token.');
-    } else {
-      return res.status(500).send('Internal server error.');
-    }
   }
 };

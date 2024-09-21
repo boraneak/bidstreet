@@ -26,7 +26,9 @@
     "paths": {
       "*": ["node_modules/*"],
       "src/*": ["src/*"],
-      "config/*": ["config/*"]
+      "config/*": ["config/*"],
+      "interfaces/*": ["interfaces/*"],
+      "middleware/*": ["middleware/*"]
     }
   },
   "exclude": ["node_modules"],
