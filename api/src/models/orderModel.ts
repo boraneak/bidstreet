@@ -1,31 +1,10 @@
 import { Schema, model } from 'mongoose';
-import { ICartItem } from 'interfaces/CartItem';
 import { IOrder } from 'interfaces/Order';
-const CartItemSchema = new Schema<ICartItem>(
-  {
-    product: { type: Schema.Types.ObjectId, ref: 'Product', required: true },
-    quantity: { type: Number, required: true },
-    shop: { type: Schema.Types.ObjectId, ref: 'Shop', required: true },
-    status: {
-      type: String,
-      default: 'Not processed',
-      enum: [
-        'Not processed',
-        'Processing',
-        'Shipped',
-        'Delivered',
-        'Cancelled',
-      ],
-    },
-  },
-  { timestamps: true },
-);
-
-export const CartItem = model<ICartItem>('CartItem', CartItemSchema);
+import { CartItem } from './cartItemModel';
 
 const OrderSchema = new Schema<IOrder>(
   {
-    products: [CartItemSchema],
+    products: [CartItem.schema],
     customer_name: {
       type: String,
       trim: true,

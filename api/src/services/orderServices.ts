@@ -1,4 +1,5 @@
-import { Order, CartItem } from 'models/orderModel';
+import { Order } from 'models/orderModel';
+import { CartItem } from 'models/cartItemModel';
 import { Request, Response } from 'express';
 import { isValidObjectId } from 'utils/isValidObjectId';
 import { Schema } from 'mongoose';
