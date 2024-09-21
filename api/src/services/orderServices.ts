@@ -1,8 +1,8 @@
 import { Order, CartItem } from 'models/orderModel';
 import { Request, Response } from 'express';
 import { isValidObjectId } from 'utils/isValidObjectId';
-
 import { Schema } from 'mongoose';
+import { handleError } from 'utils/errorHandler';
 
 export const createOrder = async (req: Request, res: Response) => {
   try {
@@ -13,12 +13,9 @@ export const createOrder = async (req: Request, res: Response) => {
     const order = new Order(req.body.order);
 
     const result = await order.save();
-    return res.status(200).json(result);
+    return res.status(201).json(result);
   } catch (error) {
-    console.error('Error creating order:', error);
-    return res.status(500).json({
-      error: 'Internal Server Error',
-    });
+    return handleError(res, error, 'Error creating order:');
   }
 };
 
@@ -38,10 +35,9 @@ export const getOrderByShop = async (req: Request, res: Response) => {
         .json({ error: 'No orders found for the specified shop' });
     }
 
-    return res.json(orders);
+    return res.status(200).json(orders);
   } catch (error) {
-    console.error('Error fetching orders by shop:', error);
-    return res.status(500).json({ error: 'Internal Server Error' });
+    return handleError(res, error, 'Error fetching orders by shop:');
   }
 };
 
@@ -59,10 +55,9 @@ export const getOrderById = async (req: Request, res: Response) => {
       return res.status(404).json({ error: 'Order not found' });
     }
 
-    return res.json(order);
+    return res.status(200).json(order);
   } catch (error) {
-    console.error('Error fetching order by ID:', error);
-    return res.status(500).json({ error: 'Internal Server Error' });
+    return handleError(res, error, 'Error fetching order by ID:');
   }
 };
 
@@ -72,12 +67,9 @@ export const getOrderByUser = async (req: Request, res: Response) => {
     if (!isValidObjectId(userId, res, 'user')) return;
 
     const orders = await Order.find({ user: userId }).sort('-created').exec();
-    return res.json(orders);
+    return res.status(200).json(orders);
   } catch (error) {
-    console.error('Error fetching orders by user:', error);
-    return res.status(500).json({
-      error: 'Internal Server Error',
-    });
+    return handleError(res, error, 'Error fetching orders by user:');
   }
 };
 
@@ -89,11 +81,8 @@ export const getOrderStatusValues = (_req: Request, res: Response) => {
     const statusPath = CartItem.schema.path(
       'status',
     ) as SchemaTypeWithEnumValues;
-    return res.json(statusPath.enumValues);
+    return res.status(200).json(statusPath.enumValues);
   } catch (error) {
-    console.error('Error retrieving order status values:', error);
-    return res.status(500).json({
-      error: 'Internal Server Error',
-    });
+    return handleError(res, error, 'Error retrieving order status values:');
   }
 };

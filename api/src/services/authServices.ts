@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { Request, Response } from 'express';
 import { config } from 'config/config';
+import { handleError } from 'utils/errorHandler';
 
 export const signUp = async (req: Request, res: Response) => {
   try {
@@ -35,10 +36,7 @@ export const signUp = async (req: Request, res: Response) => {
       },
     });
   } catch (error) {
-    console.error('Error in signUp:', error);
-    return res.status(400).json({
-      error: 'Could not sign up. Please try again.',
-    });
+    return handleError(res, error, 'Error in signUp:');
   }
 };
 
@@ -91,9 +89,6 @@ export const signIn = async (req: Request, res: Response) => {
       },
     });
   } catch (error) {
-    console.error('Error in signIn:', error);
-    return res.status(400).json({
-      error: 'Could not sign in. Please try again.',
-    });
+    return handleError(res, error, 'Error in signIn:');
   }
 };

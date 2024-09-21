@@ -1,12 +1,13 @@
 import { NextFunction, Request, Response } from 'express';
 import mongoose from 'mongoose';
-
 import Shop from 'models/shopModel';
 import fs from 'fs';
 import { IShop } from 'interfaces/Shop';
 import { IAuthRequest } from 'interfaces/requests/AuthRequest';
 import path from 'path';
 import { isValidObjectId } from 'utils/isValidObjectId';
+import { handleError } from 'utils/errorHandler';
+
 const defaultImagePath = path.join(
   __dirname,
   'public/images/defaultShopImage.jpg',
@@ -36,12 +37,9 @@ export const createShop = async (req: IAuthRequest, res: Response) => {
 
     const shop = new Shop(shopData);
     const result = await shop.save();
-    return res.status(200).json(result);
+    return res.status(201).json(result);
   } catch (error) {
-    console.error('Error creating shop:', error);
-    return res.status(500).json({
-      error: 'Internal Server Error',
-    });
+    return handleError(res, error, 'Error creating shop');
   }
 };
 
@@ -61,10 +59,7 @@ export const getShopById = async (req: IAuthRequest, res: Response) => {
 
     return res.status(200).json(shop);
   } catch (error) {
-    console.error('Error retrieving shop by ID:', error);
-    return res.status(500).json({
-      error: 'Internal server error',
-    });
+    return handleError(res, error, 'Error retrieving shop by ID');
   }
 };
 
@@ -82,15 +77,12 @@ export const getShopPhoto = async (req: Request, res: Response) => {
 
     if (shop.image && shop.image.data) {
       res.set('Content-Type', shop.image.contentType);
-      return res.send(shop.image.data);
+      return res.status(200).send(shop.image.data);
     } else {
-      return res.sendFile(defaultImagePath);
+      return res.status(200).sendFile(defaultImagePath);
     }
   } catch (error) {
-    console.error('Error retrieving shop photo:', error);
-    return res.status(500).json({
-      error: 'Internal server error',
-    });
+    return handleError(res, error, 'Error retrieving shop photo');
   }
 };
 
@@ -122,10 +114,7 @@ export const updateShopById = async (req: Request, res: Response) => {
     const result = await shop.save();
     return res.status(200).json(result);
   } catch (error) {
-    console.error('Error updating shop by ID:', error);
-    return res.status(500).json({
-      error: 'Internal server error',
-    });
+    return handleError(res, error, 'Error updating shop by ID');
   }
 };
 
@@ -142,24 +131,18 @@ export const deleteShopById = async (req: Request, res: Response) => {
     }
 
     const deletedShop = await shop.deleteOne({ _id: shopId });
-    return res.json(deletedShop);
+    return res.status(200).json(deletedShop);
   } catch (error) {
-    console.error('Error deleting shop by ID:', error);
-    return res.status(500).json({
-      error: 'Internal server error',
-    });
+    return handleError(res, error, 'Error deleting shop by ID');
   }
 };
 
 export const getAllShops = async (_req: Request, res: Response) => {
   try {
     const shops = await Shop.find();
-    return res.json(shops);
+    return res.status(200).json(shops);
   } catch (error) {
-    console.error('Error retrieving all shops:', error);
-    return res.status(500).json({
-      error: 'Internal server error',
-    });
+    return handleError(res, error, 'Error retrieving all shops');
   }
 };
 
@@ -172,12 +155,9 @@ export const getShopByOwner = async (req: IAuthRequest, res: Response) => {
       .populate('owner', '_id name')
       .exec();
 
-    return res.json(shops);
+    return res.status(200).json(shops);
   } catch (error) {
-    console.error('Error retrieving shops by owner:', error);
-    return res.status(500).json({
-      error: 'Internal server error',
-    });
+    return handleError(res, error, 'Error retrieving shops by owner');
   }
 };
 
@@ -203,7 +183,6 @@ export const isShopOwner = async (
 
     return next();
   } catch (error) {
-    console.error('Error verifying shop ownership:', error);
-    return res.status(500).json({ error: 'Internal Server Error' });
+    return handleError(res, error, 'Error verifying shop ownership');
   }
 };

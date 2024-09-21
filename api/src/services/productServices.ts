@@ -1,6 +1,5 @@
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import mongoose, { Types } from 'mongoose';
-
 import fs from 'fs';
 import { IProduct } from 'interfaces/Product';
 import { IProductRequest } from 'interfaces/requests/ProductRequest';
@@ -10,6 +9,7 @@ import { Product } from 'models/productModel';
 import path from 'path';
 import { isValidObjectId } from 'utils/isValidObjectId';
 import escapeStringRegexp from 'escape-string-regexp';
+import { handleError } from 'utils/errorHandler';
 
 const defaultImagePath = path.join(
   __dirname,
@@ -40,12 +40,9 @@ export const createProduct = async (req: Request, res: Response) => {
 
     const product = new Product(productData);
     const result = await product.save();
-    return res.status(200).json(result);
+    return res.status(201).json(result);
   } catch (error) {
-    console.error('Error creating product:', error);
-    return res.status(500).json({
-      error: 'Internal Server Error',
-    });
+    return handleError(res, error, 'Error creating product');
   }
 };
 
@@ -61,12 +58,9 @@ export const getProductById = async (req: IAuthRequest, res: Response) => {
       return res.status(404).json({ error: 'Product not found' });
     }
 
-    return res.json(product);
+    return res.status(200).json(product);
   } catch (error) {
-    console.error('Error retrieving product:', error);
-    return res.status(500).json({
-      error: 'Internal Server Error',
-    });
+    return handleError(res, error, 'Error retrieving product');
   }
 };
 
@@ -89,10 +83,7 @@ export const getProductPhoto = async (req: Request, res: Response) => {
       return res.sendFile(defaultImagePath);
     }
   } catch (error) {
-    console.error('Error retrieving product photo:', error);
-    return res.status(500).json({
-      error: 'Internal Server Error',
-    });
+    return handleError(res, error, 'Error retrieving product photo');
   }
 };
 
@@ -133,10 +124,7 @@ export const updateProductById = async (req: Request, res: Response) => {
 
     return res.status(200).json(product);
   } catch (error) {
-    console.error('Error updating product:', error);
-    return res.status(500).json({
-      error: 'Internal Server Error',
-    });
+    return handleError(res, error, 'Error updating product');
   }
 };
 
@@ -158,10 +146,7 @@ export const deleteProductById = async (req: Request, res: Response) => {
 
     return res.status(200).json({ message: 'Product deleted successfully' });
   } catch (error) {
-    console.error('Error deleting product:', error);
-    return res.status(500).json({
-      error: 'Internal Server Error',
-    });
+    return handleError(res, error, 'Error deleting product');
   }
 };
 
@@ -169,17 +154,12 @@ export const getAllProducts = async (_req: Request, res: Response) => {
   try {
     const products = await Product.find();
     if (products.length === 0) {
-      return res.status(404).json({
-        error: 'No products found',
-      });
+      return res.status(404).json({ error: 'No products found' });
     }
 
-    return res.json(products);
+    return res.status(200).json(products);
   } catch (error) {
-    console.error('Error fetching products:', error);
-    return res.status(500).json({
-      error: 'Internal Server Error',
-    });
+    return handleError(res, error, 'Error fetching products');
   }
 };
 
@@ -208,13 +188,10 @@ export const getFilteredProducts = async (
       const products = await Product.find(query)
         .populate('shop', '_id name')
         .exec();
-      return res.json(products);
+      return res.status(200).json(products);
     }
   } catch (error) {
-    console.error('Error fetching filtered products:', error);
-    return res.status(400).json({
-      error: 'Internal Server Error',
-    });
+    return handleError(res, error, 'Error fetching filtered products');
   }
 };
 
@@ -228,12 +205,9 @@ export const getProductByShop = async (req: IAuthRequest, res: Response) => {
       .select('-image')
       .exec();
 
-    return res.json(products);
+    return res.status(200).json(products);
   } catch (error) {
-    console.error('Error fetching products by shop:', error);
-    return res.status(400).json({
-      error: 'Internal Server Error',
-    });
+    return handleError(res, error, 'Error fetching products by shop');
   }
 };
 
@@ -245,12 +219,9 @@ export const getLatestProducts = async (_req: Request, res: Response) => {
       .populate('shop', '_id name')
       .exec();
 
-    return res.json(products);
+    return res.status(200).json(products);
   } catch (error) {
-    console.error('Error fetching latest products:', error);
-    return res.status(500).json({
-      error: 'Internal Server Error',
-    });
+    return handleError(res, error, 'Error fetching latest products');
   }
 };
 
@@ -261,11 +232,13 @@ export const getRelatedProducts = async (
   try {
     const productId = req.params.productId;
     if (!isValidObjectId(productId, res, 'product')) return;
+
     const currentProduct: IProduct | null =
       await Product.findById(productId).exec();
     if (!currentProduct) {
-      throw new Error('product not found');
+      throw new Error('Product not found');
     }
+
     const currentShopId: Types.ObjectId | undefined = currentProduct.shop;
     const currentCategory: string | undefined = currentProduct.category;
 
@@ -287,57 +260,17 @@ export const getRelatedProducts = async (
       .populate('shop', '_id name')
       .exec();
 
-    return res.json(relatedProducts);
+    return res.status(200).json(relatedProducts);
   } catch (error) {
-    console.error('Error fetching related products:', error);
-    return res.status(500).json({
-      error: 'Internal Server Error',
-    });
+    return handleError(res, error, 'Error fetching related products');
   }
 };
 
 export const getProductCategories = async (_req: Request, res: Response) => {
   try {
     const productCategories = await Product.distinct('category', {});
-    return res.json(productCategories);
+    return res.status(200).json(productCategories);
   } catch (error) {
-    console.error('Error fetching product categories:', error);
-    return res.status(500).json({
-      error: 'Internal Server Error',
-    });
+    return handleError(res, error, 'Error fetching product categories');
   }
-};
-
-export const increaseProductQuantity = async (
-  req: IProductRequest,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    const productId = req.params.productId;
-    if (!isValidObjectId(productId, res, 'product')) return;
-
-    const quantity = req.body.quantity;
-    if (quantity == null || typeof quantity !== 'number' || quantity <= 0) {
-      return res.status(400).json({ error: 'Invalid quantity value' });
-    }
-
-    const updatedProduct = await Product.findByIdAndUpdate(
-      req.product?._id,
-      { $inc: { quantity: quantity } },
-      { new: true },
-    ).exec();
-
-    if (!updatedProduct) {
-      return res.status(404).json({ error: 'Product not found' });
-    }
-
-    next();
-  } catch (error) {
-    console.error('Error increasing product quantity:', error);
-    return res.status(500).json({ error: 'Internal Server Error' });
-  }
-
-  // If next() is not called due to an error
-  return res.status(500).json({ error: 'Internal Server Error' });
 };
