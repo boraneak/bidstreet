@@ -19,4 +19,5 @@ export const config = {
   nodeEnv: process.env.NODE_ENV,
   reactAppPort: process.env.REACT_APP_PORT || 3000,
   mongoDbUri: process.env.MONGODB_URI,
+  saltRounds: parseInt(process.env.SALT_ROUNDS || '10', 10),
 };

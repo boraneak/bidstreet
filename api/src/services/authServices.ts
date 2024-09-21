@@ -1,12 +1,10 @@
 import User from '../models/userModel';
 import jwt, { TokenExpiredError, JsonWebTokenError } from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
 import { Request, Response, NextFunction } from 'express';
 import { IAuthRequest } from '../../interfaces/requests/AuthRequest';
 import { IDecodedToken } from '../../interfaces/DecodedToken';
 import { config } from '../../config/config';
-
-const jwtSecret = config.jwtSecret!;
-const tokenDuration = config.tokenDuration;
 
 export const signUp = async (req: Request, res: Response) => {
   try {
@@ -17,7 +15,16 @@ export const signUp = async (req: Request, res: Response) => {
       });
     }
 
-    const user = new User(req.body);
+    // Generate hashed password using bcrypt
+    const salt = await bcrypt.genSalt(config.saltRounds);
+    const hashed_password = await bcrypt.hash(req.body.password, salt);
+
+    const user = new User({
+      ...req.body,
+      salt,
+      hashed_password,
+    });
+
     await user.save();
 
     return res.status(201).json({
@@ -47,7 +54,12 @@ export const signIn = async (req: Request, res: Response) => {
       });
     }
 
-    if (!user.authenticate(req.body.password)) {
+    // Check if the provided password matches using bcrypt
+    const isMatch = await bcrypt.compare(
+      req.body.password,
+      user.hashed_password,
+    );
+    if (!isMatch) {
       return res.status(401).json({
         error: 'Password does not match.',
       });
@@ -60,8 +72,8 @@ export const signIn = async (req: Request, res: Response) => {
         email: user.email,
         seller: user.seller,
       },
-      jwtSecret,
-      { expiresIn: tokenDuration },
+      config.jwtSecret!,
+      { expiresIn: config.tokenDuration },
     );
 
     // Add secure flag for cookies in production
@@ -88,6 +100,7 @@ export const signIn = async (req: Request, res: Response) => {
   }
 };
 
+// Authorization
 export const hasAuthorization = (
   req: IAuthRequest,
   res: Response,
@@ -105,7 +118,7 @@ export const hasAuthorization = (
   try {
     const decodedToken: IDecodedToken = jwt.verify(
       token,
-      jwtSecret,
+      config.jwtSecret!,
     ) as IDecodedToken;
     req.user = decodedToken;
     return next();
