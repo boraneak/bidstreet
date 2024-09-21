@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SignUpData } from '../../types/SignUpData';
 import {
@@ -24,26 +24,10 @@ const useStyles = {
     alignItems: 'center',
     minHeight: '100vh',
   },
-  card: {
-    width: 300,
-    padding: 2,
-  },
-  title: {
-    fontWeight: 'bold',
-    marginBottom: 2,
-  },
-  apiError: {
-    marginTop: 2,
-  },
-  signInLink: {
-    cursor: 'pointer',
-    color: 'primary.main',
-    textAlign: 'center',
-  },
-  dialogActions: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-  },
+  card: { width: 300, padding: 2 },
+  title: { fontWeight: 'bold', marginBottom: 2 },
+  link: { cursor: 'pointer', textAlign: 'center', color: 'primary.main' },
+  dialogActions: { display: 'flex', justifyContent: 'flex-end' },
 };
 
 const SignUpForm: React.FC = () => {
@@ -53,67 +37,46 @@ const SignUpForm: React.FC = () => {
     email: '',
     password: '',
   });
-  const [errors, setErrors] = useState<{ [key: string]: string }>({
-    name: '',
-    email: '',
-    password: '',
-  });
-  const [apiError, setApiError] = useState<string>('');
+  const [errors, setErrors] = useState<Partial<SignUpData>>({});
+  const [apiError, setApiError] = useState('');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const handleChange =
-    (id: keyof SignUpData) => (event: ChangeEvent<HTMLInputElement>) => {
+    (id: keyof SignUpData) => (event: React.ChangeEvent<HTMLInputElement>) => {
       const { value } = event.target;
-      setValues({ ...values, [id]: value });
-      setErrors({
-        ...errors,
-        [id]: value.trim() === '' ? `${id} is required` : '',
-      });
+      setValues((prev) => ({ ...prev, [id]: value }));
+      setErrors((prev) => ({
+        ...prev,
+        [id]: value.trim() ? '' : `${id} is required`,
+      }));
     };
-
-  const navigateToSignIn = () => {
-    navigate('/signin');
-  };
-
-  const isValidateForm = (): boolean => {
-    const newErrors: { [key: string]: string } = {};
-    let isValid = true;
-
-    Object.keys(values).forEach((key) => {
-      if (values[key as keyof SignUpData].trim() === '') {
-        newErrors[key] = `${key} is required`;
-        isValid = false;
-      }
-    });
-
-    setErrors(newErrors);
-    return isValid;
-  };
 
   const onSignup = async () => {
-    if (!isValidateForm()) return;
+    const newErrors = Object.fromEntries(
+      Object.entries(values).map(([key, value]) => [
+        key,
+        value.trim() ? '' : `${key} is required`,
+      ]),
+    );
+    setErrors(newErrors);
 
-    const signUpData: SignUpData = {
-      name: values.name,
-      email: values.email,
-      password: values.password,
-    };
+    if (Object.values(newErrors).some(Boolean)) return;
 
     try {
-      await AuthService.signUp(signUpData);
+      await AuthService.signUp(values);
       setApiError('');
       setIsDialogOpen(true);
     } catch (error) {
       console.error('Error signing up:', error);
-      if (error instanceof Error) {
-        setApiError(error.message || 'Sign-up failed');
-      } else {
-        setApiError('An unexpected error occurred');
-      }
+      setApiError(
+        error instanceof Error
+          ? error.message || 'Sign-up failed'
+          : 'An unexpected error occurred',
+      );
     }
   };
 
-  const isFormValid = !Object.values(errors).some((error) => error !== '');
+  const navigateToSignIn = () => navigate('/signin');
 
   return (
     <Box sx={useStyles.container}>
@@ -125,7 +88,6 @@ const SignUpForm: React.FC = () => {
           {(['name', 'email', 'password'] as const).map((id) => (
             <TextField
               key={id}
-              id={id}
               label={id.charAt(0).toUpperCase() + id.slice(1)}
               type={id === 'password' ? 'password' : 'text'}
               value={values[id]}
@@ -137,7 +99,7 @@ const SignUpForm: React.FC = () => {
             />
           ))}
           {apiError && (
-            <Typography color="error" align="center" sx={useStyles.apiError}>
+            <Typography color="error" align="center" sx={{ mt: 2 }}>
               {apiError}
             </Typography>
           )}
@@ -148,31 +110,26 @@ const SignUpForm: React.FC = () => {
             variant="contained"
             fullWidth
             onClick={onSignup}
-            disabled={!isFormValid}
+            disabled={Object.values(errors).some(Boolean)}
           >
             Create Account
           </Button>
         </CardActions>
         <Box sx={{ mt: 2 }}>
-          <Typography sx={useStyles.signInLink} onClick={navigateToSignIn}>
+          <Typography sx={useStyles.link} onClick={navigateToSignIn}>
             Already have an account?
           </Typography>
         </Box>
       </Card>
       <Dialog open={isDialogOpen} onClose={navigateToSignIn}>
-        <DialogTitle>Account Created</DialogTitle>
+        <DialogTitle>Sign Up Successful</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Your new account has been successfully created. Click 'Sign In'
-            below to get started.
+            You have successfully signed up! Please log in to continue.
           </DialogContentText>
         </DialogContent>
         <DialogActions sx={useStyles.dialogActions}>
-          <Button
-            color="primary"
-            variant="contained"
-            onClick={navigateToSignIn}
-          >
+          <Button onClick={navigateToSignIn} color="primary">
             Sign In
           </Button>
         </DialogActions>
