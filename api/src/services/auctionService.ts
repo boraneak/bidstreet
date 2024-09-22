@@ -14,7 +14,16 @@ export const createAuctionService = async (
   body: any,
   file: Express.Multer.File | undefined,
 ) => {
-  const imageData = file ? fs.readFileSync(file.path) : null;
+  let imageData = null;
+  if (file) {
+    const safeRoot = path.resolve(__dirname, '../../uploads'); // Define the safe root directory
+    const resolvedPath = path.resolve(file.path);
+    if (resolvedPath.startsWith(safeRoot)) {
+      imageData = fs.readFileSync(resolvedPath);
+    } else {
+      throw new Error('Invalid file path');
+    }
+  }
   const auctionData = {
     ...body,
     seller: new mongoose.Types.ObjectId(userId),
@@ -63,7 +72,14 @@ export const updateAuctionByIdService = async (
   const updateAuctionData: Partial<IAuction> = { ...body };
 
   if (file) {
-    const imageData = fs.readFileSync(file.path);
+    let imageData = null;
+    const safeRoot = path.resolve(__dirname, '../../uploads'); // Define the safe root directory
+    const resolvedPath = path.resolve(file.path);
+    if (resolvedPath.startsWith(safeRoot)) {
+      imageData = fs.readFileSync(resolvedPath);
+    } else {
+      throw new Error('Invalid file path');
+    }
     updateAuctionData.image = {
       data: imageData,
       contentType: file.mimetype,
