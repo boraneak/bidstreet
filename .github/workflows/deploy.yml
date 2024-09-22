@@ -13,10 +13,13 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '16'
-      - name: Install dependencies and generate package-lock.json
+      - name: Install ajv and related packages
         run: |
           cd web
-          npm install --package-lock-only --legacy-peer-deps
+          npm install ajv ajv-keywords schema-utils --legacy-peer-deps
+      - name: Install dependencies
+        run: |
+          cd web
           npm install --legacy-peer-deps
       - name: Build
         run: |
