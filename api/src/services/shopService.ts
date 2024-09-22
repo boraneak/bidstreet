@@ -16,7 +16,12 @@ export const createShopService = async (
 ) => {
   let imageData;
   if (imageFile) {
-    imageData = fs.readFileSync(imageFile.path);
+    const safeDir = path.resolve(__dirname, 'uploads'); // Assuming 'uploads' is the intended directory
+    const resolvedPath = path.resolve(safeDir, imageFile.path);
+    if (!resolvedPath.startsWith(safeDir)) {
+      throw new Error('Invalid file path');
+    }
+    imageData = fs.readFileSync(resolvedPath);
   }
 
   const shop = new Shop({
@@ -57,7 +62,12 @@ export const updateShopByIdService = async (
   if (shop) {
     // Update image if a new file is uploaded
     if (imageFile) {
-      const imageData = fs.readFileSync(imageFile.path);
+      const safeDir = path.resolve(__dirname, 'uploads'); // Assuming 'uploads' is the intended directory
+      const resolvedPath = path.resolve(safeDir, imageFile.path);
+      if (!resolvedPath.startsWith(safeDir)) {
+        throw new Error('Invalid file path');
+      }
+      const imageData = fs.readFileSync(resolvedPath);
       shop.image = {
         data: imageData,
         contentType: imageFile.mimetype,
