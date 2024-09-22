@@ -3,12 +3,15 @@ import * as userServices from './userServices';
 import * as shopServices from './shopServices';
 import * as productServices from './productServices';
 import * as orderServices from './orderServices';
-import * as auctionServices from './auctionServices';
-export {
-  authServices,
-  userServices,
-  shopServices,
-  productServices,
-  orderServices,
-  auctionServices,
+import * as auctionService from './auctionService';
+
+const services = {
+  auth: authServices,
+  user: userServices,
+  shop: shopServices,
+  product: productServices,
+  order: orderServices,
+  auction: auctionService,
 };
+
+export default services;
