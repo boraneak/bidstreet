@@ -91,10 +91,14 @@ export const updateAuctionByIdService = async (
     return null;
   }
 
-  return Auction.findOneAndUpdate({ _id: auctionId }, updateAuctionData, {
-    new: true,
-    runValidators: true,
-  }).exec();
+  return Auction.findOneAndUpdate(
+    { _id: auctionId },
+    { $set: updateAuctionData },
+    {
+      new: true,
+      runValidators: true,
+    }
+  ).exec();
 };
 
 export const deleteAuctionByIdService = async (auctionId: string) => {
