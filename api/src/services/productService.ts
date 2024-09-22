@@ -17,7 +17,12 @@ export const createProductService = async (
 ) => {
   let imageData;
   if (file) {
-    imageData = fs.readFileSync(file.path);
+    const safeUploadDir = path.resolve(__dirname, '../../uploads');
+    const resolvedPath = path.resolve(file.path);
+    if (!resolvedPath.startsWith(safeUploadDir)) {
+      throw new Error('Invalid file path');
+    }
+    imageData = fs.readFileSync(resolvedPath);
   }
 
   const newProduct = new Product({
@@ -53,7 +58,13 @@ export const updateProductByIdService = async (
   file: Express.Multer.File | undefined,
 ) => {
   if (file) {
-    const imageData = fs.readFileSync(file.path);
+    const safeRoot = path.resolve(__dirname, '../../uploads'); // Define the safe root directory
+    const filePath = path.resolve(safeRoot, file.path);
+    const resolvedPath = fs.realpathSync(filePath);
+    if (!resolvedPath.startsWith(safeRoot)) {
+      throw new Error('Invalid file path');
+    }
+    const imageData = fs.readFileSync(resolvedPath);
     updatedData.image = {
       data: imageData,
       contentType: file.mimetype,
@@ -90,7 +101,7 @@ export const getFilteredProductsService = async (queryParams: any) => {
   }
 
   if (queryParams.category) {
-    query.category = queryParams.category;
+    query.category = { $eq: queryParams.category };
   }
 
   return await Product.find(query).populate('shop', '_id name').exec();
