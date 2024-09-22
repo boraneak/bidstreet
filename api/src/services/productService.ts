@@ -101,7 +101,7 @@ export const getFilteredProductsService = async (queryParams: any) => {
   }
 
   if (queryParams.category) {
-    query.category = queryParams.category;
+    query.category = { $eq: queryParams.category };
   }
 
   return await Product.find(query).populate('shop', '_id name').exec();
