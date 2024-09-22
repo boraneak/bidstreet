@@ -31,10 +31,14 @@ export const updateUserByIdService = async (
   }
 
   const sanitizedUpdateData = sanitize(updateData);
-  const updatedUser = await User.findByIdAndUpdate(userId, { $set: sanitizedUpdateData }, {
-    new: true,
-    runValidators: true,
-  });
+  const updatedUser = await User.findByIdAndUpdate(
+    userId,
+    { $set: sanitizedUpdateData },
+    {
+      new: true,
+      runValidators: true,
+    },
+  );
 
   if (!updatedUser) {
     throw new Error('User not found');
