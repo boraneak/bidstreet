@@ -7,6 +7,7 @@ import cookieParser from 'cookie-parser';
 import { config } from 'config/config';
 import { specs } from '../openApi';
 import { rateLimiter } from '../middleware';
+import lusca from 'lusca';
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use(
 app.use(cookieParser());
 app.use(express.json());
 app.use(morgan('dev'));
+app.use(lusca.csrf());
 
 app.use('/api/v1', router);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
