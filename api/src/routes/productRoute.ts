@@ -1,6 +1,7 @@
 import express from 'express';
-import { shopServices, userServices, productServices } from 'services/index';
+import { shopServices, userServices } from 'services/index';
 import hasAuthorization from 'middleware/hasAuthorization';
+import controllers from 'controllers/index';
 
 import multer from 'multer';
 
@@ -13,19 +14,19 @@ router.post(
   hasAuthorization,
   userServices.isSeller,
   shopServices.isShopOwner,
-  productServices.createProduct,
+  controllers.product.createProduct,
 );
 
 router.get(
   '/list/:productId',
   hasAuthorization,
-  productServices.getProductById,
+  controllers.product.getProductById,
 );
 
 router.get(
   '/photo/:productId',
   // authServices.hasAuthorization,
-  productServices.getProductPhoto,
+  controllers.product.getProductPhoto,
 );
 
 router.put(
@@ -33,20 +34,20 @@ router.put(
   upload.single('image'),
   hasAuthorization,
   shopServices.isShopOwner,
-  productServices.updateProductById,
+  controllers.product.updateProductById,
 );
 
 router.delete(
   '/delete/:shopId/:productId',
   hasAuthorization,
   shopServices.isShopOwner,
-  productServices.deleteProductById,
+  controllers.product.deleteProductById,
 );
-router.get('/', productServices.getAllProducts);
-router.get('/search', productServices.getFilteredProducts);
-router.get('/list/by/:shopId', productServices.getProductByShop);
-router.get('/latest', productServices.getLatestProducts);
-router.get('/related/:productId', productServices.getRelatedProducts);
-router.get('/categories', productServices.getProductCategories);
+router.get('/', controllers.product.getAllProducts);
+router.get('/search', controllers.product.getFilteredProducts);
+router.get('/list/by/:shopId', controllers.product.getProductByShop);
+router.get('/latest', controllers.product.getLatestProducts);
+router.get('/related/:productId', controllers.product.getRelatedProducts);
+router.get('/categories', controllers.product.getProductCategories);
 
 export default router;
