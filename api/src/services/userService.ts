@@ -24,6 +24,11 @@ export const updateUserByIdService = async (
   userId: string,
   updateData: any,
 ) => {
+  // Validate updateData to ensure it does not contain any malicious content
+  if (typeof updateData !== 'object' || Array.isArray(updateData)) {
+    throw new Error('Invalid update data');
+  }
+
   const updatedUser = await User.findByIdAndUpdate(userId, updateData, {
     new: true,
     runValidators: true,
