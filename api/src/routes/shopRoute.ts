@@ -1,5 +1,4 @@
 import express from 'express';
-import { shopServices } from 'services/index';
 import controllers from 'controllers/index';
 
 import multer from 'multer';
@@ -9,39 +8,39 @@ const upload = multer({ dest: 'uploads/' });
 
 const router = express.Router();
 
-router.get('/', shopServices.getAllShops);
+router.get('/', controllers.shop.getAllShops);
 
 router.post(
   '/create/by/:userId',
   upload.single('image'),
   hasAuthorization,
   controllers.user.isSeller,
-  shopServices.createShop,
+  controllers.shop.createShop,
 );
 
 router.get(
   '/list/owner/:userId',
   hasAuthorization,
-  shopServices.getShopByOwner,
+  controllers.shop.getShopByOwner,
 );
 
 router.put(
   '/update/:shopId',
   upload.single('image'),
   hasAuthorization,
-  shopServices.isShopOwner,
-  shopServices.updateShopById,
+  controllers.shop.isShopOwner,
+  controllers.shop.updateShopById,
 );
 
 router.delete(
   '/delete/:shopId',
   hasAuthorization,
-  shopServices.isShopOwner,
-  shopServices.deleteShopById,
+  controllers.shop.isShopOwner,
+  controllers.shop.deleteShopById,
 );
 
-router.get('/photo/:shopId', shopServices.getShopPhoto);
+router.get('/photo/:shopId', controllers.shop.getShopPhoto);
 
-router.get('/list/:shopId', shopServices.getShopById);
+router.get('/list/:shopId', controllers.shop.getShopById);
 
 export default router;
