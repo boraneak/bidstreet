@@ -3,7 +3,7 @@ import { Auction } from 'models/auctionModel';
 import mongoose from 'mongoose';
 import path from 'path';
 import { IAuction } from 'interfaces/Auction';
-import { validateAuctionData } from 'utils/validation';
+// import { validateAuctionData } from 'utils/validation';
 
 const defaultImagePath = path.join(
   __dirname,
@@ -90,8 +90,10 @@ export const updateAuctionByIdService = async (
   function validateAuctionData(data: Partial<IAuction>): Partial<IAuction> {
     const validData: Partial<IAuction> = {};
     if (typeof data.title === 'string') validData.title = data.title;
-    if (typeof data.description === 'string') validData.description = data.description;
-    if (typeof data.startingBid === 'number') validData.startingBid = data.startingBid;
+    if (typeof data.description === 'string')
+      validData.description = data.description;
+    if (typeof data.startingBid === 'number')
+      validData.startingBid = data.startingBid;
     if (data.bidStart instanceof Date) validData.bidStart = data.bidStart;
     if (data.bidEnd instanceof Date) validData.bidEnd = data.bidEnd;
     // Add more fields as necessary
@@ -109,7 +111,7 @@ export const updateAuctionByIdService = async (
     {
       new: true,
       runValidators: true,
-    }
+    },
   ).exec();
 };
 
