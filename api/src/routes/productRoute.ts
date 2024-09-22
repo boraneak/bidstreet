@@ -1,5 +1,4 @@
 import express from 'express';
-import { shopServices } from 'services/index';
 import hasAuthorization from 'middleware/hasAuthorization';
 import controllers from 'controllers/index';
 
@@ -13,7 +12,7 @@ router.post(
   upload.single('image'),
   hasAuthorization,
   controllers.user.isSeller,
-  shopServices.isShopOwner,
+  controllers.shop.isShopOwner,
   controllers.product.createProduct,
 );
 
@@ -29,14 +28,14 @@ router.put(
   '/update/:shopId/:productId',
   upload.single('image'),
   hasAuthorization,
-  shopServices.isShopOwner,
+  controllers.shop.isShopOwner,
   controllers.product.updateProductById,
 );
 
 router.delete(
   '/delete/:shopId/:productId',
   hasAuthorization,
-  shopServices.isShopOwner,
+  controllers.shop.isShopOwner,
   controllers.product.deleteProductById,
 );
 router.get('/', controllers.product.getAllProducts);
