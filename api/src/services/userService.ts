@@ -1,4 +1,5 @@
 import User from 'models/userModel';
+import sanitize from 'mongo-sanitize';
 
 export const getUserByIdService = async (userId: string) => {
   const user = await User.findById(userId);
@@ -29,7 +30,8 @@ export const updateUserByIdService = async (
     throw new Error('Invalid update data');
   }
 
-  const updatedUser = await User.findByIdAndUpdate(userId, { $set: updateData }, {
+  const sanitizedUpdateData = sanitize(updateData);
+  const updatedUser = await User.findByIdAndUpdate(userId, { $set: sanitizedUpdateData }, {
     new: true,
     runValidators: true,
   });
