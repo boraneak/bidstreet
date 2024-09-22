@@ -71,9 +71,23 @@ export const updateProductByIdService = async (
     };
   }
 
+  const updateFields = {};
+  if (updatedData.name && typeof updatedData.name === 'string') {
+    updateFields['name'] = updatedData.name;
+  }
+  if (updatedData.price && typeof updatedData.price === 'number') {
+    updateFields['price'] = updatedData.price;
+  }
+  if (updatedData.description && typeof updatedData.description === 'string') {
+    updateFields['description'] = updatedData.description;
+  }
+  if (updatedData.image) {
+    updateFields['image'] = updatedData.image;
+  }
+
   return await Product.findOneAndUpdate(
     { _id: productId, shop: shopId },
-    updatedData,
+    { $set: updateFields },
     { new: true, runValidators: true },
   );
 };
