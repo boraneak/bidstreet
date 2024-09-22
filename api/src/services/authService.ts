@@ -5,7 +5,10 @@ import { config } from 'config/config';
 import { IUser } from 'interfaces/User';
 
 export const signUpService = async (userData: Partial<IUser>) => {
-  const existingUser = await User.findOne({ email: userData.email });
+  if (typeof userData.email !== 'string') {
+    throw new Error('Invalid email format');
+  }
+  const existingUser = await User.findOne({ email: { $eq: userData.email } });
   if (existingUser) {
     throw new Error('Email already exists');
   }
