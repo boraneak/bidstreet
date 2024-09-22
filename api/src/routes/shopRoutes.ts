@@ -1,5 +1,7 @@
 import express from 'express';
-import { shopServices, userServices } from 'services/index';
+import { shopServices } from 'services/index';
+import controllers from 'controllers/index';
+
 import multer from 'multer';
 import hasAuthorization from 'middleware/hasAuthorization';
 
@@ -13,7 +15,7 @@ router.post(
   '/create/by/:userId',
   upload.single('image'),
   hasAuthorization,
-  userServices.isSeller,
+  controllers.user.isSeller,
   shopServices.createShop,
 );
 

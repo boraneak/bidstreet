@@ -1,5 +1,4 @@
 import express from 'express';
-import services from 'services/index';
 import multer from 'multer';
 import hasAuthorization from 'middleware/hasAuthorization';
 import controllers from 'controllers/index';
@@ -11,7 +10,7 @@ router.post(
   '/create/by/:userId',
   upload.single('image'),
   hasAuthorization,
-  services.user.isSeller,
+  controllers.user.isSeller,
   controllers.auction.createAuction,
 );
 
@@ -39,14 +38,14 @@ router.put(
   '/update/:auctionId',
   upload.single('image'),
   hasAuthorization,
-  services.user.isSeller,
+  controllers.user.isSeller,
   controllers.auction.updateAuctionById,
 );
 
 router.delete(
   '/delete/:auctionId',
   hasAuthorization,
-  services.user.isSeller,
+  controllers.user.isSeller,
   controllers.auction.deleteAuctionById,
 );
 

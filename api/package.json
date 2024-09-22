@@ -60,6 +60,7 @@
     "swagger-ui-express": "^5.0.1",
     "ts-node": "^10.9.2",
     "ws": "^8.17.1",
-    "lusca": "^1.7.0"
+    "lusca": "^1.7.0",
+    "mongo-sanitize": "^1.1.0"
   }
 }
