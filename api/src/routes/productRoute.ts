@@ -1,5 +1,5 @@
 import express from 'express';
-import { shopServices, userServices } from 'services/index';
+import { shopServices } from 'services/index';
 import hasAuthorization from 'middleware/hasAuthorization';
 import controllers from 'controllers/index';
 
@@ -12,7 +12,7 @@ router.post(
   '/create/by/:shopId',
   upload.single('image'),
   hasAuthorization,
-  userServices.isSeller,
+  controllers.user.isSeller,
   shopServices.isShopOwner,
   controllers.product.createProduct,
 );
@@ -23,11 +23,7 @@ router.get(
   controllers.product.getProductById,
 );
 
-router.get(
-  '/photo/:productId',
-  // authServices.hasAuthorization,
-  controllers.product.getProductPhoto,
-);
+router.get('/photo/:productId', controllers.product.getProductPhoto);
 
 router.put(
   '/update/:shopId/:productId',
