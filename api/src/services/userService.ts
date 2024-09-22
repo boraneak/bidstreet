@@ -29,7 +29,7 @@ export const updateUserByIdService = async (
     throw new Error('Invalid update data');
   }
 
-  const updatedUser = await User.findByIdAndUpdate(userId, updateData, {
+  const updatedUser = await User.findByIdAndUpdate(userId, { $set: updateData }, {
     new: true,
     runValidators: true,
   });
