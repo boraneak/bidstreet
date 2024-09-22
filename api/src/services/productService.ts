@@ -58,7 +58,13 @@ export const updateProductByIdService = async (
   file: Express.Multer.File | undefined,
 ) => {
   if (file) {
-    const imageData = fs.readFileSync(file.path);
+    const safeRoot = path.resolve(__dirname, '../../uploads'); // Define the safe root directory
+    const filePath = path.resolve(safeRoot, file.path);
+    const resolvedPath = fs.realpathSync(filePath);
+    if (!resolvedPath.startsWith(safeRoot)) {
+      throw new Error('Invalid file path');
+    }
+    const imageData = fs.readFileSync(resolvedPath);
     updatedData.image = {
       data: imageData,
       contentType: file.mimetype,
