@@ -2,7 +2,7 @@ import express from 'express';
 import authRoutes from './authRoute';
 import userRoutes from './userRoutes';
 import shopRoutes from './shopRoutes';
-import productRoutes from './productRoutes';
+import productRoutes from './productRoute';
 import orderRoutes from './orderRoutes';
 import auctionRoute from './auctionRoute';
 
