@@ -3427,6 +3427,13 @@ lru-cache@^5.1.1:
   dependencies:
     yallist "^3.0.2"
 
+lusca@^1.7.0:
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/lusca/-/lusca-1.7.0.tgz#a5d979f1b51776e60d41e0ca98f886f1b8b95502"
+  integrity sha512-msnrplCfY7zaqlZBDEloCIKld+RUeMZVeWzSPaGUKeRXFlruNSdKg2XxCyR+zj6BqzcXhXlRnvcvx6rAGgsvMA==
+  dependencies:
+    tsscmp "^1.0.5"
+
 make-dir@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/make-dir/-/make-dir-4.0.0.tgz#c3c2307a771277cd9638305f915c29ae741b614e"
@@ -3551,6 +3558,11 @@ mkdirp@^0.5.4:
   integrity sha512-FP+p8RB8OWpF3YZBCrP5gtADmtXApB5AMLn+vdyA+PyxCjrCs00mjyUozssO33cwDeT3wNGdLxJ5M//YqtHAJw==
   dependencies:
     minimist "^1.2.6"
+
+mongo-sanitize@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/mongo-sanitize/-/mongo-sanitize-1.1.0.tgz#01346b55f90716a42de3a1f957500a11c0752c36"
+  integrity sha512-6gB9AiJD+om2eZLxaPKIP5Q8P3Fr+s+17rVWso7hU0+MAzmIvIMlgTYuyvalDLTtE/p0gczcvJ8A3pbN1XmQ/A==
 
 mongodb-connection-string-url@^3.0.0:
   version "3.0.1"
@@ -4522,6 +4534,11 @@ tsconfig-paths@^4.2.0:
     json5 "^2.2.2"
     minimist "^1.2.6"
     strip-bom "^3.0.0"
+
+tsscmp@^1.0.5:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/tsscmp/-/tsscmp-1.0.6.tgz#85b99583ac3589ec4bfef825b5000aa911d605eb"
+  integrity sha512-LxhtAkPDTkVCMQjt2h6eBVY28KCjikZqZfMcC15YBeNjkgUpdCfBu5HoiOTDu86v6smE8yOjyEktJ8hlbANHQA==
 
 type-check@^0.4.0, type-check@~0.4.0:
   version "0.4.0"
