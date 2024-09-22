@@ -3,6 +3,7 @@ import { Auction } from 'models/auctionModel';
 import mongoose from 'mongoose';
 import path from 'path';
 import { IAuction } from 'interfaces/Auction';
+import { validateAuctionData } from 'utils/validation';
 
 const defaultImagePath = path.join(
   __dirname,
@@ -69,7 +70,7 @@ export const updateAuctionByIdService = async (
   body: Partial<IAuction>,
   file: Express.Multer.File | undefined,
 ) => {
-  const updateAuctionData: Partial<IAuction> = { ...body };
+  const updateAuctionData: Partial<IAuction> = validateAuctionData(body);
 
   if (file) {
     let imageData = null;
@@ -86,15 +87,30 @@ export const updateAuctionByIdService = async (
     };
   }
 
+  function validateAuctionData(data: Partial<IAuction>): Partial<IAuction> {
+    const validData: Partial<IAuction> = {};
+    if (typeof data.title === 'string') validData.title = data.title;
+    if (typeof data.description === 'string') validData.description = data.description;
+    if (typeof data.startingBid === 'number') validData.startingBid = data.startingBid;
+    if (data.bidStart instanceof Date) validData.bidStart = data.bidStart;
+    if (data.bidEnd instanceof Date) validData.bidEnd = data.bidEnd;
+    // Add more fields as necessary
+    return validData;
+  }
+
   const existingAuction = await Auction.findOne({ _id: auctionId }).exec();
   if (!existingAuction) {
     return null;
   }
 
-  return Auction.findOneAndUpdate({ _id: auctionId }, updateAuctionData, {
-    new: true,
-    runValidators: true,
-  }).exec();
+  return Auction.findOneAndUpdate(
+    { _id: auctionId },
+    { $set: updateAuctionData },
+    {
+      new: true,
+      runValidators: true,
+    }
+  ).exec();
 };
 
 export const deleteAuctionByIdService = async (auctionId: string) => {
