@@ -1,28 +1,39 @@
 import express from 'express';
 
-import { shopServices, orderServices } from 'services/index';
 import hasAuthorization from 'middleware/hasAuthorization';
+import services from 'services/index';
 
 const router = express.Router();
 
-router.post('/create/:userId', hasAuthorization, orderServices.createOrder);
+router.post(
+  '/create/:userId',
+  hasAuthorization,
+  services.order.createOrderService,
+);
 
 router.get(
   '/shop/:shopId',
   hasAuthorization,
-  shopServices.isShopOwner,
-  orderServices.getOrderByShop,
+  services.shop.isShopOwner,
+  services.order.getOrdersByShopService,
 );
 
-router.get('/user/:userId', hasAuthorization, orderServices.getOrderByUser);
+router.get(
+  '/user/:userId',
+  hasAuthorization,
+  services.order.getOrdersByUserService,
+);
 
 router.get(
   '/status-values',
   hasAuthorization,
-  orderServices.getOrderStatusValues,
+  services.order.getOrderStatusValuesService,
 );
 
-// router.put("/status/:orderId");
-router.get('/list/:orderId', hasAuthorization, orderServices.getOrderById);
+router.get(
+  '/list/:orderId',
+  hasAuthorization,
+  services.order.getOrderByIdService,
+);
 
 export default router;

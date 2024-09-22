@@ -2,7 +2,7 @@ import * as authServices from './authService';
 import * as userServices from './userServices';
 import * as shopServices from './shopServices';
 import * as productServices from './productServices';
-import * as orderServices from './orderServices';
+import * as orderService from './orderService';
 import * as auctionService from './auctionService';
 
 const services = {
@@ -10,7 +10,7 @@ const services = {
   user: userServices,
   shop: shopServices,
   product: productServices,
-  order: orderServices,
+  order: orderService,
   auction: auctionService,
 };
 
