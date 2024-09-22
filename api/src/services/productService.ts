@@ -17,7 +17,12 @@ export const createProductService = async (
 ) => {
   let imageData;
   if (file) {
-    imageData = fs.readFileSync(file.path);
+    const safeUploadDir = path.resolve(__dirname, '../../uploads');
+    const resolvedPath = path.resolve(file.path);
+    if (!resolvedPath.startsWith(safeUploadDir)) {
+      throw new Error('Invalid file path');
+    }
+    imageData = fs.readFileSync(resolvedPath);
   }
 
   const newProduct = new Product({
