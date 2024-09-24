@@ -9,6 +9,7 @@ import { specs } from '../openApi';
 import { rateLimiter } from '../middleware';
 import lusca from 'lusca';
 import path from 'path';
+import session from 'express-session';
 
 const app = express();
 
@@ -22,6 +23,22 @@ app.use(
 app.use(cookieParser());
 app.use(express.json());
 app.use(morgan('dev'));
+
+// Configure session middleware
+app.use(
+  session({
+    secret: config.sessionSecret,
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      secure: process.env.NODE_ENV === 'production', // Use HTTPS in production
+      httpOnly: true, // Prevents client-side JavaScript from accessing the cookie
+      sameSite: 'lax', // Prevents CSRF attacks; use 'strict' for stricter rules
+      maxAge: 24 * 60 * 60 * 1000, // Cookie expiration time (e.g., 24 hours)
+    },
+  }),
+);
+
 app.use(lusca.csrf());
 
 app.use('/api/v1', router);
