@@ -29,7 +29,12 @@ app.use(
     secret: config.sessionSecret,
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false }, // Set to true if using HTTPS
+    cookie: {
+      secure: process.env.NODE_ENV === 'production', // Use HTTPS in production
+      httpOnly: true, // Prevents client-side JavaScript from accessing the cookie
+      sameSite: 'lax', // Prevents CSRF attacks; use 'strict' for stricter rules
+      maxAge: 24 * 60 * 60 * 1000, // Cookie expiration time (e.g., 24 hours)
+    },
   }),
 );
 
