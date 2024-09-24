@@ -7,6 +7,8 @@
     "@eslint/js": "^9.10.0",
     "@types/express": "4.17.21",
     "@types/jest": "^29.5.13",
+    "@types/lusca": "^1.7.5",
+    "@types/mongo-sanitize": "^1.0.3",
     "cross-env": "^7.0.3",
     "eslint": "9.10.0",
     "eslint-plugin-jest": "^28.8.3",
@@ -46,7 +48,9 @@
     "express": "^4.20.0",
     "express-rate-limit": "^7.4.0",
     "jsonwebtoken": "^9.0.2",
+    "lusca": "^1.7.0",
     "migrate-mongo": "^11.0.0",
+    "mongo-sanitize": "^1.1.0",
     "mongodb": "^6.8.1",
     "mongoose": "^8.6.2",
     "morgan": "^1.10.0",
@@ -59,8 +63,6 @@
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
     "ts-node": "^10.9.2",
-    "ws": "^8.17.1",
-    "lusca": "^1.7.0",
-    "mongo-sanitize": "^1.1.0"
+    "ws": "^8.17.1"
   }
 }

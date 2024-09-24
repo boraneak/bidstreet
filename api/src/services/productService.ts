@@ -71,7 +71,7 @@ export const updateProductByIdService = async (
     };
   }
 
-  const updateFields = {};
+  const updateFields: Partial<IProduct> = {}; // Use Partial<IProduct> to make all fields optional
   if (updatedData.name && typeof updatedData.name === 'string') {
     updateFields['name'] = updatedData.name;
   }
@@ -115,7 +115,7 @@ export const getFilteredProductsService = async (queryParams: any) => {
   }
 
   if (queryParams.category) {
-    query.category = { $eq: queryParams.category };
+    query.category = queryParams.category; //  This fixed: not assignable to type string since $eq is an object
   }
 
   return await Product.find(query).populate('shop', '_id name').exec();

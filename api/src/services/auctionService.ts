@@ -89,7 +89,7 @@ export const updateAuctionByIdService = async (
 
   function validateAuctionData(data: Partial<IAuction>): Partial<IAuction> {
     const validData: Partial<IAuction> = {};
-    if (typeof data.title === 'string') validData.title = data.title;
+    if (typeof data.itemName === 'string') validData.itemName = data.itemName;
     if (typeof data.description === 'string')
       validData.description = data.description;
     if (typeof data.startingBid === 'number')
