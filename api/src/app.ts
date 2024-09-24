@@ -6,9 +6,8 @@ import router from './routes/index';
 import cookieParser from 'cookie-parser';
 import { config } from 'config/config';
 import { specs } from '../openApi';
-import { rateLimiter } from '../middleware';
+import { rateLimiter, expressSession } from '../middleware';
 import lusca from 'lusca';
-import session from 'express-session';
 
 const app = express();
 
@@ -23,16 +22,7 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(morgan('dev'));
 
-// Configure session middleware
-app.use(
-  session({
-    secret: config.sessionSecret,
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false }, // Set to true if using HTTPS
-  }),
-);
-
+app.use(expressSession);
 app.use(lusca.csrf());
 
 app.use('/api/v1', router);

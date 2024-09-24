@@ -28,4 +28,5 @@ export const config = {
   mongoDbUri: ensureEnv(process.env.MONGODB_URI, 'MONGODB_URI'),
   saltRounds: parseInt(process.env.SALT_ROUNDS || '10', 10),
   sessionSecret: ensureEnv(process.env.SESSION_SECRET, 'SESSION_SECRET'),
+  cookieMaxAge: parseInt(process.env.COOKIE_MAX_AGE || '86400000', 10),
 };

@@ -1,4 +1,4 @@
 import rateLimiter from './rateLimiter';
 import hasAuthorization from './hasAuthorization';
-
-export { rateLimiter, hasAuthorization };
+import expressSession from './expressSession';
+export { rateLimiter, hasAuthorization, expressSession };
