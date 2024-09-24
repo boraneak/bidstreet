@@ -8,6 +8,7 @@ import { config } from 'config/config';
 import { specs } from '../openApi';
 import { rateLimiter } from '../middleware';
 import lusca from 'lusca';
+import path from 'path';
 
 const app = express();
 
@@ -25,6 +26,11 @@ app.use(lusca.csrf());
 
 app.use('/api/v1', router);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+
+// Test socket server
+app.get('/socket', (_req, res) => {
+  res.sendFile(path.join(__dirname, '../socket/index.html'));
+});
 
 app.get('/', (_req, res) => {
   res.send('Welcome to the Express server!');
