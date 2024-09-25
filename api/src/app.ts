@@ -6,7 +6,7 @@ import router from './routes/index';
 import cookieParser from 'cookie-parser';
 import { config } from 'config/config';
 import { specs } from '../openApi';
-import { rateLimiter, expressSession } from '../middleware';
+import { rateLimiter, expressSession } from '../middlewares';
 import lusca from 'lusca';
 
 const app = express();

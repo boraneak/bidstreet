@@ -1,6 +1,6 @@
 import express from 'express';
 import multer from 'multer';
-import hasAuthorization from 'middleware/hasAuthorization';
+import hasAuthorization from 'middlewares/hasAuthorization';
 import controllers from 'controllers/index';
 const upload = multer({ dest: 'uploads/' });
 

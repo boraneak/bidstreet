@@ -2,7 +2,7 @@ import express from 'express';
 import controllers from 'controllers/index';
 
 import multer from 'multer';
-import hasAuthorization from 'middleware/hasAuthorization';
+import hasAuthorization from 'middlewares/hasAuthorization';
 
 const upload = multer({ dest: 'uploads/' });
 
