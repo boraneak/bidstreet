@@ -1,7 +1,7 @@
 import jwt, { TokenExpiredError, JsonWebTokenError } from 'jsonwebtoken';
 import { Response, NextFunction } from 'express';
 
-import { config } from 'config/config';
+import { config } from 'config/index';
 import { IDecodedToken } from 'interfaces/DecodedToken';
 import { IAuthRequest } from 'interfaces/requests/AuthRequest';
 

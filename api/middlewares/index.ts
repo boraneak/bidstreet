@@ -1,4 +1,5 @@
 import rateLimiter from './rateLimiter';
 import hasAuthorization from './hasAuthorization';
 import expressSession from './expressSession';
-export { rateLimiter, hasAuthorization, expressSession };
+import corsOptions from './cors';
+export { rateLimiter, hasAuthorization, expressSession, corsOptions };

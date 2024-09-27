@@ -4,7 +4,7 @@ import * as shopController from './shopController';
 import * as productController from './productController';
 import * as orderController from './orderController';
 import * as auctionController from './auctionController';
-
+import * as getCsrfToken from './csrfController';
 const controllers = {
   auth: authController,
   user: userController,
@@ -12,6 +12,7 @@ const controllers = {
   product: productController,
   order: orderController,
   auction: auctionController,
+  csrfToken: getCsrfToken,
 };
 
 export default controllers;

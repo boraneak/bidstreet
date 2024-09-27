@@ -3,7 +3,6 @@ import { Auction } from 'models/auctionModel';
 import mongoose from 'mongoose';
 import path from 'path';
 import { IAuction } from 'interfaces/Auction';
-// import { validateAuctionData } from 'utils/validation';
 
 const defaultImagePath = path.join(
   __dirname,

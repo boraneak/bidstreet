@@ -1,4 +1,4 @@
-import { config } from 'config/config';
+import { config } from 'config/index';
 import mongoose from 'mongoose';
 
 export const connectToDatabase = async (): Promise<void> => {

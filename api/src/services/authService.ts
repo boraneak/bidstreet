@@ -1,7 +1,7 @@
 import User from 'models/userModel';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
-import { config } from 'config/config';
+import { config } from 'config/index';
 import { IUser } from 'interfaces/User';
 
 export const signUpService = async (userData: IUser) => {
