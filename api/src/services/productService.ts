@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { IProduct } from 'interfaces/Product';
 import { Product } from 'models/productModel';
-import escapeStringRegexp from 'escape-string-regexp';
+import { escapeRegExp } from 'utils/stringUtils';
 
 const defaultImagePath = path.join(
   __dirname,
@@ -110,7 +110,7 @@ export const getFilteredProductsService = async (queryParams: any) => {
   } = {};
 
   if (queryParams.productName) {
-    const sanitizedName = escapeStringRegexp(queryParams.productName);
+    const sanitizedName = escapeRegExp(queryParams.productName);
     query.name = new RegExp(sanitizedName, 'i');
   }
 
