@@ -1,20 +1,16 @@
 import User from 'models/userModel';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
-import { config } from 'config/config';
+import { config } from 'config/index';
 import { IUser } from 'interfaces/User';
 
-export const signUpService = async (userData: Partial<IUser>) => {
-  if (typeof userData.email !== 'string') {
-    throw new Error('Invalid email format');
-  }
+export const signUpService = async (userData: IUser) => {
   const existingUser = await User.findOne({ email: { $eq: userData.email } });
   if (existingUser) {
     throw new Error('Email already exists');
   }
-
   const salt = await bcrypt.genSalt(config.saltRounds);
-  const hashed_password = await bcrypt.hash(userData._password!, salt);
+  const hashed_password = await bcrypt.hash(userData.password!, salt);
 
   const user = new User({
     ...userData,

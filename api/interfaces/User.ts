@@ -7,7 +7,7 @@ export interface IUser extends Document {
   updated?: Date;
   created: Date;
   seller: boolean;
-  _password?: string;
+  password?: string;
   authenticate: (plainText: string) => boolean;
   encryptPassword: (password: string) => string;
   genSalt: () => string;

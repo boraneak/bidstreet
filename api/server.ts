@@ -1,7 +1,7 @@
 import { connectToDatabase } from './database';
 import { createServer } from 'http';
 import app from 'src/app';
-import { config } from 'config/config';
+import { config } from 'config/index';
 import { initializeSocket } from 'src/scoket';
 
 const server = createServer(app);

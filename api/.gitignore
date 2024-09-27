@@ -8,3 +8,6 @@ node_modules/
 
 # Distribution folder
 dist/
+
+# uploads folder
+uploads/

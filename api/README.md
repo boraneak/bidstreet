@@ -1,7 +1,5 @@
 # Bidstreet API
 
-Bidstreet API built with TypeScript, Node.js, Express and MongoDB. The project uses `ts-node` for development, `typescript` for building, and `eslint` for linting.
-
 ## Getting Started
 
 ### Prerequisites

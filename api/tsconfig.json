@@ -28,7 +28,7 @@
       "src/*": ["src/*"],
       "config/*": ["config/*"],
       "interfaces/*": ["interfaces/*"],
-      "middleware/*": ["middleware/*"],
+      "middlewares/*": ["middlewares/*"],
       "models/*": ["src/models/*"],
       "services/*": ["src/services/*"],
       "routes/*": ["src/routes/*"],
