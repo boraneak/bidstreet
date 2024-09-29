@@ -4,7 +4,7 @@ import swaggerUi from 'swagger-ui-express';
 import router from './routes/index';
 import cookieParser from 'cookie-parser';
 import { specs } from '../openApi';
-import { rateLimiter, expressSession, corsOptions } from '../middlewares';
+import { rateLimiter, corsOptions, expressSession } from '../middlewares';
 import lusca from 'lusca';
 import controllers from 'controllers/index';
 
