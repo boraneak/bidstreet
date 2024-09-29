@@ -6,7 +6,6 @@ import cookieParser from 'cookie-parser';
 import { specs } from '../openApi';
 import { rateLimiter, corsOptions, expressSession } from '../middlewares';
 import lusca from 'lusca';
-import path from 'path';
 import controllers from 'controllers/index';
 
 const app = express();
@@ -23,10 +22,6 @@ app.use(lusca.csrf());
 app.use('/api/v1', router);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
-// Test socket client
-app.get('/socket', (_req, res) => {
-  res.sendFile(path.join(__dirname, '../socket/index.html'));
-});
 app.get('/csrf-token', controllers.csrfToken.getCsrfToken);
 
 app.get('/', (_req, res) => {

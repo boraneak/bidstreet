@@ -11,11 +11,8 @@ app.listen(config.port, async () => {
   console.log('Server Info:');
   console.log(`Environment: ${config.nodeEnv}`);
   await connectToDatabase();
-  const io = initializeSocket(server);
-  console.log(
-    'Socket.IO server initialized and listening for connections.',
-    io,
-  );
+  initializeSocket(server);
+  console.log('Socket.IO server initialized and listening for connections.');
   console.log(
     `Server is listening at http://localhost:${config.port} on ${currentDate}`,
   );
