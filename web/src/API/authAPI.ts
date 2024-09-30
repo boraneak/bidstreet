@@ -1,37 +1,9 @@
-import axios, { AxiosInstance, AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
+import apiClient from '../utils/apiClient';
+import { handleApiError } from '../utils/errorUtils';
 import { AuthResponse } from '../types/AuthResponse';
 import { SignUpData } from '../types/SignUpData';
 import { SignInData } from '../types/SignInData';
-// Create a custom API client
-const apiClient: AxiosInstance = axios.create({
-  baseURL: process.env.REACT_APP_API_BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  withCredentials: true,
-});
-
-// Custom error class for API errors
-class ApiError extends Error {
-  constructor(
-    public status: number,
-    message: string,
-  ) {
-    super(message);
-    this.name = 'ApiError';
-  }
-}
-
-// Helper function to handle API errors
-const handleApiError = (error: unknown): never => {
-  if (axios.isAxiosError(error)) {
-    throw new ApiError(
-      error.response?.status || 500,
-      error.response?.data?.message || 'An unexpected error occurred',
-    );
-  }
-  throw error;
-};
 
 // Authentication service
 export const AuthService = {

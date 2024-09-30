@@ -51,7 +51,7 @@ const NavigationBar: React.FC = () => {
                       textTransform: 'none',
                     }}
                   >
-                    Sign up
+                    Register
                   </Button>
                 </Link>
                 <Link to="/signin">
