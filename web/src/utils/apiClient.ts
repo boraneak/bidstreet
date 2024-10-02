@@ -1,40 +1,32 @@
 import axios, { AxiosInstance, InternalAxiosRequestConfig } from 'axios';
 
-// Create a custom API client
-const apiClient: AxiosInstance = axios.create({
-  baseURL: process.env.REACT_APP_API_BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  withCredentials: true,
-});
+const createClient = (baseURL: string): AxiosInstance =>
+  axios.create({
+    baseURL,
+    headers: { 'Content-Type': 'application/json' },
+    withCredentials: true,
+  });
 
-const csrfApiClient: AxiosInstance = axios.create({
-  baseURL: 'http://localhost:9000',
-  withCredentials: true,
-});
+const apiClient = createClient(process.env.REACT_APP_API_BASE_URL!);
+const csrfApiClient = createClient(process.env.REACT_APP_CSRF_BASE_URL!);
 
-// Function to get CSRF token
 const getCsrfToken = async (): Promise<string> => {
-  const response = await csrfApiClient.get('/csrf-token');
-  return response.data.csrfToken;
+  const { data } = await csrfApiClient.get('/csrf-token');
+  return data.csrfToken;
 };
 
-// Interceptor to add CSRF token to relevant requests
 apiClient.interceptors.request.use(
   async (config: InternalAxiosRequestConfig) => {
     if (
-      config.method &&
-      ['post', 'put', 'delete', 'patch'].includes(config.method.toLowerCase())
+      ['post', 'put', 'delete', 'patch'].includes(
+        config.method?.toLowerCase() || '',
+      )
     ) {
-      const token = await getCsrfToken();
-      config.headers['X-CSRF-Token'] = token;
+      config.headers['X-CSRF-Token'] = await getCsrfToken();
     }
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  },
+  (error) => Promise.reject(error),
 );
 
 export default apiClient;
