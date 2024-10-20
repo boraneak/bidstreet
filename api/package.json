@@ -23,8 +23,8 @@
   "scripts": {
     "start": "cross-env NODE_ENV=production node -r tsconfig-paths/register -r ts-node/register/transpile-only dist/server.js",
     "dev": "cross-env NODE_ENV=development nodemon --watch . -e ts --exec ts-node -r tsconfig-paths/register server.ts",
-    "lint": "yarn eslint . --ignore-pattern 'dist/**'",
-    "lint:fix": "yarn eslint --fix --ignore-pattern 'dist/**'",
+    "lint": "npm eslint . --ignore-pattern 'dist/**'",
+    "lint:fix": "npm eslint --fix --ignore-pattern 'dist/**'",
     "build": "tsc",
     "migrate:up": "migrate-mongo up",
     "migrate:down": "migrate-mongo down",
@@ -67,6 +67,5 @@
     "swagger-ui-express": "^5.0.1",
     "ts-node": "^10.9.2",
     "ws": "^8.17.1"
-  },
-  "packageManager": "yarn@4.5.0"
+  }
 }

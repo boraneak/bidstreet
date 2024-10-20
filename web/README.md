@@ -8,10 +8,6 @@
    ```
 1. Install the dependencies:
    ```
-   yarn
-   ```
-   or if you use npm:
-   ```
    npm install
    ```
 2. Create `.env`
@@ -21,10 +17,6 @@
    ```
 
 3. Run the project
-   ```
-   yarn start
-   ```
-   or if you use npm:
    ```
    npm start
    ```

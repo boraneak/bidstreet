@@ -1,15 +1,15 @@
-FROM node:18-alpine
+# FROM node:18-alpine
 
-WORKDIR /app
+# WORKDIR /app
 
-COPY package.json yarn.lock ./
+# COPY package.json yarn.lock ./
 
-RUN yarn install
+# RUN yarn install
 
-COPY . .
+# COPY . .
 
-RUN yarn build
+# RUN yarn build
 
-EXPOSE 9000
+# EXPOSE 9000
 
-CMD ["node", "dist/src/app.js"]
+# CMD ["node", "dist/src/app.js"]

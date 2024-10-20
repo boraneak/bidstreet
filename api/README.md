@@ -5,7 +5,6 @@
 ### Prerequisites
 
 - Node.js (>= v18.18.0)
-- Yarn (or npm if you prefer)
 
 ### Installation
 
@@ -14,10 +13,6 @@
    cd bidstreet/api
    ```
 1. Install the dependencies:
-   ```
-   yarn install
-   ```
-   or if you use npm:
    ```
    npm install
    ```
@@ -32,41 +27,21 @@ In the project directory, you can run the following scripts:
 
 0.  Start the server in development mode with hot-reloading using ts-node and nodemon.
     ```
-    yarn dev
-    ```
-    or if you use npm:
-    ```
     npm run dev
     ```
 1.  Run ESLint to check for linting errors in your code.
-    ```
-    yarn lint
-    ```
-    or if you use npm:
     ```
     npm run lint
     ```
 2.  Run ESLint with the --fix option to automatically fix linting errors where possible.
     ```
-    yarn lint:fix
-    ```
-    or if you use npm:
-    ```
     npm run lint:fix
     ```
 3.  Compile the TypeScript files to JavaScript.
     ```
-    yarn build
-    ```
-    or if you use npm:
-    ```
     npm run build
     ```
 4.  Test
-    ```
-    yarn test
-    ```
-    or if you use npm:
     ```
     npm run test
     ```
@@ -79,34 +54,16 @@ In the project directory, you can run the following scripts:
 npm run migrate:up
 ```
 
-or if you use yarn:
-
-```
-yarn migrate:up
-```
-
 - To revert the last migration:
 
 ```
 npm run migrate:down
 ```
 
-or if you use yarn:
-
-```
-yarn migrate:down
-```
-
 - To check migration status
 
 ```
 npm run migrate:status
-```
-
-or if you use yarn:
-
-```
-yarn migrate:status
 ```
 
 ### API Documentation
