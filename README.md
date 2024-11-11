@@ -26,7 +26,7 @@ git clone git@github.com:boraneak/bidstreet.git
 #### Authentication
 
 - Provides sign-in and sign-out functionality.
-- Implements user authentication and authorization using JWT tokens.
+- Implements user authentication and authorization using JWT.
 
 #### User Management
 
@@ -77,13 +77,13 @@ This project uses **Prettier** for code formatting. The following scripts are av
 - To format the codebase, run:
 
 ```
-yarn prettier
+npm run prettier
 ```
 
 - To check if the code is correctly formatted, run:
 
 ```
-yarn prettier:check
+npm run prettier:check
 ```
 
 ## Contributing
