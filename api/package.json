@@ -55,7 +55,7 @@
     "migrate-mongo": "^11.0.0",
     "mongo-sanitize": "^1.1.0",
     "mongodb": "^6.8.1",
-    "mongoose": "^8.6.2",
+    "mongoose": "^8.8.3",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
     "nodemon": "^3.1.4",
