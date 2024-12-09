@@ -31,10 +31,9 @@
     "react-dom": "^18.3.1",
     "react-jss": "^10.10.0",
     "react-router-dom": "^6.26.2",
-    "react-scripts": "^5.0.1",
+    "react-scripts": "^3.0.1",
     "send": "^0.19.0",
-    "serve-static": "^1.16.0",
-    "typescript": "^5.6.2"
+    "serve-static": "^1.16.0"
   },
   "resolutions": {
     "body-parser": "^1.20.3",
@@ -68,5 +67,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "typescript": "^4.9.5"
   }
 }
