@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 import { config } from 'config/index';
 import { IUser } from 'interfaces/User';
 
-export const signUpService = async (userData: IUser) => {
+export const registerService = async (userData: IUser) => {
   const existingUser = await User.findOne({ email: { $eq: userData.email } });
   if (existingUser) {
     throw new Error('Email already exists');
@@ -28,7 +28,7 @@ export const signUpService = async (userData: IUser) => {
   };
 };
 
-export const signInService = async (email: string, password: string) => {
+export const loginService = async (email: string, password: string) => {
   const user = await User.findOne({ email: { $eq: email } });
   if (!user) {
     throw new Error('User not found');

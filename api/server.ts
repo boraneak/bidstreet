@@ -8,7 +8,6 @@ const server = createServer(app);
 
 app.listen(config.port, async () => {
   const currentDate = new Date().toLocaleString();
-  console.log('Server Info:');
   console.log(`Environment: ${config.nodeEnv}`);
   await connectToDatabase();
   initializeSocket(server);

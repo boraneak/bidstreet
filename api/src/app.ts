@@ -21,7 +21,6 @@ app.use(lusca.csrf());
 
 app.use('/api/v1', router);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
-
 app.get('/csrf-token', controllers.csrfToken.getCsrfToken);
 
 app.get('/', (_req, res) => {
