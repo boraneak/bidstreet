@@ -5,7 +5,6 @@ import { AuthResponse } from '../types/AuthResponse';
 import { SignUpData } from '../types/SignUpData';
 import { SignInData } from '../types/SignInData';
 
-// Authentication service
 export const AuthService = {
   async signIn(data: SignInData): Promise<AxiosResponse<AuthResponse>> {
     try {
